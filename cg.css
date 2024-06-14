@@ -1,0 +1,181 @@
+/* Ensure input fields and select boxes are responsive */
+input, select {
+    width: calc(100% - 23px);
+    padding: 1px;
+    display: inline-block;
+    border: 1px solid rgb(255, 255, 255);
+    background: #ffffff;
+    background-color: #fffdfd;
+    outline: none;
+    border-radius: 6px;
+}
+
+/* Flexbox for better responsive layout */
+.main-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.data-section {
+    flex: 1;
+    padding: 20px;
+}
+
+.image-section {
+    flex: 1;
+    padding: 20px;
+    position: relative; /* This allows absolute positioning of child elements */
+}
+
+/* Flexbox for columns */
+.row {
+    display: flex;
+    gap: 5px;
+    margin: 20px 10px;
+}
+
+.column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+button {
+    background-color: #04aa6d;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: rgb(255, 255, 255);
+    padding: 14px 20px;
+    margin: 6px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+}
+
+button:hover {
+    opacity: 1;
+}
+
+/* Container should be responsive */
+.container {
+    width: 100%;
+    height: auto;
+    float: left;
+    min-width: 300px; /* Reduced minimum width */
+    padding: 20px; /* Added padding */
+}
+
+.w-50 {
+    width: 50%;
+}
+
+/* Make tables responsive */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 8px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.highlight {
+    background-color: #ffffff;
+}
+
+.highlight-value {
+    background-color: #000;
+    color: #fff;
+}
+
+.gradient-border {
+    border: 2px solid;
+    border-image: linear-gradient(to bottom, black, gray) 1;
+    padding: 5px; /* Adjust padding as needed */
+    outline: none; /* Remove the default outline */
+    width: 420px; /* Adjust the width as needed */
+    height: 25px; /* Adjust the height as needed */
+}
+
+.time-inputs {
+    display: flex;
+    gap: 10px; /* Adjust the gap between inputs as needed */
+}
+
+input[readonly] {
+    background-color: #f9f9f9;
+}
+
+.summary-box {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #eaeaea;
+    border: 1px solid #ccc;
+}
+
+.summary-box div {
+    flex: 1;
+    text-align: center;
+}
+
+.summary-box div:not(:last-child) {
+    margin-right: 10px;
+}
+
+.summary-box input {
+    font-weight: bold;
+    background-color: #fff;
+    border: none;
+    text-align: center;
+}
+
+/* Positioning adjustments for images */
+#aircraft-layout {
+    position: absolute;
+    top: 100px; /* Adjust as needed */
+    right: 0; /* Right-aligned within the image section */
+}
+
+#equipment-layout {
+    position: absolute;
+    top: 1000px; /* Adjust as needed */
+    right: 0; /* Right-aligned within the image section */
+}
+
+#PASSENGERS-layout-1 {
+    position: absolute;
+    top: 2800px; /* Adjust as needed */
+    right: 0; /* Right-aligned within the image section */
+}
+
+#STRETCHERS-layout-2 {
+    position: absolute;
+    top: 3350px; /* Adjust as needed */
+    right: 0; /* Right-aligned within the image section */
+}
+
+#additional-layout-3 {
+    position: absolute;
+    top: 3700px; /* Adjust as needed */
+    right: 0; /* Right-aligned within the image section */
+}
+
+/* Responsive design adjustments */
+@media screen and (max-width: 768px) {
+    .main-container {
+        flex-direction: column;
+    }
+
+    .data-section, .image-section {
+        width: 100%;
+    }
+}

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Helicopter Chart Interpretation</title>
+    <style>
+        canvas {
+            border: 1px solid black;
+            display: none; /* Initially hidden */
+        }
+        input, select {
+            width: calc(100% - 23px);
+            padding: 10px;
+            display: inline-block;
+            border: 1px solid rgb(255, 255, 255);
+            background: #ffffff;
+            background-color: #fffdfd;
+            outline: none;
+            border-radius: 6px;
+        }
+        .row {
+            display: flex;
+            gap: 5px;
+            margin: 20px 10px;
+        }
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        button {
+            background-color: #04aa6d;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            color: rgb(255, 255, 255);
+            padding: 14px 20px;
+            margin: 6px 0;
+            border: none;
+            cursor: pointer;
+            width: 13.8%;
+            opacity: 0.9;
+        }
+        button:hover {
+            opacity: 1;
+        }
+        .container {
+            width: calc(100% - 960px);
+            height: auto;
+            float: left;
+            min-width: 865px;
+        }
+        .w-50 {
+            width: 20%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .highlight {
+            background-color: #ffffff;
+        }
+        .highlight-value {
+            background-color: #000;
+            color: #fff;
+        }
+        .gradient-border {
+            border: 2px solid;
+            border-image: linear-gradient(to bottom, black, gray) 1;
+            padding: 5px; /* Adjust padding as needed */
+            outline: none; /* Remove the default outline */
+            width: 420px; /* Adjust the width as needed */
+            height: 25px; /* Adjust the height as needed */
+        }
+        .time-inputs {
+            display: flex;
+            gap: 10px; /* Adjust the gap between inputs as needed */
+        }
+
+        /* Positioning adjustments for images */
+        #aircraft-layout {
+            position: absolute;
+            top: 100px; /* Adjust as needed */
+            left: 1600px; /* Right-aligned within the image section */
+        }
+
+        #equipment-layout {
+            position: absolute;
+            top: 1100px; /* Adjust as needed */
+            left: 1600px; /* Right-aligned within the image section */
+        }
+
+        #PASSENGERS-layout-1 {
+            position: absolute;
+            top: 2900px; /* Adjust as needed */
+            left: 1600px; /* Right-aligned within the image section */
+        }
+
+        #STRETCHERS-layout-2 {
+            position: absolute;
+            top: 3650px; /* Adjust as needed */
+            left: 1600px; /* Right-aligned within the image section */
+        }
+
+        #additional-layout-3 {
+            position: absolute;
+            top: 4000px; /* Adjust as needed */
+            left: 1600px; /* Right-aligned within the image section */
+        }
+        .image-section {
+            flex: 1;
+            padding: 10px;
+            position: relative; /* This allows absolute positioning of child elements */
+        }
+        /* Style adjustments for labels inside summary-item-horizontal */
+.summary-item-horizontal label {
+    font-weight: bold;
+    margin-right: 10px;
+    white-space: nowrap; /* Prevents label text from wrapping */
+}
+
+.summary-input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    text-align: center; /* Center-aligns the text within the input */
+}
+
+.summary-input-orange {
+    background-color: #fff;
+}
+
+.summary-input-green {
+    background-color: #fff;
+}
+
+.summary-input-white {
+    background-color: #fff;
+}
+
+.summary-input-beige {
+    background-color: #fff;
+}
+
+/* Horizontal summary box styling */
+.summary-box-horizontal {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap; /* Allows items to wrap to the next line if they don't fit */
+}
+
+.summary-item-horizontal {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    background-color: #04aa6d;
+    flex: 1; /* Makes each item take up equal space */
+    min-width: 200px; /* Ensures a minimum width for each item */
+}
+
+        .section-box {
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+
+.label-style {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.select-style {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #fff;
+}
+
+
+
+
+    </style>
+</head>
+<body style="display: flex; gap: 20px; min-width: 1887px;">
+    <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
+        <h1>Cougar Calculator</h1>
+        <div style="width: 100%; background-color: #ffffff; padding: 0px 0;">
+            <nav style="display: flex; justify-content: left; gap: 5px;">
+                <button onclick="window.location.href='main.html'">Main</button>
+                <button onclick="window.location.href='fuel.html'">Fuel</button>
+                <button onclick="window.location.href='cg.html'">CG</button>
+                <button onclick="window.location.href='FCF.html'">FCF</button>
+            </nav>
+        </div>
+        <p>Please fill in this form to get all data.</p>
+        <div class="section-box">
+            <h3 class="colored-heading">Aircraft Tail Number</h3>
+            <div class="box">
+                <select id="tail-number" class="select-style"style="background-color: #FFFFED;"></td>>
+                    <option value="9901">9901</option>
+                    <option value="9902">9902</option>
+                    <option value="9903">9903</option>
+                    <option value="9904">9904</option>
+                    <option value="9905">9905</option>
+                    <option value="9909">9909</option>
+                    <option value="9910" selected>9910</option>
+                    <option value="9911">9911</option>
+                </select>
+            </div>
+            </div>
+            <h3 class="colored-heading">Aircraft Weight</h3>
+            <table>
+                <tr>
+                    <th>ITEMS</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>EMPTY WGT</td>
+                    <td><input type="text" id="emptyWeight" readonly sstyle="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="emptyWeightCG" readonly style="background-color: #ffffff;"></td>
+                    <td><input type="text" id="emptyWeightMMNT" readonly></td>
+                </tr>
+            </table>
+            <h3>Crew</h3>
+            <table>
+                <tr>
+                    <th>CREW</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>PILOTS</td>
+                    <td>200</td>
+                    <td><input type="text" id="pilotsNumber" value="2" oninput="updateWeight('pilotsNumber', 200, 'pilotsWeight', 'pilotsMMNT', 50.39)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="pilotsWeight" value="400" readonly></td>
+                    <td>50.39</td>
+                    <td><input type="text" id="pilotsMMNT" value="20156" readonly></td>
+                </tr>
+                <tr>
+                    <td>3RD CM</td>
+                    <td>200</td>
+                    <td><input type="text" id="thirdCMNumber" value="0" oninput="updateWeight('thirdCMNumber', 200, 'thirdCMWeight', 'thirdCMMMNT', 75.74)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="thirdCMWeight" value="0" readonly></td>
+                    <td>75.74</td>
+                    <td><input type="text" id="thirdCMMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>FE</td>
+                    <td>200</td>
+                    <td><input type="text" id="feNumber" value="1" oninput="updateWeight('feNumber', 200, 'feWeight', 'feMMNT', 113.71)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="feWeight" value="200" readonly></td>
+                    <td>113.71</td>
+                    <td><input type="text" id="feMMNT" value="22742" readonly></td>
+                </tr>
+                <tr>
+                    <td>GUNNER</td>
+                    <td>200</td>
+                    <td><input type="text" id="gunnerNumber" value="0" oninput="updateWeight('gunnerNumber', 200, 'gunnerWeight', 'gunnerMMNT', 115)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="gunnerWeight" value="0" readonly></td>
+                    <td>115</td>
+                    <td><input type="text" id="gunnerMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>CRS 1 AND 2</td>
+                    <td>250</td>
+                    <td><input type="text" id="crs1And2Number" value="2" oninput="updateWeight('crs1And2Number', 250, 'crs1And2Weight', 'crs1And2MMNT', 220)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="crs1And2Weight" value="500" readonly></td>
+                    <td>220</td>
+                    <td><input type="text" id="crs1And2MMNT" value="110000" readonly></td>
+                </tr>
+                <tr>
+                    <td>CRS 3 AND 4</td>
+                    <td>250</td>
+                    <td><input type="text" id="crs3And4Number" value="2" oninput="updateWeight('crs3And4Number', 250, 'crs3And4Weight', 'crs3And4MMNT', 260)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="crs3And4Weight" value="500" readonly></td>
+                    <td>260</td>
+                    <td><input type="text" id="crs3And4MMNT" value="130000" readonly></td>
+                </tr>
+            </table>
+            <h3>Optional Equipment</h3>
+            <table>
+                <tr>
+                    <th>OPTIONAL EQUIPMENT</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>FLIR to be removed when not installed</td>
+                    <td>-88</td>
+                    <td><input type="text" id="flirNumber" value="0" oninput="updateWeight('flirNumber', -88, 'flirWeight', 'flirMMNT', -18.9)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="flirWeight" value="0" readonly></td>
+                    <td>-18.9</td>
+                    <td><input type="text" id="flirMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>HOIST</td>
+                    <td>97</td>
+                    <td><input type="text" id="hoistNumber" value="1" oninput="updateWeight('hoistNumber', 97, 'hoistWeight', 'hoistMMNT', 162.2)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="hoistWeight" value="97" readonly></td>
+                    <td>162.2</td>
+                    <td><input type="text" id="hoistMMNT" value="15733.4" readonly></td>
+                </tr>
+                <tr>
+                    <td>FAST ROPE</td>
+                    <td>80</td>
+                    <td><input type="text" id="fastRopeNumber" value="1" oninput="updateWeight('fastRopeNumber', 80, 'fastRopeWeight', 'fastRopeMMNT', 167.98)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="fastRopeWeight" value="80" readonly></td>
+                    <td>167.98</td>
+                    <td><input type="text" id="fastRopeMMNT" value="13438.4" readonly></td>
+                </tr>
+                <tr>
+                    <td>SEARCH LIGHT</td>
+                    <td>53</td>
+                    <td><input type="text" id="searchLightNumber" value="1" oninput="updateWeight('searchLightNumber', 53, 'searchLightWeight', 'searchLightMMNT', 120.56)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="searchLightWeight" value="53" readonly></td>
+                    <td>120.56</td>
+                    <td><input type="text" id="searchLightMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>MG58 RH empty 72lb / loaded 103</td>
+                    <td>103</td>
+                    <td><input type="text" id="mg58RHNumber" value="1" oninput="updateWeight('mg58RHNumber', 103, 'mg58RHWeight', 'mg58RHMMNT', 108.94)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="mg58RHWeight" value="103" readonly></td>
+                    <td>108.94</td>
+                    <td><input type="text" id="mg58RHMMNT" value="11220.82" readonly></td>
+                </tr>
+                <tr>
+                    <td>MG58 LH empty 72lb / loaded 103</td>
+                    <td>103</td>
+                    <td><input type="text" id="mg58LHNumber" value="1" oninput="updateWeight('mg58LHNumber', 103, 'mg58LHWeight', 'mg58LHMMNT', 116.42)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="mg58LHWeight" value="103" readonly></td>
+                    <td>116.42</td>
+                    <td><input type="text" id="mg58LHMMNT" value="11991.26" readonly></td>
+                </tr>
+                <tr>
+                    <td>EXTRA AMMUNITION BOX</td>
+                    <td>31</td>
+                    <td><input type="text" id="extraAmmoBoxNumber" value="2" oninput="updateWeight('extraAmmoBoxNumber', 31, 'extraAmmoBoxWeight', 'extraAmmoBoxMMNT', 95)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="extraAmmoBoxWeight" value="62" readonly></td>
+                    <td>95</td>
+                    <td><input type="text" id="extraAmmoBoxMMNT" value="5890" readonly></td>
+                </tr>
+                <tr>
+                    <td>20MM GUN EMPTY</td>
+                    <td>269</td>
+                    <td><input type="text" id="gunNumber" value="0" oninput="updateWeight('gunNumber', 269, 'gunWeight', 'gunMMNT', 100.4)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="gunWeight" value="0" readonly></td>
+                    <td>100.4</td>
+                    <td><input type="text" id="gunMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>20MM GUN LOADED</td>
+                    <td>452</td>
+                    <td><input type="text" id="gunLoadedNumber" value="0" oninput="updateWeight('gunLoadedNumber', 452, 'gunLoadedWeight', 'gunLoadedMMNT', 100.4)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="gunLoadedWeight" value="0" readonly></td>
+                    <td>100.4</td>
+                    <td><input type="text" id="gunLoadedMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>ROCKET LAUNCHER EMPTY</td>
+                    <td>170</td>
+                    <td><input type="text" id="rocketLauncherNumber" value="0" oninput="updateWeight('rocketLauncherNumber', 170, 'rocketLauncherWeight', 'rocketLauncherMMNT', 117)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="rocketLauncherWeight" value="0" readonly></td>
+                    <td>117</td>
+                    <td><input type="text" id="rocketLauncherMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>ROCKET LAUNCHER LOADED</td>
+                    <td>682</td>
+                    <td><input type="text" id="rocketLauncherLoadedNumber" value="0" oninput="updateWeight('rocketLauncherLoadedNumber', 682, 'rocketLauncherLoadedWeight', 'rocketLauncherLoadedMMNT', 117)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="rocketLauncherLoadedWeight" value="0" readonly></td>
+                    <td>117</td>
+                    <td><input type="text" id="rocketLauncherLoadedMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>REFUELLING PROBE</td>
+                    <td>330</td>
+                    <td><input type="text" id="refuelingProbeNumber" value="1" oninput="updateWeight('refuelingProbeNumber', 330, 'refuelingProbeWeight', 'refuelingProbeMMNT', 1)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="refuelingProbeWeight" value="330" readonly></td>
+                    <td>1</td>
+                    <td><input type="text" id="refuelingProbeMMNT" value="31120" readonly></td>
+                </tr>
+                <tr>
+                    <td>JDD full installation</td>
+                    <td>160</td>
+                    <td><input type="text" id="jddNumber" value="1" oninput="updateWeight('jddNumber', 160, 'jddWeight', 'jddMMNT', 194.5)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="jddWeight" value="160" readonly></td>
+                    <td>194.5</td>
+                    <td><input type="text" id="jddMMNT" value="31120" readonly></td>
+                </tr>
+                <tr>
+                    <td>CABIN DOORS ARMOURED PLATES</td>
+                    <td>40</td>
+                    <td><input type="text" id="doorsArmouredNumber" value="1" oninput="updateWeight('doorsArmouredNumber', 40, 'doorsArmouredWeight', 'doorsArmouredMMNT', 56.73)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="doorsArmouredWeight" value="40" readonly></td>
+                    <td>56.73</td>
+                    <td><input type="text" id="doorsArmouredMMNT" value="2269.2" readonly></td>
+                </tr>
+                <tr>
+                    <td>PILOTS SEATS ARMOURED PLATES</td>
+                    <td>118</td>
+                    <td><input type="text" id="seatsArmouredNumber" value="1" oninput="updateWeight('seatsArmouredNumber', 118, 'seatsArmouredWeight', 'seatsArmouredMMNT', 58.31)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="seatsArmouredWeight" value="118" readonly></td>
+                    <td>58.31</td>
+                    <td><input type="text" id="seatsArmouredMMNT" value="6880.58" readonly></td>
+                </tr>
+                <tr>
+                    <td>CABIN FLOOR ARMOURED PLATES</td>
+                    <td>522</td>
+                    <td><input type="text" id="floorArmouredNumber" value="1" oninput="updateWeight('floorArmouredNumber', 522, 'floorArmouredWeight', 'floorArmouredMMNT', 141.84)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="floorArmouredWeight" value="522" readonly></td>
+                    <td>141.84</td>
+                    <td><input type="text" id="floorArmouredMMNT" value="74040.48" readonly></td>
+                </tr>
+                <tr>
+                    <td>COMMON SAR KIT</td>
+                    <td>90</td>
+                    <td><input type="text" id="commonSARKitNumber" value="1" oninput="updateWeight('commonSARKitNumber', 90, 'commonSARKitWeight', 'commonSARKitMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="commonSARKitWeight" value="90" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="commonSARKitMMNT" value="23130" readonly></td>
+                </tr>
+                <tr>
+                    <td>LAND SAR KIT</td>
+                    <td>135</td>
+                    <td><input type="text" id="landSARKitNumber" value="1" oninput="updateWeight('landSARKitNumber', 135, 'landSARKitWeight', 'landSARKitMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="landSARKitWeight" value="135" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="landSARKitMMNT" value="34695" readonly></td>
+                </tr>
+                <tr>
+                    <td>SEA SAR KIT</td>
+                    <td>149</td>
+                    <td><input type="text" id="seaSARKitNumber" value="1" oninput="updateWeight('seaSARKitNumber', 149, 'seaSARKitWeight', 'seaSARKitMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="seaSARKitWeight" value="149" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="seaSARKitMMNT" value="38393" readonly></td>
+                </tr>
+                <tr>
+                    <td>TRANSACO STRETCHER</td>
+                    <td>91</td>
+                    <td><input type="text" id="transacoStretcherNumber" value="1" oninput="updateWeight('transacoStretcherNumber', 91, 'transacoStretcherWeight', 'transacoStretcherMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="transacoStretcherWeight" value="91" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="transacoStretcherMMNT" value="23387" readonly></td>
+                </tr>
+                <tr>
+                    <td>SAR KIT NET</td>
+                    <td>13</td>
+                    <td><input type="text" id="sarKitNetNumber" value="1" oninput="updateWeight('sarKitNetNumber', 13, 'sarKitNetWeight', 'sarKitNetMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sarKitNetWeight" value="13" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="sarKitNetMMNT" value="3341" readonly></td>
+                </tr>
+                <tr>
+                    <td>MEDICAL KIT ASSEMBLY</td>
+                    <td>70</td>
+                    <td><input type="text" id="medicalKitNumber" value="1" oninput="updateWeight('medicalKitNumber', 70, 'medicalKitWeight', 'medicalKitMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="medicalKitWeight" value="70" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="medicalKitMMNT" value="17990" readonly></td>
+                </tr>
+            </table>
+            <h3>Fuel</h3>
+            <table>
+                <tr>
+                    <th>FUEL</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>LONGI RH</td>
+                    <td>375</td>
+                    <td><input type="text" id="fuelRHNumber" value="2" oninput="updateWeight('fuelRHNumber', 375, 'fuelRHWeight', 'fuelRHMMNT', 175)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="fuelRHWeight" value="750.00" readonly></td>
+                    <td>175</td>
+                    <td><input type="text" id="fuelRHMMNT" value="131250.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>LONGI LH</td>
+                    <td>390</td>
+                    <td><input type="text" id="fuelLHNumber" value="3" oninput="updateWeight('fuelLHNumber', 390, 'fuelLHWeight', 'fuelLHMMNT', 175)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="fuelLHWeight" value="1170.00" readonly></td>
+                    <td>175</td>
+                    <td><input type="text" id="fuelLHMMNT" value="204750.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>REAR + REAR TRANSVERS</td>
+                    <td>1000</td>
+                    <td><input type="text" id="rearTransversNumber" value="4" oninput="updateWeight('rearTransversNumber', 1000, 'rearTransversWeight', 'rearTransversMMNT', 230)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="rearTransversWeight" value="4000.00" readonly></td>
+                    <td>230</td>
+                    <td><input type="text" id="rearTransversMMNT" value="920000.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>FWRD + FWRD TRANSVERS + CENTRAL</td>
+                    <td>2000</td>
+                    <td><input type="text" id="forwardTransversNumber" value="5" oninput="updateWeight('forwardTransversNumber', 2000, 'forwardTransversWeight', 'forwardTransversMMNT', 140)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="forwardTransversWeight" value="10000.00" readonly></td>
+                    <td>140</td>
+                    <td><input type="text" id="forwardTransversMMNT" value="1400000.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>EXTERNAL RH</td>
+                    <td>0</td>
+                    <td><input type="text" id="externalRHNumber" value="1" oninput="updateWeight('externalRHNumber', 0, 'externalRHWeight', 'externalRHMMNT', 269.92)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="externalRHWeight" value="0.00" readonly></td>
+                    <td>269.92</td>
+                    <td><input type="text" id="externalRHMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>EXTERNAL LH</td>
+                    <td>0</td>
+                    <td><input type="text" id="externalLHNumber" value="1" oninput="updateWeight('externalLHNumber', 0, 'externalLHWeight', 'externalLHMMNT', 269.92)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="externalLHWeight" value="0.00" readonly></td>
+                    <td>269.92</td>
+                    <td><input type="text" id="externalLHMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>CABIN</td>
+                    <td>730</td>
+                    <td><input type="text" id="cabinNumber" value="3" oninput="updateWeight('cabinNumber', 730, 'cabinWeight', 'cabinMMNT', 335.5)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="cabinWeight" value="2190.00" readonly></td>
+                    <td>335.5</td>
+                    <td><input type="text" id="cabinMMNT" value="734745.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>TOTAL FUEL</td>
+                    <td colspan="2"></td>
+                    <td><input type="text" id="totalFuelWeight" readonly style="background-color: #FFFFED;"></td>
+                    <td colspan="2"></td>
+                </tr>
+            </table>
+            <h3>Passengers</h3>
+            <table>
+                <tr>
+                    <th>PASSENGERS</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerANumber" value="0" oninput="updateWeight('passengerANumber', 250, 'passengerAWeight', 'passengerAMMNT', 96.69)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerAWeight" value="0" readonly></td>
+                    <td>96.69</td>
+                    <td><input type="text" id="passengerAMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerBNumber" value="0" oninput="updateWeight('passengerBNumber', 250, 'passengerBWeight', 'passengerBMMNT', 113.71)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerBWeight" value="0" readonly></td>
+                    <td>113.71</td>
+                    <td><input type="text" id="passengerBMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerCNumber" value="0" oninput="updateWeight('passengerCNumber', 250, 'passengerCWeight', 'passengerCMMNT', 131.59)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerCWeight" value="0" readonly></td>
+                    <td>131.59</td>
+                    <td><input type="text" id="passengerCMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerDNumber" value="0" oninput="updateWeight('passengerDNumber', 250, 'passengerDWeight', 'passengerDMMNT', 149.72)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerDWeight" value="0" readonly></td>
+                    <td>149.72</td>
+                    <td><input type="text" id="passengerDMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>E</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerENumber" value="0" oninput="updateWeight('passengerENumber', 250, 'passengerEWeight', 'passengerEMMNT', 166.27)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerEWeight" value="0" readonly></td>
+                    <td>166.27</td>
+                    <td><input type="text" id="passengerEMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>F</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerFNumber" value="0" oninput="updateWeight('passengerFNumber', 250, 'passengerFWeight', 'passengerFMMNT', 185.18)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerFWeight" value="0" readonly></td>
+                    <td>185.18</td>
+                    <td><input type="text" id="passengerFMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerGNumber" value="0" oninput="updateWeight('passengerGNumber', 250, 'passengerGWeight', 'passengerGMMNT', 201.73)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerGWeight" value="0" readonly></td>
+                    <td>201.73</td>
+                    <td><input type="text" id="passengerGMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>H</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerHNumber" value="0" oninput="updateWeight('passengerHNumber', 250, 'passengerHWeight', 'passengerHMMNT', 220.64)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerHWeight" value="0" readonly></td>
+                    <td>220.64</td>
+                    <td><input type="text" id="passengerHMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>I</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerINumber" value="0" oninput="updateWeight('passengerINumber', 250, 'passengerIWeight', 'passengerIMMNT', 237.19)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerIWeight" value="0" readonly></td>
+                    <td>237.19</td>
+                    <td><input type="text" id="passengerIMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>J</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerJNumber" value="0" oninput="updateWeight('passengerJNumber', 250, 'passengerJWeight', 'passengerJMMNT', 257.28)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerJWeight" value="0" readonly></td>
+                    <td>257.28</td>
+                    <td><input type="text" id="passengerJMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>K</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerKNumber" value="0" oninput="updateWeight('passengerKNumber', 250, 'passengerKWeight', 'passengerKMMNT', 273.83)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerKWeight" value="0" readonly></td>
+                    <td>273.83</td>
+                    <td><input type="text" id="passengerKMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>L</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerLNumber" value="0" oninput="updateWeight('passengerLNumber', 250, 'passengerLWeight', 'passengerLMMNT', 293.53)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerLWeight" value="0" readonly></td>
+                    <td>293.53</td>
+                    <td><input type="text" id="passengerLMMNT" value="0" readonly></td>
+                </tr>
+            </table>
+            <h3>Stretchers / Litters</h3>
+            <table>
+                <tr>
+                    <th>STRETCHERS / LITTERS</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>A STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherANumber" value="0" oninput="updateWeight('stretcherANumber', 220, 'stretcherAWeight', 'stretcherAMMNT', 126.87)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherAWeight" value="0" readonly></td>
+                    <td>126.87</td>
+                    <td><input type="text" id="stretcherAMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>B STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherBNumber" value="0" oninput="updateWeight('stretcherBNumber', 220, 'stretcherBWeight', 'stretcherBMMNT', 135.14)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherBWeight" value="0" readonly></td>
+                    <td>135.14</td>
+                    <td><input type="text" id="stretcherBMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>C STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherCNumber" value="0" oninput="updateWeight('stretcherCNumber', 220, 'stretcherCWeight', 'stretcherCMMNT', 225.76)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherCWeight" value="0" readonly></td>
+                    <td>225.76</td>
+                    <td><input type="text" id="stretcherCMMNT" value="0" readonly></td>
+                </tr>
+                <tr>
+                    <td>D STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherDNumber" value="0" oninput="updateWeight('stretcherDNumber', 220, 'stretcherDWeight', 'stretcherDMMNT', 259.84)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherDWeight" value="0" readonly></td>
+                    <td>259.84</td>
+                    <td><input type="text" id="stretcherDMMNT" value="0" readonly></td>
+                </tr>
+            </table>
+            <h3>Other Load</h3>
+            <table>
+                <tr>
+                    <th>OTHER LOAD</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>section A</td>
+                    <td><input type="text" id="sectionAWeightSingle" value="0"></td>
+                    <td><input type="text" id="sectionANumber" value="1" oninput="updateWeight('sectionANumber', parseFloat(document.getElementById('sectionAWeightSingle').value) || 0, 'sectionAWeight', 'sectionAMMNT', 120)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionAWeight" value="0.00" readonly></td>
+                    <td>120</td>
+                    <td><input type="text" id="sectionAMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>section B</td>
+                    <td><input type="text" id="sectionBWeightSingle" value="0"></td>
+                    <td><input type="text" id="sectionBNumber" value="1" oninput="updateWeight('sectionBNumber', parseFloat(document.getElementById('sectionBWeightSingle').value) || 0, 'sectionBWeight', 'sectionBMMNT', 140)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionBWeight" value="0.00" readonly></td>
+                    <td>140</td>
+                    <td><input type="text" id="sectionBMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>section C</td>
+                    <td><input type="text" id="sectionCWeightSingle" value="0"></td>
+                    <td><input type="text" id="sectionCNumber" value="1" oninput="updateWeight('sectionCNumber', parseFloat(document.getElementById('sectionCWeightSingle').value) || 0, 'sectionCWeight', 'sectionCMMNT', 180)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionCWeight" value="0.00" readonly></td>
+                    <td>180</td>
+                    <td><input type="text" id="sectionCMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>section D</td>
+                    <td><input type="text" id="sectionDWeightSingle" value="0"></td>
+                    <td><input type="text" id="sectionDNumber" value="1" oninput="updateWeight('sectionDNumber', parseFloat(document.getElementById('sectionDWeightSingle').value) || 0, 'sectionDWeight', 'sectionDMMNT', 220)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionDWeight" value="0.00" readonly></td>
+                    <td>220</td>
+                    <td><input type="text" id="sectionDMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>section E</td>
+                    <td><input type="text" id="sectionEWeightSingle" value="0"></td>
+                    <td><input type="text" id="sectionENumber" value="1" oninput="updateWeight('sectionENumber', parseFloat(document.getElementById('sectionEWeightSingle').value) || 0, 'sectionEWeight', 'sectionEMMNT', 260)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionEWeight" value="0.00" readonly></td>
+                    <td>260</td>
+                    <td><input type="text" id="sectionEMMNT" value="0.00" readonly></td>
+                </tr>
+            </table>
+            <div class="section-box">
+                <h3 class="colored-heading">Summary</h3>
+                <div class="summary-box-horizontal">
+                    <div class="summary-item-horizontal">
+                        <label>Zero Fuel Weight:</label>
+                        <input type="text" id="zfw" value="3816.00" readonly class="summary-input summary-input-orange">
+                    </div>
+                    <div class="summary-item-horizontal">
+                        <label>Total Weight:</label>
+                        <input type="text" id="ttl-weight" value="21926.00" readonly class="summary-input summary-input-green">
+                    </div>
+                    <div class="summary-item-horizontal">
+                        <label>Center of Gravity:</label>
+                        <input type="text" id="cg-summary" value="NaN" readonly class="summary-input summary-input-white">
+                    </div>
+                    <div class="summary-item-horizontal">
+                        <label>Total Moment:</label>
+                        <input type="text" id="ttl-mmnt" value="NaN" readonly class="summary-input summary-input-beige">
+                    </div>
+                </div>
+            </div>
+            
+    </div>
+    <div class="row">
+        <section id="aircraft-layout">
+            <img src="1.png" alt="Aircraft Layout" style="max-width: 1200px; height: auto;">
+        </section>
+        <section id="equipment-layout">
+            <img src="2.png" alt="Equipment Layout" style="max-width: 1200px; height: auto;">
+        </section>
+        <section id="PASSENGERS-layout-1">
+            <img src="3.png" alt="PASSENGERS Layout 1" style="max-width: 800px; height: auto;">
+        </section>
+        <section id="STRETCHERS-layout-2">
+            <img src="4.png" alt="STRETCHERS Layout 2" style="max-width: 800px; height: auto;">
+        </section>
+        <section id="additional-layout-3">
+            <img src="5.png" alt="Additional Layout 3" style="max-width: 800px; height: auto;">
+        </section>
+    
+    </div>
+        </div>
+    </div>
+    <canvas id="fuelChart" width="1241" height="1755"></canvas> 
+    <div class="toast-overlay" id="toast-overlay"></div>
+    <img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
+    <script type="module" src="./datafolder/0ft_15C.js"></script>
+    <script type="module" src="./fuel.js"></script>
+    <script type="module" src="./fuelCalculation.js"></script>
+    <script src="cg.js"></script>
+</body>
+</html>
