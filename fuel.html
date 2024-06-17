@@ -83,6 +83,46 @@
             display: flex;
             gap: 10px; /* Adjust the gap between inputs as needed */
         }
+        /* Namespace for Style 2 */
+        .namespace2 body {
+            font-family: Arial, sans-serif;
+        }
+        .namespace2 table3 {
+            width: 30%;
+            margin: 10px auto;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .namespace2 th, .namespace2 td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold; /* Make the text bold */
+        }
+        .namespace2 .readonly3 {
+            background-color: #e0e0e0;
+        }
+        .namespace2 .input-cell {
+            background-color: #ffffff;
+        }
+        .namespace2 .header {
+            background-color: #f2f2f2;
+            color: rgb(0, 0, 0);
+            font-weight: bold; /* Make the header bold */
+        }
+        .namespace2 .readonly input, .namespace2 .input-cell input {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            border: none;
+        }
+        .namespace2 .readonly input {
+            background-color: #ffffff;
+        }
+        .namespace2 .input-cell input {
+            background-color: #FFFFED;
+            border: 1px solid #ffffff;
+        }
     </style>
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
@@ -283,6 +323,96 @@
             </table>
             <button onclick="calculateFirstTable()">Calculate</button>
         </div>
+        <!-- Fuel Leak Check Table -->
+        <div class="namespace2">
+            <p style="text-align: left; font-size: 20px;">
+                Calculation of the <span style="color: red;">Fuel Leak check</span>
+            </p>
+            <table>
+                <tr>
+                    <th colspan="3" class="header">Fuel Leak check ( FMT page 1 )</th>
+                </tr>
+                <tr>
+                    <td>Total Fuel</td>
+                    <td colspan="2" class="input-cell"><input type="number" id="totalFuel" value="1800"></td>
+                </tr>
+                <tr>
+                    <td rowspan="2" class="highlight-green">Fuel consum per H</td>
+                    <td class="highlight-yellow readonly"><input type="text" id="eng1" value="ENG 1 lb" readonly></td>
+                    <td class="input-cell"><input type="number" id="eng1_val" value="645"></td>
+                </tr>
+                <tr>
+                    <td class="highlight-yellow readonly"><input type="text" id="eng2" value="ENG 2 lb" readonly></td>
+                    <td class="input-cell"><input type="number" id="eng2_val" value="645"></td>
+                </tr>
+                <tr>
+                    <td>Total per min</td>
+                    <td colspan="2" class="readonly"><input type="text" id="totalPerMin" readonly></td>
+                </tr>
+                <tr>
+                    <td class="highlight-red">Minutes</td>
+                    <td class="input-cell"><input type="number" id="minutes" value="60"></td>
+                    <td class="readonly"><input type="text" id="calculatedTotal" readonly></td>
+                </tr>
+                <tr>
+                    <td class="highlight-green">Remaining Fuel</td>
+                    <td colspan="2" class="readonly"><input type="text" id="remainingFuel" readonly></td>
+                </tr>
+            </table>
+        </div>
+        <!-- Additional Tables for Input and Results -->
+        <div class="namespace2">
+            <table class="table3">
+                <tr>
+                    <th colspan="1" class="header">Input</th>
+                    <th colspan="2" class="header">Results</th>
+                </tr>
+                <tr>
+                    <td>Time (in minute)</td>
+                    <td>Fuel</td>
+                    <td>NM</td>
+                </tr>
+                <tr>
+                    <td class="input-cell"><input type="number" id="timeInput1" value="55"></td>
+                    <td class="readonly"><input type="text" id="fuelResult1" readonly></td>
+                    <td class="readonly"><input type="text" id="nmResult1" readonly></td>
+                </tr>
+            </table>
+
+            <table class="table3">
+                <tr>
+                    <th colspan="1" class="header">Input</th>
+                    <th colspan="2" class="header">Results</th>
+                </tr>
+                <tr>
+                    <td>NM</td>
+                    <td>Fuel</td>
+                    <td>Time</td>
+                </tr>
+                <tr>
+                    <td class="input-cell"><input type="number" id="nmInput2" value="1"></td>
+                    <td class="readonly"><input type="text" id="fuelResult2" readonly></td>
+                    <td class="readonly"><input type="text" id="timeResult2" readonly></td>
+                </tr>
+            </table>
+
+            <table class="table3">
+                <tr>
+                    <th colspan="1" class="header">Input</th>
+                    <th colspan="2" class="header">Results</th>
+                </tr>
+                <tr>
+                    <td>Fuel</td>
+                    <td>Time</td>
+                    <td>NM</td>
+                </tr>
+                <tr>
+                    <td class="input-cell"><input type="number" id="fuelInput3" value="700"></td>
+                    <td class="readonly"><input type="text" id="timeResult3" readonly></td>
+                    <td class="readonly"><input type="text" id="nmResult3" readonly></td>
+                </tr>
+            </table>
+        </div>
     </div>
     <canvas id="fuelChart" width="1241" height="1755"></canvas> 
     <div class="toast-overlay" id="toast-overlay"></div>
@@ -290,5 +420,8 @@
     <script type="module" src="./datafolder/0ft_15C.js"></script>
     <script type="module" src="./fuel.js"></script>
     <script type="module" src="./fuelCalculation.js"></script>
+    <script type="module" src="./datafolder/fuelLeak.js"></script>
+
 </body>
 </html>
+                   
