@@ -1,9 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <title>Helicopter Chart Interpretation</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid black;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785);
+        }
         canvas {
             border: 1px solid black;
             display: none; /* Initially hidden */
@@ -20,6 +38,7 @@
         }
         .row {
             display: flex;
+            flex-wrap: wrap;
             gap: 5px;
             margin: 20px 10px;
         }
@@ -28,6 +47,7 @@
             display: flex;
             flex-direction: column;
             gap: 5px;
+            min-width: 300px;
         }
         button {
             background-color: #04aa6d;
@@ -37,20 +57,11 @@
             margin: 6px 0;
             border: none;
             cursor: pointer;
-            width: 13.8%;
+            width: 100%;
             opacity: 0.9;
         }
         button:hover {
             opacity: 1;
-        }
-        .container {
-            width: calc(100% - 960px);
-            height: auto;
-            float: left;
-            min-width: 865px;
-        }
-        .w-50 {
-            width: 20%;
         }
         table {
             width: 100%;
@@ -64,6 +75,16 @@
         th {
             background-color: #f2f2f2;
         }
+        .gradient-border {
+            border: 2px solid;
+            border-image: linear-gradient(to bottom, black, gray) 1;
+            padding: 5px;
+            outline: none;
+        }
+        .time-inputs {
+            display: flex;
+            gap: 10px;
+        }
         .highlight {
             background-color: #ffffff;
         }
@@ -71,71 +92,17 @@
             background-color: #000;
             color: #fff;
         }
-        .gradient-border {
-            border: 2px solid;
-            border-image: linear-gradient(to bottom, black, gray) 1;
-            padding: 5px; /* Adjust padding as needed */
-            outline: none; /* Remove the default outline */
-            width: 420px; /* Adjust the width as needed */
-            height: 25px; /* Adjust the height as needed */
-        }
-        .time-inputs {
-            display: flex;
-            gap: 10px; /* Adjust the gap between inputs as needed */
-        }
-        /* Namespace for Style 2 */
-        .namespace2 body {
-            font-family: Arial, sans-serif;
-        }
-        .namespace2 table3 {
-            width: 30%;
-            margin: 10px auto;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .namespace2 th, .namespace2 td {
-            border: 1px solid #999;
-            padding: 8px;
-            text-align: center;
-            font-weight: bold; /* Make the text bold */
-        }
-        .namespace2 .readonly3 {
-            background-color: #e0e0e0;
-        }
-        .namespace2 .input-cell {
-            background-color: #ffffff;
-        }
-        .namespace2 .header {
-            background-color: #f2f2f2;
-            color: rgb(0, 0, 0);
-            font-weight: bold; /* Make the header bold */
-        }
-        .namespace2 .readonly input, .namespace2 .input-cell input {
-            width: 100%;
-            box-sizing: border-box;
-            text-align: center;
-            border: none;
-        }
-        .namespace2 .readonly input {
-            background-color: #ffffff;
-        }
-        .namespace2 .input-cell input {
-            background-color: #FFFFED;
-            border: 1px solid #ffffff;
-        }
     </style>
 </head>
-<body style="display: flex; gap: 20px; min-width: 1887px;">
-    <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
+<body>
+    <div class="container">
         <h1>Cougar Calculator</h1>
-        <div style="width: 100%; background-color: #ffffff; padding: 0px 0;">
-            <nav style="display: flex; justify-content: left; gap: 5px;">
-                <button onclick="window.location.href='main.html'">Main</button>
-                <button onclick="window.location.href='fuel.html'">Fuel</button>
-                <button onclick="window.location.href='cg.html'">CG</button>
-                <button onclick="window.location.href='FCF.html'">FCF</button>
-            </nav>
-        </div>
+        <nav style="display: flex; justify-content: left; gap: 5px;">
+            <button onclick="window.location.href='main.html'">Main</button>
+            <button onclick="window.location.href='fuel.html'">Fuel</button>
+            <button onclick="window.location.href='cg.html'">CG</button>
+            <button onclick="window.location.href='FCF.html'">FCF</button>
+        </nav>
         <p>Please fill in this form to get all data.</p>
         <div class="row">
             <div class="column">
@@ -421,7 +388,5 @@
     <script type="module" src="./fuel.js"></script>
     <script type="module" src="./fuelCalculation.js"></script>
     <script type="module" src="./datafolder/fuelLeak.js"></script>
-
 </body>
 </html>
-                   
