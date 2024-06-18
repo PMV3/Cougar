@@ -12,10 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const onSite = onSiteHours + (onSiteMinutes / 60);
         
         const flight = usable / consumption;
-        document.getElementById('flight').value = `${Math.floor(flight)}h ${Math.round((flight % 1) * 60)}m`;
+        document.getElementById('flight').value = formatTime(flight * 60);
 
         const legs = flight + onSite;
-        document.getElementById('legs').value = `${Math.floor(legs)}h ${Math.round((legs % 1) * 60)}m`;
+        document.getElementById('legs').value = formatTime(legs * 60);
 
         const speedBox1 = parseFloat(document.getElementById('speedBox1').value);
         
@@ -35,14 +35,15 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('trip2').value = trip2;
 
         const legs2 = trip2 / speed2;
-        document.getElementById('legs2').value = `${Math.floor(legs2)}h ${Math.round((legs2 % 1) * 60)}m`;
+        document.getElementById('legs2').value = formatTime(legs2 * 60);
 
         const onSiteHours2 = parseFloat(document.getElementById('onSiteHours2').value);
         const onSiteMinutes2 = parseFloat(document.getElementById('onSiteMinutes2').value);
+        
         const onSite2 = onSiteHours2 + (onSiteMinutes2 / 60);
 
         const flight2 = legs2 + onSite2;
-        document.getElementById('flight2').value = `${Math.floor(flight2)}h ${Math.round((flight2 % 1) * 60)}m`;
+        document.getElementById('flight2').value = formatTime(flight2 * 60);
 
         const needed2 = flight2 * consumption2;
         document.getElementById('needed2').value = needed2.toFixed(2);
@@ -77,7 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = calculateTime(distance, bf);
 
         document.getElementById('bf').value = bf.toFixed(2);
-        document.getElementById('time').value = time.toFixed(2);
+        document.getElementById('time').value = formatTime(time);
 
         // Calculate fuel required from A to B
         let fuelAtoB = time * fuelConsumption;
@@ -101,8 +102,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const bingo = fuelEntered - totalFuelRequired;
         document.getElementById('bingo').value = bingo.toFixed(2);
 
-        const endurance = bingo / fuelConsumption;
-        document.getElementById('endurance').value = `${Math.floor(endurance)}h ${Math.round((endurance % 1) * 60)}m`;
+        const endurance = bingo / fuelConsumption; // endurance in minutes
+        document.getElementById('endurance').value = formatTimeFromMinutes(endurance);
     }
 
     function calculateMFQIFR() {
@@ -136,6 +137,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Total fuel required
         const totalFuelRequired = fuelAtoB + fuelBtoC + reserveFuel + startupTaxi;
         document.getElementById('mfqIFR').value = totalFuelRequired.toFixed(2);
+    }
+
+    function formatTime(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = Math.floor(totalMinutes % 60);
+        const seconds = Math.floor((totalMinutes * 60) % 60);
+        return `${hours}h ${minutes}m ${seconds}s`;
+    }
+
+    function formatTimeFromMinutes(totalMinutes) {
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = Math.floor(totalMinutes % 60);
+        const seconds = Math.floor((totalMinutes * 60) % 60);
+        return `${hours}h ${minutes}m ${seconds}s`;
     }
 
     window.calculateFirstTable = calculateFirstTable;
