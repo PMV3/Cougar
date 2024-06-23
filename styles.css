@@ -2,7 +2,7 @@ h3 {
   text-align: center;
 }
 
-.toast-buttons {
+.toast-buttons1 {
   max-width: 700px;
   display: flex;
   flex-wrap: wrap;
@@ -19,7 +19,7 @@ h3 {
   flex-wrap: wrap;
 }
 
-button.custom-toast {
+button.custom-toast1 {
   padding: 0.5rem 1rem;
   border: none;
   color: #fff;
@@ -48,11 +48,11 @@ button.success-toast {
   background-color: #2ecc71;
 }
 
-button.danger-toast {
+button.danger-toast1 {
   background-color: #e74c3c;
 }
 
-button.info-toast {
+button.info-toast1 {
   background-color: #3498db;
 }
 

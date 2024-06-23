@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function interpolateData(height, temp, inputSpeed, inputWeight) {
         let chartData, backgroundImage, originalWidth, originalHeight, margin;
 
-        if (height >= 0 && height <= 3000) {
+        if (height >= 0 && height <= 5000) {
             if (temp < 30) {
                 chartData = foraoe_8_FuelConsumption_15C;
                 backgroundImage = backgroundImage15C;
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     left: 35 * (desiredWidth / originalWidth)
                 };
             }
-        } else if (height > 3000 && height <= 9000) {
+        } else if (height > 5000 && height <= 9000) {
             if (temp < 30) {
                 chartData = foraoe_8_FuelConsumption_6000ft_15C;
                 backgroundImage = backgroundImage6000ft15C;
@@ -122,8 +122,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalHeight = 1755; // replace with actual height of the third chart
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
-                    right: 0 * (desiredWidth / originalWidth),
-                    bottom: 0 * (desiredHeight / originalHeight),
+                    right: 35 * (desiredWidth / originalWidth),
+                    bottom: 300 * (desiredHeight / originalHeight),
                     left: 35 * (desiredWidth / originalWidth)
                 };
             } else {
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
                     right: 0 * (desiredWidth / originalWidth),
-                    bottom: 0 * (desiredHeight / originalHeight),
+                    bottom: 300 * (desiredHeight / originalHeight),
                     left: 0 * (desiredWidth / originalWidth)
                 };
             }
