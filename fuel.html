@@ -3,127 +3,127 @@
 <head>
     <meta charset="UTF-8" />
     <title>Helicopter Chart Interpretation</title>
-    <style>
-       canvas {
-    border: 1px solid black;
-    display: none; /* Initially hidden */
-}
-input, select {
-    width: calc(100% - 23px);
-    padding: 8px; /* Reduced padding to create more room */
-    display: inline-block;
-    border: 1px solid rgb(255, 255, 255);
-    background: #ffffff;
-    background-color: #fffdfd;
-    outline: none;
-    border-radius: 6px;
-}
-.row {
-    display: flex;
-    gap: 5px;
-    margin: 20px 10px;
-}
-.column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-button {
-    background-color: #04aa6d;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: rgb(255, 255, 255);
-    padding: 14px 20px;
-    margin: 6px 0;
-    border: none;
-    cursor: pointer;
-    width: 13.8%;
-    opacity: 0.9;
-}
-button:hover {
-    opacity: 1;
-}
-.container {
-    width: calc(100% - 960px);
-    height: auto;
-    float: left;
-    min-width: 960px;
-}
-.w-50 {
-    width: 20%;
-}
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-th, td {
-    border: 1px solid black;
-    padding: 8px;
-    text-align: center;
-}
-th {
-    background-color: #f2f2f2;
-}
-.highlight {
-    background-color: #ffffff;
-}
-.highlight-value {
-    background-color: #000;
-    color: #fff;
-}
-.gradient-border {
-    border: 2px solid;
-    border-image: linear-gradient(to bottom, black, gray) 1;
-    padding: 5px; /* Adjust padding as needed */
-    outline: none; /* Remove the default outline */
-    width: 420px; /* Adjust the width as needed */
-    height: 25px; /* Adjust the height as needed */
-}
-.time-inputs {
-    display: flex;
-    gap: 10px; /* Adjust the gap between inputs as needed */
-}
-/* Namespace for Style 2 */
-.namespace2 body {
-    font-family: Arial, sans-serif;
-}
-.namespace2 table3 {
-    width: 30%;
-    margin: 10px auto;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-.namespace2 th, .namespace2 td {
-    border: 1px solid #999;
-    padding: 8px;
-    text-align: center;
-    font-weight: bold; /* Make the text bold */
-}
-.namespace2 .readonly3 {
-    background-color: #e0e0e0;
-}
-.namespace2 .input-cell {
-    background-color: #ffffff;
-}
-.namespace2 .header {
-    background-color: #f2f2f2;
-    color: rgb(0, 0, 0);
-    font-weight: bold; /* Make the header bold */
-}
-.namespace2 .readonly input, .namespace2 .input-cell input {
-    width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    border: none;
-}
-.namespace2 .readonly input {
-    background-color: #ffffff;
-}
-.namespace2 .input-cell input {
-    background-color: #FFFFED;
-    border: 1px solid #ffffff;
-}
-
+   <style>
+        canvas {
+            border: 1px solid black;
+            display: none; /* Initially hidden */
+        }
+        input, select {
+            width: calc(100% - 28px);
+            padding: 10px;
+            display: inline-block;
+            border: 1px solid rgb(255, 255, 255);
+            background: #ffffff;
+            background-color: #fffdfd;
+            outline: none;
+            border-radius: 60px;
+        }
+        .row {
+            display: flex;
+            gap: 5px;
+            margin: 20px 10px;
+        }
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        button {
+            background-color: #04aa6d;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+            color: rgb(255, 255, 255);
+            padding: 14px 20px;
+            margin: 6px 0;
+            border: none;
+            cursor: pointer;
+            width: 13.8%;
+            opacity: 0.9;
+        }
+        button:hover {
+            opacity: 1;
+        }
+        .container {
+            width: calc(100% - 960px);
+            height: auto;
+            float: left;
+            min-width: 960px;
+        }
+        .w-50 {
+            width: 20%;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 6px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .highlight {
+            background-color: #ffffff;
+        }
+        .highlight-value {
+            background-color: #000;
+            color: #fff;
+        }
+        .gradient-border {
+            border: 2px solid;
+            border-image: linear-gradient(to bottom, black, gray) 1;
+            padding: 5px; /* Adjust padding as needed */
+            outline: none; /* Remove the default outline */
+            width: 420px; /* Adjust the width as needed */
+            height: 25px; /* Adjust the height as needed */
+        }
+        .time-inputs {
+            display: flex;
+            gap: 10px; /* Adjust the gap between inputs as needed */
+        }
+        /* Namespace for Style 2 */
+        .namespace2 body {
+            font-family: Arial, sans-serif;
+        }
+        .namespace2 table3 {
+            width: 30%;
+            margin: 10px auto;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .namespace2 th, .namespace2 td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: center;
+            font-weight: bold; /* Make the text bold */
+        }
+        .namespace2 .readonly3 {
+            background-color: #e0e0e0;
+        }
+        .namespace2 .input-cell {
+            background-color: #ffffff;
+        }
+        .namespace2 .header {
+            background-color: #f2f2f2;
+            color: rgb(0, 0, 0);
+            font-weight: bold; /* Make the header bold */
+        }
+        .namespace2 .readonly input, .namespace2 .input-cell input {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+            border: none;
+        }
+        .namespace2 .readonly input {
+            background-color: #ffffff;
+        }
+        .namespace2 .input-cell input {
+            background-color: #FFFFED;
+            border: 1px solid #ffffff;
+        }
+       
 
     </style>
 </head>
