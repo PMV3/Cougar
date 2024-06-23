@@ -81,29 +81,32 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('time').value = formatTime(time);
 
         // Calculate fuel required from A to B
-        let fuelAtoB = time * fuelConsumption;
+let fuelAtoB = time * fuelConsumption;
 
-        // Add 5% to fuelAtoB if wind speed >= 15 Kts
-        if (windSpeed >= 15) {
-            fuelAtoB += 0.05 * fuelAtoB;
-        }
+// Add 5% to fuelAtoB if wind speed >= 15 Kts
+if (windSpeed >= 15) {
+    fuelAtoB += 0.05 * fuelAtoB;
+}
 
-        // Calculate reserve fuel
-        const reserve = (dayNight === "day") ? 500 : 600;
+// Calculate reserve fuel
+const reserve = (dayNight === "day") ? 500 : 600;
 
-        // Additional fuel for startup and taxi
-        const startupTaxi = 150;
+// Additional fuel for startup and taxi
+const startupTaxi = 150;
 
-        // Total fuel required
-        const totalFuelRequired = fuelAtoB + reserve + startupTaxi;
-        document.getElementById('fuelNeeded').value = totalFuelRequired.toFixed(2);
+// Calculate Flight Fuel
+const flightFuel = fuelAtoB * 2 + reserve + startupTaxi;
+document.getElementById('flightFuel').value = flightFuel.toFixed(2);
 
-        // Calculate Bingo and Endurance
-        const bingo = fuelEntered - totalFuelRequired;
-        document.getElementById('bingo').value = bingo.toFixed(2);
+// Total fuel required (keep this calculation for Bingo, but don't display)
+const totalFuelRequired = fuelAtoB + reserve + startupTaxi;
 
-        const endurance = bingo / fuelConsumption; // endurance in minutes
-        document.getElementById('endurance').value = formatTimeFromMinutes(endurance);
+// Calculate Bingo and Endurance
+const bingo = fuelEntered - totalFuelRequired;
+document.getElementById('bingo').value = bingo.toFixed(2);
+
+const endurance = bingo / fuelConsumption; // endurance in minutes
+document.getElementById('endurance').value = formatTimeFromMinutes(endurance);
     }
 
     function calculateMFQIFR() {
