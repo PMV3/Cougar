@@ -149,11 +149,14 @@ document.getElementById('endurance').value = formatTimeFromMinutes(endurance);
         return `${hours}h ${minutes}m ${seconds}s`;
     }
 
-    function formatTimeFromMinutes(totalMinutes) {
+    function formatTime(totalMinutes) {
         const hours = Math.floor(totalMinutes / 60);
-        const minutes = Math.floor(totalMinutes % 60);
-        const seconds = Math.floor((totalMinutes * 60) % 60);
-        return `${hours}h ${minutes}m ${seconds}s`;
+        const minutes = Math.round(totalMinutes % 60); // Round to nearest minute
+        return `${hours}h ${minutes}m`;
+    }
+    
+    function formatTimeFromMinutes(totalMinutes) {
+        return formatTime(totalMinutes);
     }
 
     window.calculateFirstTable = calculateFirstTable;
