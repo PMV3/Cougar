@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const reserve = parseFloat(document.getElementById('reserve').value);
         const consumption = parseFloat(document.getElementById('consumption').value);
 
-        const usable = qInTanks - reserve;
+        const usable = qInTanks - reserve-150;
         document.getElementById('usable').value = usable.toFixed(2);
 
         const onSiteHours = parseFloat(document.getElementById('onSiteHours').value);
@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('needed2').value = needed2.toFixed(2);
 
         const reserve2 = parseFloat(document.getElementById('reserve2').value);
-        const qInTanks2 = needed2 + reserve2;
+        const qInTanks2 = needed2 + reserve2 +150;
         document.getElementById('qInTanks2').value = qInTanks2.toFixed(2);
     }
 

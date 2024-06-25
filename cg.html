@@ -198,11 +198,12 @@
 <body style="display: flex; gap: 20px; min-width: 1887px;">
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
         <h1>Cougar Calculator</h1>
-        <div style="width: 230%;  padding: 0px 0;">
+        <div style="width: 175%;  padding: 0px 0;">
             <nav style="display: flex; justify-content: left; gap: 10px;">
-                <button onclick="window.location.href='main.html'" style="font-size: 14px;  padding: 10px 20px;">Main</button>
-                <button onclick="window.location.href='fuel.html'" style="font-size: 14px;  padding: 10px 20px;">Fuel</button>
-                <button onclick="window.location.href='cg.html'" style="font-size: 14px; padding: 10px 20px;">CG</button>
+                <button onclick="window.location.href='main.html'">Main</button>
+                <button onclick="window.location.href='fuel.html'">Fuel</button>
+                <button onclick="window.location.href='cg.html'">CG</button>
+            </nav>
         </div>
         <p>Please fill in this form to get all data.</p>
         <div class="section-box">
@@ -502,7 +503,7 @@
                 <tr>
                     <td>LONGI LH</td>
                     <td>390</td>
-                    <td><input type="text" id="fuelLHNumber" value="3" oninput="updateWeight('fuelLHNumber', 390, 'fuelLHWeight', 'fuelLHMMNT', 175)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="fuelLHNumber" value="0" oninput="updateWeight('fuelLHNumber', 390, 'fuelLHWeight', 'fuelLHMMNT', 175)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="fuelLHWeight" value="1170.00" readonly></td>
                     <td>175</td>
                     <td><input type="text" id="fuelLHMMNT" value="204750.00" readonly></td>
@@ -510,7 +511,7 @@
                 <tr>
                     <td>REAR + REAR TRANSVERS</td>
                     <td>1000</td>
-                    <td><input type="text" id="rearTransversNumber" value="4" oninput="updateWeight('rearTransversNumber', 1000, 'rearTransversWeight', 'rearTransversMMNT', 230)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="rearTransversNumber" value="0" oninput="updateWeight('rearTransversNumber', 1000, 'rearTransversWeight', 'rearTransversMMNT', 230)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="rearTransversWeight" value="4000.00" readonly></td>
                     <td>230</td>
                     <td><input type="text" id="rearTransversMMNT" value="920000.00" readonly></td>
@@ -518,7 +519,7 @@
                 <tr>
                     <td>FWRD + FWRD TRANSVERS + CENTRAL</td>
                     <td>2000</td>
-                    <td><input type="text" id="forwardTransversNumber" value="5" oninput="updateWeight('forwardTransversNumber', 2000, 'forwardTransversWeight', 'forwardTransversMMNT', 140)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="forwardTransversNumber" value="0" oninput="updateWeight('forwardTransversNumber', 2000, 'forwardTransversWeight', 'forwardTransversMMNT', 140)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="forwardTransversWeight" value="10000.00" readonly></td>
                     <td>140</td>
                     <td><input type="text" id="forwardTransversMMNT" value="1400000.00" readonly></td>
@@ -526,7 +527,7 @@
                 <tr>
                     <td>EXTERNAL RH</td>
                     <td>0</td>
-                    <td><input type="text" id="externalRHNumber" value="1" oninput="updateWeight('externalRHNumber', 0, 'externalRHWeight', 'externalRHMMNT', 269.92)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="externalRHNumber" value="0" oninput="updateWeight('externalRHNumber', 0, 'externalRHWeight', 'externalRHMMNT', 269.92)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="externalRHWeight" value="0.00" readonly></td>
                     <td>269.92</td>
                     <td><input type="text" id="externalRHMMNT" value="0.00" readonly></td>
@@ -534,7 +535,7 @@
                 <tr>
                     <td>EXTERNAL LH</td>
                     <td>0</td>
-                    <td><input type="text" id="externalLHNumber" value="1" oninput="updateWeight('externalLHNumber', 0, 'externalLHWeight', 'externalLHMMNT', 269.92)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="externalLHNumber" value="0" oninput="updateWeight('externalLHNumber', 0, 'externalLHWeight', 'externalLHMMNT', 269.92)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="externalLHWeight" value="0.00" readonly></td>
                     <td>269.92</td>
                     <td><input type="text" id="externalLHMMNT" value="0.00" readonly></td>
@@ -542,7 +543,7 @@
                 <tr>
                     <td>CABIN</td>
                     <td>730</td>
-                    <td><input type="text" id="cabinNumber" value="3" oninput="updateWeight('cabinNumber', 730, 'cabinWeight', 'cabinMMNT', 335.5)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="cabinNumber" value="0" oninput="updateWeight('cabinNumber', 730, 'cabinWeight', 'cabinMMNT', 335.5)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="cabinWeight" value="2190.00" readonly></td>
                     <td>335.5</td>
                     <td><input type="text" id="cabinMMNT" value="734745.00" readonly></td>
@@ -775,15 +776,17 @@
                         <input type="text" id="ttl-mmnt" value="NaN" readonly class="summary-input summary-input-beige">
                     </div>
                 </div>
+                    <div class="image-section" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
+                        <img id="chart-image" src="cg.png" alt="Weight and Balance Chart" style="display: block; width: 100%; height: auto;">
+                        <canvas id="chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    </div>
+                </div>
             </div>
             
     </div>
     <div class="row">
         <section id="aircraft-layout">
             <img src="1.png" alt="Aircraft Layout" style="max-width: 1200px; height: auto;">
-        </section>
-        <section id="equipment-layout">
-            <img src="2.png" alt="Equipment Layout" style="max-width: 1200px; height: auto;">
         </section>
         <section id="PASSENGERS-layout-1">
             <img src="3.png" alt="PASSENGERS Layout 1" style="max-width: 800px; height: auto;">
@@ -798,12 +801,7 @@
     </div>
         </div>
     </div>
-    <canvas id="fuelChart" width="1241" height="1755"></canvas> 
-    <div class="toast-overlay" id="toast-overlay"></div>
-    <img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
-    <script type="module" src="./datafolder/0ft_15C.js"></script>
-    <script type="module" src="./fuel.js"></script>
-    <script type="module" src="./fuelCalculation.js"></script>
+    <script src="chart-drawer.js"></script>
     <script src="cg.js"></script>
 </body>
 </html>

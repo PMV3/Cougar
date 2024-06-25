@@ -123,40 +123,55 @@ document.addEventListener('DOMContentLoaded', function () {
             totalMoment += moment;
         });
 
-        const cg = totalMoment / totalWeight;
-
-        document.getElementById('ttl-weight').value = totalWeight.toFixed(2);
-        document.getElementById('ttl-mmnt').value = totalMoment.toFixed(2);
-        document.getElementById('cg-summary').value = cg.toFixed(2);
-
         // Calculate and update total fuel weight
         const totalFuelWeight = 
-              parseFloat(document.getElementById('fuelRHWeight').value) + 
-              parseFloat(document.getElementById('fuelLHWeight').value) + 
-              parseFloat(document.getElementById('rearTransversWeight').value) + 
-              parseFloat(document.getElementById('forwardTransversWeight').value) + 
-              parseFloat(document.getElementById('externalRHWeight').value) + 
-              parseFloat(document.getElementById('externalLHWeight').value) + 
-              parseFloat(document.getElementById('cabinWeight').value);
+              parseFloat(document.getElementById('fuelRHWeight').value || 0) + 
+              parseFloat(document.getElementById('fuelLHWeight').value || 0) + 
+              parseFloat(document.getElementById('rearTransversWeight').value || 0) + 
+              parseFloat(document.getElementById('forwardTransversWeight').value || 0) + 
+              parseFloat(document.getElementById('externalRHWeight').value || 0) + 
+              parseFloat(document.getElementById('externalLHWeight').value || 0) + 
+              parseFloat(document.getElementById('cabinWeight').value || 0);
 
         document.getElementById('totalFuelWeight').value = totalFuelWeight.toFixed(2);
         
         // Update ZFW and total weight
         const emptyWeight = parseFloat(document.getElementById('emptyWeight').value) || 0;
         const zfw = totalWeight + emptyWeight - totalFuelWeight;
-        const ttlWeight =  zfw + totalFuelWeight;
-        const aircraftMoment = emptyWeight * parseFloat(document.getElementById('emptyWeightCG').value);
+        const ttlWeight = zfw + totalFuelWeight;
+        const emptyWeightCG = parseFloat(document.getElementById('emptyWeightCG').value) || 0;
+        const aircraftMoment = emptyWeight * emptyWeightCG;
         const ttlMoment = totalMoment + aircraftMoment;
+        
+        const cg = ttlWeight > 0 ? ttlMoment / ttlWeight : 0;
                 
         document.getElementById('zfw').value = zfw.toFixed(2);
         document.getElementById('ttl-weight').value = ttlWeight.toFixed(2);
         document.getElementById('ttl-mmnt').value = ttlMoment.toFixed(2);
-        document.getElementById('cg-summary').value = (ttlMoment / ttlWeight).toFixed(2);
+        document.getElementById('cg-summary').value = cg.toFixed(2);
+
+        // Debug logging
+        console.log('Debug - Total Weight:', ttlWeight);
+        console.log('Debug - Total Moment:', ttlMoment);
+        console.log('Debug - Calculated CG:', cg);
+
+        // Draw the result on the chart
+        console.log("Attempting to draw:", ttlWeight, cg);
+        if (window.chartDrawer && typeof window.chartDrawer.drawResult === 'function') {
+            if (ttlWeight > 0 && !isNaN(cg)) {
+                window.chartDrawer.drawResult(ttlWeight, cg);
+            } else {
+                console.error('Invalid weight or CG value for drawing');
+            }
+        } else {
+            console.error("Chart drawer not available or drawResult is not a function");
+        }
     }
 
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('input', calculateCG);
     });
 
-    calculateCG(); // Initial calculation on page load
+    // Initial calculation on page load
+    calculateCG();
 });
