@@ -32,10 +32,13 @@ function saveDataForStep2() {
     const temperature = document.getElementById('temperature').value;
     const height = document.getElementById('height').value;
     const totalWeight = document.getElementById('ttl-weight').value;
+    const windSpeed = document.getElementById('wind').value; 
+
 
     localStorage.setItem('temperature', temperature);
     localStorage.setItem('height', height);
     localStorage.setItem('totalWeight', totalWeight);
+    localStorage.setItem('windSpeed', windSpeed); 
 }
 
 document.addEventListener('DOMContentLoaded', function () {

@@ -22,6 +22,8 @@ function getDataFromStep1() {
   const totalWeight = localStorage.getItem('totalWeight');
   const temperature = localStorage.getItem('temperature');
   const height = localStorage.getItem('height');
+  const windSpeed = localStorage.getItem('windSpeed'); 
+
 
   if (totalWeight) {
       document.getElementById("#acweight").value = totalWeight;
@@ -32,10 +34,15 @@ function getDataFromStep1() {
   if (height) {
       document.getElementById("#hp").value = height;
   }
+  if (windSpeed) { // Add this block
+    document.getElementById("#wind").value = windSpeed;
+}
 
   localStorage.removeItem('totalWeight');
   localStorage.removeItem('temperature');
   localStorage.removeItem('height');
+  localStorage.removeItem('windSpeed'); // Add this line
+
 
   totalcount();
 }
