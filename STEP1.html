@@ -275,7 +275,7 @@ button {
         <div class="section-box">
             <h3 class="colored-heading">Aircraft Tail Number</h3>
             <div class="form-row">
-                <div class="form-group full-width">
+                <div class="form-group" style="width: 49%;">
                     <select id="tail-number" class="select-style" style="background-color: #FFFFED; width: 100%;">
                         <option value="">Please select an aircraft</option>
                         <option value="9901">9901</option>
@@ -287,18 +287,23 @@ button {
                         <option value="9910">9910</option>
                         <option value="9911">9911</option>
                     </select>
+                    
+                </div>
+                <div class="form-group" style="width: 48%;">
+                    <label for="wind">Wind (kt):</label>
+                    <input type="number" id="wind" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="wind" placeholder="Enter Wind Speed">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="temperature">Temperature (°C):</label>
-                    <input type="number" id="temperature" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="temperature" placeholder="Enter OAT"
-                    >
+                    <input type="number" id="temperature" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="temperature" placeholder="Enter OAT">
                 </div>
                 <div class="form-group">
                     <label for="height">Height (ft):</label>
-                    <input type="number" id="height" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="height "  placeholder="Enter Altitude">
-                </div>
+                    <input type="number" id="height" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="height" placeholder="Enter Altitude">
+            </div>
+        </div>
             </div>
             <div class="form-row">
                 <div class="form-group full-width">

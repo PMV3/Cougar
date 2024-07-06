@@ -17,6 +17,34 @@ const canvas5 = document.getElementById("curveCanvas5");
 const ctx5 = canvas5.getContext("2d");
 
 let showerrornum;
+
+function getDataFromStep1() {
+  const totalWeight = localStorage.getItem('totalWeight');
+  const temperature = localStorage.getItem('temperature');
+  const height = localStorage.getItem('height');
+
+  if (totalWeight) {
+      document.getElementById("#acweight").value = totalWeight;
+  }
+  if (temperature) {
+      document.getElementById("#qat").value = temperature;
+  }
+  if (height) {
+      document.getElementById("#hp").value = height;
+  }
+
+  localStorage.removeItem('totalWeight');
+  localStorage.removeItem('temperature');
+  localStorage.removeItem('height');
+
+  totalcount();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  getDataFromStep1();
+  // Other initialization code...
+});
+
 function errorpanclear() {
   showerrornum = 0;
   let toastAlready = document.body.querySelector(".toast");
@@ -67,6 +95,14 @@ function rcbuttondown() {
   count_7();
   showchart(7);
 }
+
+
+// Add these event listeners at the end of your script
+document.getElementById("#qat").addEventListener('input', totalcount);
+document.getElementById("#hp").addEventListener('input', totalcount);
+document.getElementById("#acweight").addEventListener('input', totalcount);
+document.getElementById("#wind").addEventListener('input', totalcount);
+
 function count(num) {
   if (num == 1) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);

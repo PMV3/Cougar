@@ -100,74 +100,20 @@
       <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
         <div class="w-50">
           <div class="row">
-            <label for="aircraftSelect"><b>Select Aircraft:</b></label>
-            <select id="aircraftSelect" name="aircraftSelect" onchange="updateBaseWeight()">
-                <option value="0">Please select an aircraft</option>
-                <!-- Updated aircraft options with new names and weights -->
-                <option value="9902">A/C 9902 - 13791 lbs</option>
-                <option value="9905">A/C 9905 - 13858 lbs</option>
-                <option value="9909">A/C 9909 - 13787 lbs</option>
-                <option value="9910">A/C 9910 - 14096 lbs</option>
-                <option value="9911">A/C 9911 - 13897 lbs</option>
-            </select>
-          </div>
-          <input type="hidden" id="equipmentWeight" name="equipmentWeight" value="0" />
-          <div class="row">
-            <label for="passengerCount"><b>Number of Passengers:</b></label>
-            <input type="number" id="passengerCount" name="passengerCount" value="0">
-          </div>
-          <div class="row">
-            <label for="cargoWeight"><b>Cargo Weight:</b></label>
-            <input type="number" id="cargoWeight" name="cargoWeight" value="0">
-          </div>
-          <div class="row">
-            <label for="fuelWeight"><b>Fuel Weight:</b></label>
-            <input type="number" id="fuelWeight" name="fuelWeight" value="0">
+       
           </div>
           
              
           
         
-          <div class="row">
-            <button type="button" style="width: 100%;" onclick="calculateWeight()">Calculate Weight</button>
-            <input type="hidden" id="baseWeight" name="baseWeight" />
-          </div>
+        
+      
         </div>
         <!-- <hr /> -->
-        <div class="w-50">
-          <div class="row">
-            <label for="acweight"><b>Total Weight (lbs):</b></label>
-            <input
-              type="text"
-              placeholder="AUW"
-              name="acweight"
-              id="#acweight"
-              value=""
-              required
-            />
-          </div>
-          <div class="row">
-            <label for="qat"><b>Temperature (°C):</b></label>
-            <input
-              id="#qat"
-              name="qat"
-              type="text"
-              placeholder="Enter OAT"
-              value=""
-              required
-            />
-          </div>
-
-          <div class="row">
-            <label for="hp"><b>Elevation (ft):</b></label>
-            <input
-              type="text"
-              value=""
-              placeholder="Enter Altitude"
-              name="hp"
-              id="#hp"
-              required
-            />
+        <div class="w-50" style="display: none;">
+          <input type="hidden" name="acweight" id="#acweight" value="AUW">
+          <input type="hidden" name="qat" id="#qat" value="Enter OAT">
+          <input type="hidden" name="hp" id="#hp" value="Enter Altitude">
           </div>
           <div class="row">
             <label for="WIND"><b>Wind (kt):</b></label>
@@ -179,7 +125,6 @@
               value=""
               required
             />
-          </div>
           
         </div>
       </div>

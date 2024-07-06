@@ -28,6 +28,16 @@ function calculateMaxFuelToUse() {
     document.getElementById('maxFuelToUse').value = zeroFuelWeightMax5ftIGE.toFixed(2);
 }
 
+function saveDataForStep2() {
+    const temperature = document.getElementById('temperature').value;
+    const height = document.getElementById('height').value;
+    const totalWeight = document.getElementById('ttl-weight').value;
+
+    localStorage.setItem('temperature', temperature);
+    localStorage.setItem('height', height);
+    localStorage.setItem('totalWeight', totalWeight);
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const tailNumberSelect = document.getElementById('tail-number');
     const aircraftData = {
@@ -58,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('emptyWeightCG').value = '';
             document.getElementById('emptyWeightMMNT').value = '';
         }
-       
     });
 
     function calculateCG() {
@@ -202,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function () {
         
         // Calculate ZFW (Zero Fuel Weight)
         const emptyWeight = parseFloat(document.getElementById('emptyWeight').value) || 0;
-        const zfw = totalWeight + emptyWeight; // This is now correct, excluding fuel weight
+        const zfw = totalWeight + emptyWeight;
         const ttlWeight = zfw + totalFuelWeight;
         const emptyWeightCG = parseFloat(document.getElementById('emptyWeightCG').value) || 0;
         const aircraftMoment = emptyWeight * emptyWeightCG;
@@ -216,29 +225,17 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('cg-summary').value = cg.toFixed(2);
 
         // Check CG and weight conditions
-    const isCGOK = checkCGAndWeight(ttlWeight, cg);
-    const cgStatusElement = document.getElementById('cg-status');
-    if (isCGOK) {
-        cgStatusElement.textContent = "Center of Gravity: OK";
-        cgStatusElement.style.color = "green";
-    } else {
-        cgStatusElement.textContent = "Center of Gravity: NOT OK";
-        cgStatusElement.style.color = "red";
-    }
-
-    function checkCGAndWeight(weight, cg) {
-        const isWeightOK = weight <= 21495;
-        const isCGOK = cg >= 170 && cg <= 195;
-        return isWeightOK && isCGOK;
-    }
-
-        // Debug logging
-        console.log('Debug - Total Weight:', ttlWeight);
-        console.log('Debug - Total Moment:', ttlMoment);
-        console.log('Debug - Calculated CG:', cg);
+        const isCGOK = checkCGAndWeight(ttlWeight, cg);
+        const cgStatusElement = document.getElementById('cg-status');
+        if (isCGOK) {
+            cgStatusElement.textContent = "Center of Gravity: OK";
+            cgStatusElement.style.color = "green";
+        } else {
+            cgStatusElement.textContent = "Center of Gravity: NOT OK";
+            cgStatusElement.style.color = "red";
+        }
 
         // Draw the result on the chart
-        console.log("Attempting to draw:", ttlWeight, cg);
         if (window.chartDrawer && typeof window.chartDrawer.drawResult === 'function') {
             if (ttlWeight > 0 && !isNaN(cg)) {
                 window.chartDrawer.drawResult(ttlWeight, cg);
@@ -249,8 +246,14 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Chart drawer not available or drawResult is not a function");
         }
 
-        // Only update Max Fuel To Use
         calculateMaxFuelToUse();
+        saveDataForStep2(); // Add this line to save data for Step 2
+    }
+
+    function checkCGAndWeight(weight, cg) {
+        const isWeightOK = weight <= 21495;
+        const isCGOK = cg >= 170 && cg <= 195;
+        return isWeightOK && isCGOK;
     }
 
     document.querySelectorAll('input').forEach(input => {
@@ -348,6 +351,7 @@ function calculateWeight() {
 
     calculateZeroFuelWeightMax5ftIGE();
     calculateMaxFuelToUse();
+    saveDataForStep2(); // Add this line to save data for Step 2
 }
 
 // Event listener for the calculate button
@@ -369,3 +373,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Add event listener to save data when navigating away from the page
+window.addEventListener('beforeunload', saveDataForStep2);
