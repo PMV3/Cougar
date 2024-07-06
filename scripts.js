@@ -26,26 +26,23 @@ function getDataFromStep1() {
   const height = localStorage.getItem('height');
   const windSpeed = localStorage.getItem('windSpeed');
 
-  if (totalWeight) {
-    document.getElementById("#acweight").value = totalWeight;
-  }
-  if (temperature) {
-    document.getElementById("#qat").value = temperature;
-  }
-  if (height) {
-    document.getElementById("#hp").value = height;
-  }
-  if (windSpeed) {
-    document.getElementById("#wind").value = windSpeed;
-  }
- 
+  if (totalWeight) document.getElementById("#acweight").value = totalWeight;
+  if (temperature) document.getElementById("#qat").value = temperature;
+  if (height) document.getElementById("#hp").value = height;
+  if (windSpeed) document.getElementById("#wind").value = windSpeed;
+
+
+  // Clear the localStorage after retrieving the data
   localStorage.removeItem('totalWeight');
   localStorage.removeItem('temperature');
   localStorage.removeItem('height');
   localStorage.removeItem('windSpeed');
 
-  totalcount();
+  totalcount(); // Recalculate all values based on retrieved data
 }
+
+// Call this function when the page loads
+document.addEventListener('DOMContentLoaded', getDataFromStep1);
 
 function errorpanclear() {
   showerrornum = 0;

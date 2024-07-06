@@ -28,11 +28,16 @@ function calculateMaxFuelToUse() {
     document.getElementById('maxFuelToUse').value = zeroFuelWeightMax5ftIGE.toFixed(2);
 }
 
+function saveDataAndGoToStep2() {
+    saveDataForStep2();
+    window.location.href = 'STEP2.html';
+}
+
 function saveDataForStep2() {
     const temperature = document.getElementById('temperature').value;
     const height = document.getElementById('height').value;
     const totalWeight = document.getElementById('ttl-weight').value;
-    const windSpeed = document.getElementById('wind').value; // Assuming you have a wind input field
+    const windSpeed = document.getElementById('wind').value;
 
     localStorage.setItem('temperature', temperature);
     localStorage.setItem('height', height);

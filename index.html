@@ -264,19 +264,19 @@ button {
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
-        <h1>COUGAR AS 532 A2 </h1>
+        <h1>COUGAR AS 532 A2</h1>
         <div style="width: 175%;  padding: 0px 0;">
             <nav style="display: flex; justify-content: left; gap: 10px;">
                 <button onclick="window.location.href='STEP1.html'">STEP1</button>
-                <button onclick="window.location.href='STEP2.html'">STEP2</button>
+                <button onclick="saveDataAndGoToStep2()">STEP2</button>
                 <button onclick="window.location.href='STEP3.html'">STEP3</button>
             </nav>
         </div>
         <div class="section-box">
-            <h3 class="colored-heading">Aircraft Tail Number</h3>
             <div class="form-row">
-                <div class="form-group full-width">
-                    <select id="tail-number" class="select-style" style="background-color: #FFFFED; width: 100%;">
+                <div class="form-group" style="width: 49%;">
+                    <label for="tail-number" class="label-style">Aircraft Tail Number:</label>
+                    <select id="tail-number" class="select-style" style="background-color: #FFFFED;">
                         <option value="">Please select an aircraft</option>
                         <option value="9901">9901</option>
                         <option value="9902">9902</option>
@@ -288,16 +288,22 @@ button {
                         <option value="9911">9911</option>
                     </select>
                 </div>
+                <div class="form-group" style="width: 48%;">
+                    <label for="wind">Wind (kt):</label>
+                    <input type="number" id="wind" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="wind" placeholder="Enter Wind Speed">
+                </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="temperature">Temperature (°C):</label>
-                    <input type="number" id="temperature" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="temperature">
+                    <input type="number" id="temperature" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="temperature" placeholder="Enter OAT">
                 </div>
                 <div class="form-group">
                     <label for="height">Height (ft):</label>
-                    <input type="number" id="height" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="height">
-                </div>
+                    <input type="number" id="height" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="height" placeholder="Enter Altitude">
+         
+        </div>
+        </div>
             </div>
             <div class="form-row">
                 <div class="form-group full-width">
