@@ -18,8 +18,6 @@ const ctx5 = canvas5.getContext("2d");
 
 let showerrornum;
 
-// ... [Keep all your existing function and variable declarations] ...
-
 function getDataFromStep1() {
   const totalWeight = localStorage.getItem('totalWeight');
   const temperature = localStorage.getItem('temperature');
@@ -31,7 +29,6 @@ function getDataFromStep1() {
   if (height) document.getElementById("#hp").value = height;
   if (windSpeed) document.getElementById("#wind").value = windSpeed;
 
-
   // Clear the localStorage after retrieving the data
   localStorage.removeItem('totalWeight');
   localStorage.removeItem('temperature');
@@ -39,6 +36,20 @@ function getDataFromStep1() {
   localStorage.removeItem('windSpeed');
 
   totalcount(); // Recalculate all values based on retrieved data
+}
+
+function saveDataAndGoToStep3() {
+  const totalWeight = document.getElementById("#acweight").value;
+  const height = document.getElementById("#hp").value;
+  const temperature = document.getElementById("#qat").value;
+  const windSpeed = document.getElementById("#wind").value;
+
+  localStorage.setItem('step3_totalWeight', totalWeight);
+  localStorage.setItem('step3_height', height);
+  localStorage.setItem('step3_temperature', temperature);
+  localStorage.setItem('step3_windSpeed', windSpeed);
+
+  window.location.href = 'STEP3.html';
 }
 
 // Call this function when the page loads

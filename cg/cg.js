@@ -30,6 +30,7 @@ function calculateMaxFuelToUse() {
 
 function saveDataAndGoToStep2() {
     saveDataForStep2();
+    saveDataForStep3();
     window.location.href = 'STEP2.html';
 }
 
@@ -44,6 +45,21 @@ function saveDataForStep2() {
     localStorage.setItem('totalWeight', totalWeight);
     localStorage.setItem('windSpeed', windSpeed);
 }
+
+function saveDataForStep3() {
+    const totalWeight = document.getElementById('ttl-weight').value;
+    const height = document.getElementById('height').value;
+    const temperature = document.getElementById('temperature').value;
+    const windSpeed = document.getElementById('wind').value;
+
+    localStorage.setItem('step3_totalWeight', totalWeight);
+    localStorage.setItem('step3_height', height);
+    localStorage.setItem('step3_temperature', temperature);
+    localStorage.setItem('step3_windSpeed', windSpeed);
+}
+
+
+
 
 document.addEventListener('DOMContentLoaded', function () {
     const tailNumberSelect = document.getElementById('tail-number');
