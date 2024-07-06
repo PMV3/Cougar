@@ -18,39 +18,34 @@ const ctx5 = canvas5.getContext("2d");
 
 let showerrornum;
 
+// ... [Keep all your existing function and variable declarations] ...
+
 function getDataFromStep1() {
   const totalWeight = localStorage.getItem('totalWeight');
   const temperature = localStorage.getItem('temperature');
   const height = localStorage.getItem('height');
-  const windSpeed = localStorage.getItem('windSpeed'); 
-
+  const windSpeed = localStorage.getItem('windSpeed');
 
   if (totalWeight) {
-      document.getElementById("#acweight").value = totalWeight;
+    document.getElementById("#acweight").value = totalWeight;
   }
   if (temperature) {
-      document.getElementById("#qat").value = temperature;
+    document.getElementById("#qat").value = temperature;
   }
   if (height) {
-      document.getElementById("#hp").value = height;
+    document.getElementById("#hp").value = height;
   }
-  if (windSpeed) { // Add this block
+  if (windSpeed) {
     document.getElementById("#wind").value = windSpeed;
-}
-
+  }
+ 
   localStorage.removeItem('totalWeight');
   localStorage.removeItem('temperature');
   localStorage.removeItem('height');
-  localStorage.removeItem('windSpeed'); // Add this line
-
+  localStorage.removeItem('windSpeed');
 
   totalcount();
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-  getDataFromStep1();
-  // Other initialization code...
-});
 
 function errorpanclear() {
   showerrornum = 0;
