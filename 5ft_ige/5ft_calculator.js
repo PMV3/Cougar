@@ -43,7 +43,7 @@ function calculateWeight() {
     const temperature = parseFloat(document.getElementById('temperature').value);
     const height = parseFloat(document.getElementById('height').value);
     console.log("Temperature:", temperature, "Height:", height);
-    const resultDiv = document.getElementById('result');
+    const resultDiv = document.getElementById('5ft_weight');
 
     if (isNaN(temperature) || isNaN(height)) {
         resultDiv.textContent = "Please enter valid numbers for temperature and height.";
@@ -78,3 +78,14 @@ document.addEventListener('DOMContentLoaded', function() {
         calculateButton.addEventListener('click', calculateWeight);
     }
 });
+
+
+
+
+
+
+
+
+
+
+
