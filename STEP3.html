@@ -123,6 +123,9 @@
             background-color: #FFFFED;
             border: 1px solid #ffffff;
         }
+        .hidden {
+    display: none;
+}
        
 
     </style>
@@ -138,7 +141,7 @@
             </nav>
         </div>
         <div class="row">
-            <div class="column">
+            <div class="column hidden">
                 <label for="total-weight"><b>Total Weight (lbs):</b></label>
                 <input type="number" id="totalweight" class="gradient-border" placeholder="Enter Total Weight">
                 <label for="height"><b>Height (ft):</b></label>
@@ -147,6 +150,8 @@
             <div class="column">
                 <label for="speed"><b>Speed (TAS):</b></label>
                 <input type="number" id="speed" class="gradient-border" placeholder="Enter Speed">
+            </div>
+            <div class="column hidden">
                 <label for="temperature"><b>Temperature (°C):</b></label>
                 <input type="number" id="temperature" class="gradient-border" placeholder="Enter Temperature">
             </div>
