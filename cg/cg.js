@@ -1,6 +1,12 @@
 // Combined cg.js and 5ft_calculator.js
 
+
+
+
 let zeroFuelWeightMax5ftIGE = 0; // Global variable to store the fixed value
+
+
+
 
 function updateWeight(numberId, singleWeight, weightId, mmntId, cg) {
     const numberElement = document.getElementById(numberId);
@@ -17,6 +23,9 @@ function updateWeight(numberId, singleWeight, weightId, mmntId, cg) {
     calculateCG();
 }
 
+
+
+
 function calculateZeroFuelWeightMax5ftIGE() {
     const maxWeight5ftIGE = parseFloat(document.getElementById('5ft_weight').textContent.match(/\d+(\.\d+)?/)[0]) || 0;
     const zeroFuelWeight = parseFloat(document.getElementById('zfw').value) || 0;
@@ -24,9 +33,15 @@ function calculateZeroFuelWeightMax5ftIGE() {
     document.getElementById('zeroFuelWeightMax5ftIGE').value = zeroFuelWeightMax5ftIGE.toFixed(2);
 }
 
+
+
+
 function calculateMaxFuelToUse() {
     document.getElementById('maxFuelToUse').value = zeroFuelWeightMax5ftIGE.toFixed(2);
 }
+
+
+
 
 function saveDataAndGoToStep2() {
     saveDataForStep2();
@@ -34,29 +49,61 @@ function saveDataAndGoToStep2() {
     window.location.href = 'STEP2.html';
 }
 
+
+
+
 function saveDataForStep2() {
     const temperature = document.getElementById('temperature').value;
     const height = document.getElementById('height').value;
     const totalWeight = document.getElementById('ttl-weight').value;
     const windSpeed = document.getElementById('wind').value;
+    const totalFuelWeight = document.getElementById('totalFuelWeight').value;
+
+
+
 
     localStorage.setItem('temperature', temperature);
     localStorage.setItem('height', height);
     localStorage.setItem('totalWeight', totalWeight);
     localStorage.setItem('windSpeed', windSpeed);
-}
+    localStorage.setItem('totalFuelWeight', totalFuelWeight);
 
+
+
+
+    console.log('Data saved for Step 2:', { temperature, height, totalWeight, windSpeed, totalFuelWeight });
+}
 function saveDataForStep3() {
     const totalWeight = document.getElementById('ttl-weight').value;
     const height = document.getElementById('height').value;
     const temperature = document.getElementById('temperature').value;
     const windSpeed = document.getElementById('wind').value;
+    const totalFuelWeight = document.getElementById('totalFuelWeight').value; // Add this line
+
+
+
 
     localStorage.setItem('step3_totalWeight', totalWeight);
     localStorage.setItem('step3_height', height);
     localStorage.setItem('step3_temperature', temperature);
     localStorage.setItem('step3_windSpeed', windSpeed);
+    localStorage.setItem('step3_totalFuelWeight', totalFuelWeight); // Add this line
 }
+
+
+
+
+window.addEventListener('beforeunload', function() {
+    console.log('Leaving Step 1, localStorage contents:', JSON.stringify(localStorage));
+});
+
+
+
+
+
+
+
+
 
 
 
@@ -74,6 +121,9 @@ document.addEventListener('DOMContentLoaded', function () {
         9911: { weight: 13660, cog: 188.62 },
     };
 
+
+
+
     tailNumberSelect.addEventListener('change', function () {
         const selectedTailNumber = tailNumberSelect.value;
         if (aircraftData[selectedTailNumber]) {
@@ -81,9 +131,15 @@ document.addEventListener('DOMContentLoaded', function () {
             const cog = aircraftData[selectedTailNumber].cog;
             const moment = weight * cog;
 
+
+
+
             document.getElementById('emptyWeight').value = weight;
             document.getElementById('emptyWeightCG').value = cog;
             document.getElementById('emptyWeightMMNT').value = moment.toFixed(2);
+
+
+
 
             calculateCG();
         } else {
@@ -92,6 +148,9 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('emptyWeightMMNT').value = '';
         }
     });
+
+
+
 
     function calculateCG() {
         const sections = [
@@ -147,8 +206,14 @@ document.addEventListener('DOMContentLoaded', function () {
             { number: 'sectionENumber', weight: 'sectionEWeight', cg: 260, mmnt: 'sectionEMMNT', singleWeight: 0 },
         ];
 
+
+
+
         let totalWeight = 0;
         let totalMoment = 0;
+
+
+
 
         sections.forEach(section => {
             const numberElement = document.getElementById(section.number);
@@ -166,6 +231,9 @@ document.addEventListener('DOMContentLoaded', function () {
             totalWeight += weight;
             totalMoment += moment;
 
+
+
+
                 // Add this part at the end of the function to calculate and display section totals
     const sections = {
         Crew: ['pilots', 'thirdCM', 'fe', 'gunner', 'crs1And2', 'crs3And4'],
@@ -175,9 +243,15 @@ document.addEventListener('DOMContentLoaded', function () {
         OtherLoad: ['sectionA', 'sectionB', 'sectionC', 'sectionD', 'sectionE']
     };
 
+
+
+
     for (const [sectionName, items] of Object.entries(sections)) {
         let sectionWeight = 0;
         let sectionMoment = 0;
+
+
+
 
         items.forEach(item => {
             const weight = parseFloat(document.getElementById(`${item}Weight`).value) || 0;
@@ -186,7 +260,13 @@ document.addEventListener('DOMContentLoaded', function () {
             sectionMoment += moment;
         });
 
+
+
+
         const sectionCG = sectionWeight > 0 ? sectionMoment / sectionWeight : 0;
+
+
+
 
         // Display the totals for each section
         document.getElementById(`total${sectionName}Weight`).value = sectionWeight.toFixed(2);
@@ -194,17 +274,29 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById(`total${sectionName}CG`).value = sectionCG.toFixed(2);
     }
 
+
+
+
     // Calculate and display fuel totals separately
     const fuelWeights = ['internalFuelWeight', 'sponsonWeight', 'cabinFuelWeight', 'forwardLongitudinalWeight', 'rearLongitudinalWeight', 'rearTransversalWeight'];
     const fuelMoments = ['internalFuelMMNT', 'sponsonMMNT', 'cabinFuelMMNT', 'forwardLongitudinalMMNT', 'rearLongitudinalMMNT', 'rearTransversalMMNT'];
+
+
+
 
     const totalFuelWeight = fuelWeights.reduce((sum, id) => sum + (parseFloat(document.getElementById(id).value) || 0), 0);
     const totalFuelMoment = fuelMoments.reduce((sum, id) => sum + (parseFloat(document.getElementById(id).value) || 0), 0);
     const totalFuelCG = totalFuelWeight > 0 ? totalFuelMoment / totalFuelWeight : 0;
 
+
+
+
     document.getElementById('totalFuelWeight').value = totalFuelWeight.toFixed(2);
     document.getElementById('totalFuelCG').value = totalFuelCG.toFixed(2);
     document.getElementById('totalFuelMMNT').value = totalFuelMoment.toFixed(2);
+
+
+
 
             
         });
@@ -247,6 +339,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('ttl-mmnt').value = ttlMoment.toFixed(2);
         document.getElementById('cg-summary').value = cg.toFixed(2);
 
+
+
+
         // Check CG and weight conditions
         const isCGOK = checkCGAndWeight(ttlWeight, cg);
         const cgStatusElement = document.getElementById('cg-status');
@@ -257,6 +352,9 @@ document.addEventListener('DOMContentLoaded', function () {
             cgStatusElement.textContent = "Center of Gravity: NOT OK";
             cgStatusElement.style.color = "red";
         }
+
+
+
 
         // Draw the result on the chart
         if (window.chartDrawer && typeof window.chartDrawer.drawResult === 'function') {
@@ -269,9 +367,15 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Chart drawer not available or drawResult is not a function");
         }
 
+
+
+
         calculateMaxFuelToUse();
         saveDataForStep2(); // Add this line to save data for Step 2
     }
+
+
+
 
     function checkCGAndWeight(weight, cg) {
         const isWeightOK = weight <= 21495;
@@ -279,25 +383,40 @@ document.addEventListener('DOMContentLoaded', function () {
         return isWeightOK && isCGOK;
     }
 
+
+
+
     document.querySelectorAll('input').forEach(input => {
         input.addEventListener('input', calculateCG);
     });
+
+
+
 
     document.getElementById('5ft_weight').addEventListener('DOMSubtreeModified', function() {
         calculateZeroFuelWeightMax5ftIGE();
         calculateMaxFuelToUse();
     });
 
+
+
+
     document.getElementById('zfw').addEventListener('input', function() {
         calculateZeroFuelWeightMax5ftIGE();
         calculateMaxFuelToUse();
     });
+
+
+
 
     // Initial calculations
     calculateZeroFuelWeightMax5ftIGE();
     calculateMaxFuelToUse();
     calculateCG();
 });
+
+
+
 
 // 5ft_calculator.js content
 function findWeight(temperature, height) {
@@ -306,7 +425,13 @@ function findWeight(temperature, height) {
         weight: findWeightForHeight(tempData, height)
     }));
 
+
+
+
     weights.sort((a, b) => a.temperature - b.temperature);
+
+
+
 
     let lowerTemp = weights[0];
     let upperTemp = weights[weights.length - 1];
@@ -318,15 +443,27 @@ function findWeight(temperature, height) {
         }
     }
 
+
+
+
     const tempRatio = (temperature - lowerTemp.temperature) / (upperTemp.temperature - lowerTemp.temperature);
     const weight = lowerTemp.weight + tempRatio * (upperTemp.weight - lowerTemp.weight);
+
+
+
 
     return Math.min(weight, 21495);
 }
 
+
+
+
 function findWeightForHeight(tempData, height) {
     let lowerPoint = tempData.points[tempData.points.length - 1];
     let upperPoint = tempData.points[0];
+
+
+
 
     for (let i = 0; i < tempData.points.length - 1; i++) {
         if (tempData.points[i].y >= height && tempData.points[i + 1].y < height) {
@@ -336,9 +473,15 @@ function findWeightForHeight(tempData, height) {
         }
     }
 
+
+
+
     const heightRatio = (height - lowerPoint.y) / (upperPoint.y - lowerPoint.y);
     return lowerPoint.x + heightRatio * (upperPoint.x - lowerPoint.x);
 }
+
+
+
 
 function calculateWeight() {
     console.log("Calculate Weight function called");
@@ -347,24 +490,39 @@ function calculateWeight() {
     console.log("Temperature:", temperature, "Height:", height);
     const resultDiv = document.getElementById('5ft_weight');
 
+
+
+
     if (isNaN(temperature) || isNaN(height)) {
         resultDiv.textContent = "Please enter valid numbers for temperature and height.";
         return;
     }
+
+
+
 
     if (temperature < -50 || temperature > 50) {
         resultDiv.textContent = "Temperature must be between -50°C and 50°C.";
         return;
     }
 
+
+
+
     if (height < 0 || height > 20000) {
         resultDiv.textContent = "Height must be between 0 and 20,000 ft.";
         return;
     }
 
+
+
+
     console.log("Calculating weight...");
     const weight = findWeight(temperature, height);
     console.log("Calculated weight:", weight);
+
+
+
 
     if (weight >= 21495) {
         resultDiv.textContent = `Maximum weight: 21495.00 lbs (Limit reached)`;
@@ -372,10 +530,16 @@ function calculateWeight() {
         resultDiv.textContent = `Maximum weight: ${weight.toFixed(2)} lbs`;
     }
 
+
+
+
     calculateZeroFuelWeightMax5ftIGE();
     calculateMaxFuelToUse();
     saveDataForStep2(); // Add this line to save data for Step 2
 }
+
+
+
 
 // Event listener for the calculate button
 document.addEventListener('DOMContentLoaded', function() {
@@ -383,6 +547,9 @@ document.addEventListener('DOMContentLoaded', function() {
     if (calculateButton) {
         calculateButton.addEventListener('click', calculateWeight);
     }
+
+
+
 
     // Add event listeners for fuel inputs
     const fuelInputs = [
@@ -397,5 +564,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+
+
 // Add event listener to save data when navigating away from the page
-window.addEventListener('beforeunload', saveDataForStep2);
+window.addEventListener('beforeunload', saveDataForStep2); 

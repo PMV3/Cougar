@@ -29,29 +29,52 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
+    function autoFillSpeed() {
+        const speed = document.getElementById('speed').value;
+        const speedFields = ['speedFuel', 'speedIFR', 'speed2', 'speedBox1'];
+        speedFields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) field.value = speed;
+        });
+    }
+
     function getDataFromStep2() {
         const totalWeight = localStorage.getItem('step3_totalWeight');
         const height = localStorage.getItem('step3_height');
         const temperature = localStorage.getItem('step3_temperature');
         const windSpeed = localStorage.getItem('step3_windSpeed');
-    
+        const speed = localStorage.getItem('step3_speed');
+        const fuelConsumption = localStorage.getItem('step3_fuelConsumption');
+
         if (totalWeight) document.getElementById("totalweight").value = totalWeight;
         if (height) document.getElementById("height").value = height;
         if (temperature) document.getElementById("temperature").value = temperature;
         if (windSpeed) document.getElementById("wind").value = windSpeed;
-    
-        console.log('Data retrieved in Step 3:', { totalWeight, height, temperature, windSpeed });
-    
+        if (speed) {
+            document.getElementById("speed").value = speed;
+            autoFillSpeed(); // Call this to fill speed in all fields
+        }
+        if (fuelConsumption) {
+            document.getElementById("fuelConsumption").value = fuelConsumption;
+            document.getElementById("fuelConsumptionIFR").value = fuelConsumption;
+            document.getElementById("consumption").value = fuelConsumption;
+            document.getElementById("consumption2").value = fuelConsumption;
+        }
+
+        console.log('Data retrieved in Step 3:', { totalWeight, height, temperature, windSpeed, speed, fuelConsumption });
+
         // Calculate AEO Fuel Consumption
         calculateAEOFuelConsumption();
-    
+
         // Clear localStorage after retrieving and using the data
         localStorage.removeItem('step3_totalWeight');
         localStorage.removeItem('step3_height');
         localStorage.removeItem('step3_temperature');
         localStorage.removeItem('step3_windSpeed');
+        localStorage.removeItem('step3_speed');
+        localStorage.removeItem('step3_fuelConsumption');
     }
-    
+
     function calculateAEOFuelConsumption() {
         const totalWeight = parseFloat(document.getElementById("totalweight").value);
         const height = parseFloat(document.getElementById("height").value);
@@ -96,9 +119,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fuelConsumptionInput.value = `${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m`;
 
+        // Now, let's fill in the other fields:
+
+        // VFR table
+        document.getElementById('fuelConsumption').value = fuelConsumptionPerMinute;
+
+        // IFR table
+        document.getElementById('fuelConsumptionIFR').value = fuelConsumptionPerMinute;
+
+        // "FUEL needed" table
+        document.getElementById('consumption2').value = fuelConsumptionPerHour;
+
+        // "RANGE" table
+        document.getElementById('consumption').value = fuelConsumptionPerHour;
+
+        autoFillSpeed(); // Call this after calculation to ensure all speed fields are updated
+
         canvas.style.display = 'block';
         drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin);
     };
+    
 
     async function interpolateData(height, temp, inputSpeed, inputWeight) {
         let chartData, backgroundImage, originalWidth, originalHeight, margin;
@@ -408,7 +448,6 @@ document.addEventListener('DOMContentLoaded', () => {
         fuelAtoB += 0.05 * fuelAtoB;
 
         const reserveFuel = reserve < 30 ? 20 * fuelConsumption : 30 * fuelConsumption;
-
         const startupTaxi = 150;
 
         const totalFuelRequired = fuelAtoB + fuelBtoC + reserveFuel + startupTaxi;
@@ -457,12 +496,11 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('remainingFuel').value = remainingFuel.toFixed(2);
     });
 
-    // Fuel leak check conversions
     document.getElementById('convertTime').addEventListener('click', function() {
         const time = parseFloat(document.getElementById('timeInput').value);
         const fuel = parseFloat(document.getElementById('totalPerMin').value) * time;
         const nm = parseFloat(document.getElementById('speedBox1').value) * (time / 60);
-        
+
         document.getElementById('fuelOutput').value = fuel.toFixed(2);
         document.getElementById('nmOutput').value = nm.toFixed(2);
     });
@@ -472,7 +510,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const speed = parseFloat(document.getElementById('speedBox1').value);
         const time = (nm / speed) * 60;
         const fuel = parseFloat(document.getElementById('totalPerMin').value) * time;
-        
+
         document.getElementById('fuelOutput2').value = fuel.toFixed(2);
         document.getElementById('timeOutput').value = time.toFixed(2);
     });
@@ -483,7 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const time = fuel / fuelPerMin;
         const speed = parseFloat(document.getElementById('speedBox1').value);
         const nm = (speed * time) / 60;
-        
+
         document.getElementById('timeOutput2').value = time.toFixed(2);
         document.getElementById('nmOutput2').value = nm.toFixed(2);
     });

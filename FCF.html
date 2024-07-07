@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Helicopter Chart Interpretation</title>
+    <style>
+      canvas {
+        border: 1px solid black;
+      }
+      input {
+        width: calc(100% - 23px);
+        /* max-width: 150px; */
+        padding: 10px;
+        /* margin: 5px 0 22px 0; */
+        display: inline-block;
+        border: 1 px solid linen;
+        background: #f1f1f1;
+        background-color: #fffdfd;
+        outline: none;
+        border-radius: 6px;
+      }
+      
+
+      select {
+        width: 100%;
+        /* max-width: 150px; */
+        padding: 10px;
+        /* margin: 5px 0 22px 0; */
+        display: inline-block;
+        border: 1 px solid linen;
+        background: #f1f1f1;
+        background-color: #fffdfd;
+        outline: none;
+        border-radius: 6px;
+      }
+
+      .row {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+        margin: 20px 10px;
+        /* width: 100%; */
+      }
+
+      /* Add a background color when the inputs get focus *
+
+/* Set a style for all buttons */
+      button {
+        background-color: #04aa6d;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        color: white;
+        padding: 14px 20px;
+        margin: 6px 0;
+        border: none;
+        cursor: pointer;
+        width: 13.8%;
+        opacity: 0.9;
+      }
+
+      button:hover {
+        opacity: 1;
+      }
+      .container {
+        width: calc(100% - 960px);
+        height: auto;
+        float: left;
+        min-width: 865px;
+        /* padding-right: 15px;
+        margin-right: 15%; */
+      }
+
+      .w-50 {
+        width: 50%;
+      }
+    </style>
+     <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body style="display: flex; gap: 20px; min-width: 1887px;">
+    
+    <div class="container" 
+      style="border: 1px solid black;
+      border-radius: 10px;
+      padding: 10px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)"
+      >
+      <h1 style="text-align: left; color: rgb(0, 0, 0);">COUGAR AS 532 A2</h1>
+      
+      <nav style="display: flex; justify-content: left; gap: 10px;width: 2700px">
+        <button onclick="window.location.href='STEP1.html'">STEP1</button>
+        <button onclick="saveDataAndGoToStep2()">STEP2</button>
+        <button onclick="window.location.href='STEP3.html'">STEP3</button>
+        <button onclick="window.location.href='FCF.html'">FCF</button>
+
+    </nav>           
+      <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
+        <div class="w-50">
+     
+          <div class="row">
+            <label for="torque"><b>TORQUE (%):</b></label>
+            <input type="number" id="#torque" name="torque" value="43.2">
+          </div>
+          <div class="row">
+            <label for="nr_rpm"><b>NR (rpm):</b></label>
+            <input type="number" id="#nr_rpm" name="nr_rpm" value="259">
+          </div>
+          <div class="row">
+            <label for="actualNg"><b>ACTUAL NG(%):</b></label>
+            <input type="number" id="#actualNg" name="actualNg" value="98.3">
+          </div>
+          <div class="row">
+            <label for="actualt4"><b>T4 (°C):</b></label>
+            <input type="number" id="#actualt4" name="actualt4" value="650">
+          </div>
+          
+        </div>
+        <!-- <hr /> -->
+        <div class="w-50">
+          <div class="row">
+            <label for="nr_100"><b>NR 100% (265 rpm)</b></label>
+            <input
+              type="text"
+              name="nr_100"
+              id="#nr_100"
+              value="265"
+              required
+            />
+          </div>
+          <div class="row">
+            <label for="qat"><b>QAT (°C):</b></label>
+            <input
+              id="#qat"
+              name="qat"
+              type="text"
+              placeholder="Enter OAT"
+              value="-22"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <label for="hp"><b>HP (ft):</b></label>
+            <input
+              type="text"
+              value="6100"
+              placeholder="Enter Altitude"
+              name="hp"
+              id="#hp"
+              required
+            />
+          </div>
+
+          <div class="row">
+            <label for="speed"><b>SPEED (kt):</b></label>
+            <input
+              type="text"
+              value="130"
+              placeholder="Enter SPEED"
+              name="speed"
+              id="#speed"
+              required
+            />
+          </div>
+          <!-- <div class="row">
+            <label for="WIND"><b>Wind (kt):</b></label>
+            <input
+              type="text"
+              placeholder="Enter Wind Speed"
+              name="wind"
+              id="#wind"
+              value=""
+              required
+            />
+          </div> -->
+          
+        </div>
+      </div>
+      <div class="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
+        <button type="button" onclick="getall()" class="signupbtn">
+          GETTING<br/>All 
+        </button>
+        <button type="button" onclick="getcorrectNG()" class="signupbtn">
+          CORRECT <br/>NG
+        </button>
+        <button type="button" onclick="getgraduation()" class="signupbtn">
+          GET <br/>GRADUATIN
+        </button>
+        <button type="button" onclick="getmaxt4()" class="signupbtn">
+          MAXI<br/>T4
+        </button>
+        
+      </div>
+        </hr>
+        <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px;">
+          <div class="w-50">
+            
+              <div id = "#fornew0">
+                <div class="row" >
+                  <label for="CORRECTED NG"><b>CORRECTED NG (%)</b></label>
+                  <input
+                    type="text"
+                    placeholder="The result of CORRECTED NG"
+                    name="corrected_ng"
+                    id="#corrected_ng"
+                    required
+                  />
+                </div>
+                
+              </div>
+              <div id="#fornew1">
+                <hr/>
+                <div class="row">
+                  
+                  <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
+                    ><b>POINT A</b></label
+                  >
+                  <input
+                    type="text"
+                    placeholder="The result of A point"
+                    name="point_A"
+                    id="#point_A"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  
+                  <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
+                    ><b>POINT B</b></label
+                  >
+                  <input
+                    type="text"
+                    placeholder="The result of B point"
+                    name="point_B"
+                    id="#point_B"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  
+                  <label for="Net Margin For chart 6 Wheight_index.jpg"
+                    ><b>Net Margin(%):</b></label
+                  >
+                  <input
+                    type="text"
+                    placeholder="The result of Net Margin"
+                    name="net_margin"
+                    id="#net_margin"
+                    required
+                  />
+                </div>
+
+
+                <div class="row">
+                  
+                  <label for="Gross Margin For chart 6 Wheight_index.jpg"
+                    ><b>Gross Margin(%):</b></label
+                  >
+                  <input
+                    type="text"
+                    placeholder="The result of Gross Margin"
+                    name="gross_margin"
+                    id="#gross_margin"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  
+                    <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
+                      ><b>ENGIN CONDITION</b></label
+                    >
+                    <input
+                      type="text"
+                      placeholder="The result of ENGIN CONDITION"
+                      name="engin_condition"
+                      id="#engin_condition"
+                      required
+                    />
+                  </div>
+              </div>
+              
+            </div>
+          
+            <div class="w-50">            
+                <div id="#fornew3">
+                  <div class="row">
+                    <label for="MAXI t4"><b>MAXI T4(°C):</b></label>
+                    <input
+                      type="text"
+                      placeholder="THE result of MAX T4."
+                      name="maxit4"
+                      id="#maxit4"
+                      required
+                    />
+                  </div>
+                  <div class="row">
+                    <label for="Enginconditionone"><b>Engin Condition For T4(°C):</b></label>
+                    <input
+                      type="text"
+                      placeholder="THE result of MAX T4."
+                      name="Enginconditionone"
+                      id="#Enginconditionone"
+                      required
+                    />
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <canvas
+        id="newcurveCanvas"
+        width="821"
+        height="1018"
+        style="background-image: url('changedCorrectedNG.jpg');display: none;"
+      ></canvas>
+      <canvas
+        id="newcurveCanvas1"
+        width="831"
+        height="998"
+        style="background-image: url('MaxIt4.jpg');display: none;"
+      ></canvas>
+      <canvas
+        id="newcurveCanvas2"
+        width="841"
+        height="1020"
+        style="background-image: url('correctedgraduation.jpg');"
+      >
+      </canvas>
+      
+    </div>
+    <div class="toast-overlay" id="toast-overlay"></div>
+
+    
+    
+    <!-- <script src="./datafolder/singleEnginHovoge.js"></script> -->
+    <!-- <script src="./datafolder/singleengineIGE.js"></script> -->
+    <script src="./newdatas/maxit4map.js"></script>
+    <script src="./newdatas//correctedNGdata.js"></script>
+    <script src="./newdatas/toquedatamap.js"></script>
+    <script src="./mainscript.js"></script>
+
+
+  </body>
+</html>
