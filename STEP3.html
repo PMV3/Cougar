@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helicopter Chart Interpretation</title>
     <style>
         canvas {
@@ -45,11 +44,13 @@
             opacity: 1;
         }
         .container {
-            width: calc(100% - 1000px);
-            height: auto;
-            float: left;
-            min-width: 865px;
-        }
+        width: calc(100% - 1000px);
+        height: auto;
+        float: left;
+        min-width: 865px;
+        /* padding-right: 15px;
+        margin-right: 15%; */
+      }
         .w-50 {
             width: 20%;
         }
@@ -75,15 +76,16 @@
         .gradient-border {
             border: 2px solid;
             border-image: linear-gradient(to bottom, black, gray) 1;
-            padding: 5px;
-            outline: none;
-            width: 420px;
-            height: 25px;
+            padding: 5px; /* Adjust padding as needed */
+            outline: none; /* Remove the default outline */
+            width: 420px; /* Adjust the width as needed */
+            height: 25px; /* Adjust the height as needed */
         }
         .time-inputs {
             display: flex;
-            gap: 10px;
+            gap: 10px; /* Adjust the gap between inputs as needed */
         }
+        /* Namespace for Style 2 */
         .namespace2 body {
             font-family: Arial, sans-serif;
         }
@@ -97,7 +99,7 @@
             border: 1px solid #999;
             padding: 8px;
             text-align: center;
-            font-weight: bold;
+            font-weight: bold; /* Make the text bold */
         }
         .namespace2 .readonly3 {
             background-color: #e0e0e0;
@@ -108,7 +110,7 @@
         .namespace2 .header {
             background-color: #f2f2f2;
             color: rgb(0, 0, 0);
-            font-weight: bold;
+            font-weight: bold; /* Make the header bold */
         }
         .namespace2 .readonly input, .namespace2 .input-cell input {
             width: 100%;
@@ -124,23 +126,10 @@
             border: 1px solid #ffffff;
         }
         .hidden {
-            display: none;
-        }
-        @media (max-width: 768px) {
-            .container {
-                width: 100%;
-                min-width: unset;
-            }
-            input, select, button {
-                width: 100%;
-            }
-            .row {
-                flex-direction: column;
-            }
-            table {
-                font-size: 0.8em;
-            }
-        }
+    display: none;
+}
+       
+
     </style>
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
@@ -152,6 +141,7 @@
                 <button onclick="window.location.href='STEP2.html'">STEP2</button>
                 <button onclick="window.location.href='STEP3.html'">STEP3</button>
                 <button onclick="window.location.href='FCF.html'">FCF</button>
+
             </nav>
         </div>
         <div class="row">
@@ -440,5 +430,7 @@
     <script type="module" src="./fuel.js"></script>
     <script type="module" src="./fuelCalculation.js"></script>
     <script type="module" src="./datafolder/fuelLeak.js"></script>
+
 </body>
 </html>
+                   
