@@ -18,6 +18,17 @@
             outline: none;
             border-radius: 6px;
         }
+        /* Remove arrows from number inputs */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
         .row {
             display: flex;
             gap: 5px;
@@ -61,6 +72,8 @@
             border: 1px solid black;
             padding: 4px;
             text-align: center;
+            height: 40px; /* Increased height */
+            vertical-align: middle;
         }
         th {
             background-color: #f2f2f2;
@@ -90,10 +103,16 @@
         /* New styles for improved table layout */
         table input, table select {
             width: 100%;
-            padding: 2px;
-            font-size: 12px;
+            height: 30px; /* Increased height */
+            padding: 5px;
+            font-size: 14px;
             box-sizing: border-box;
         }
+
+        table input[placeholder] {
+    background-color: #FFFFED; /* Light gray for readonly fields */
+}       
+
         .col-small { width: 8%; }
         .col-medium { width: 10%; }
         .col-large { width: 12%; }
@@ -141,7 +160,7 @@
         <!-- VFR Calculation -->
         <div class="column">
             <p style="text-align: left; font-size: 20px;">
-                Calculation of Minimum Fuel Quantity on <span style="color: red;">VFR</span> 
+             Minimum Fuel Quantity on <span style="color: red;">VFR</span> 
             </p>
             <table>
                 <tr>
@@ -176,7 +195,7 @@
         <!-- IFR Calculation -->
         <div class="column">
             <p style="text-align: left; font-size: 20px;">
-                Calculation of Minimum Fuel Quantity on <span style="color: red;">IFR</span> 
+                Minimum Fuel Quantity on <span style="color: red;">IFR</span> 
             </p>
             <table>
                 <tr>
@@ -201,7 +220,7 @@
         <!-- FUEL Calculation -->
         <div class="column">
             <p style="text-align: left; font-size: 20px;">
-                Calculation of the <span style="color: red;">FUEL</span> needed for the distance to reach the recovery point
+                 <span style="color: red;">FUEL</span> needed for the distance to reach the recovery point
             </p>
             <table>
                 <tr>
@@ -241,7 +260,7 @@
         <!-- RANGE Calculation -->
         <div class="column">
             <p style="text-align: left; font-size: 20px;">
-                Calculation of the <span style="color: red;">RANGE</span> from the fuel quantity available in the aircraft
+                 <span style="color: red;">RANGE</span> from the fuel quantity available in the aircraft
             </p>
             <table>
                 <tr>
@@ -249,8 +268,9 @@
                     <th class="col-medium" colspan="3">Fuel</th>
                     <th class="col-medium" colspan="3">Time</th>
                     <th class="col-small" rowspan="2">Speed (IAS)</th>
-                    <th class="col-small" rowspan="2">Trip (NM)</th>
                     <th class="col-small" rowspan="2">Range (NM)</th>
+                    <th class="col-small" rowspan="2">Trip (NM)</th>
+
                 </tr>
                 <tr>
                     <th class="col-small">Reserve</th>
@@ -272,8 +292,9 @@
                     </td>
                     <td><input type="text" id="legs" readonly></td>
                     <td><input type="number" id="speedBox1" placeholder="Enter"></td>
-                    <td><input type="number" id="trip" readonly></td>
                     <td><input type="number" id="range" readonly></td>
+                    <td><input type="number" id="trip" readonly></td>
+
                 </tr>
             </table>
             <button onclick="calculateFirstTable()">Calculate</button>

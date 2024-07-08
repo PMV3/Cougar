@@ -1,0 +1,92 @@
+
+
+
+<!-- Fuel Leak Check Table -->
+<div class="namespace2">
+    <p style="text-align: left; font-size: 20px;">
+        Calculation of the <span style="color: red;">Fuel Leak check</span>
+    </p>
+    <table>
+        <tr>
+            <th colspan="3" class="header">Fuel Leak check ( FMT page 1 )</th>
+        </tr>
+        <tr>
+            <td>Total Fuel</td>
+            <td colspan="2" class="input-cell"><input type="number" id="totalFuel" value="1800"></td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="highlight-green">Fuel consum per H</td>
+            <td class="highlight-yellow readonly"><input type="text" id="eng1" value="ENG 1 lb" readonly></td>
+            <td class="input-cell"><input type="number" id="eng1_val" value="645"></td>
+        </tr>
+        <tr>
+            <td class="highlight-yellow readonly"><input type="text" id="eng2" value="ENG 2 lb" readonly></td>
+            <td class="input-cell"><input type="number" id="eng2_val" value="645"></td>
+        </tr>
+        <tr>
+            <td>Total per min</td>
+            <td colspan="2" class="readonly"><input type="text" id="totalPerMin" readonly></td>
+        </tr>
+        <tr>
+            <td class="highlight-red">Minutes</td>
+            <td class="input-cell"><input type="number" id="minutes" value="60"></td>
+            <td class="readonly"><input type="text" id="calculatedTotal" readonly></td>
+        </tr>
+        <tr>
+            <td class="highlight-green">Remaining Fuel</td>
+            <td colspan="2" class="readonly"><input type="text" id="remainingFuel" readonly></td>
+        </tr>
+    </table>
+</div>
+<!-- Additional Tables for Input and Results -->
+<div class="namespace2">
+    <table class="table3">
+        <tr>
+            <th colspan="1" class="header">Input</th>
+            <th colspan="2" class="header">Results</th>
+        </tr>
+        <tr>
+            <td>Time (in minute)</td>
+            <td>Fuel</td>
+            <td>NM</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="timeInput1" value="55"></td>
+            <td class="readonly"><input type="text" id="fuelResult1" readonly></td>
+            <td class="readonly"><input type="text" id="nmResult1" readonly></td>
+        </tr>
+    </table>
+
+    <table class="table3">
+        <tr>
+            <th colspan="1" class="header">Input</th>
+            <th colspan="2" class="header">Results</th>
+        </tr>
+        <tr>
+            <td>NM</td>
+            <td>Fuel</td>
+            <td>Time</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="nmInput2" value="1"></td>
+            <td class="readonly"><input type="text" id="fuelResult2" readonly></td>
+            <td class="readonly"><input type="text" id="timeResult2" readonly></td>
+        </tr>
+    </table>
+
+    <table class="table3">
+        <tr>
+            <th colspan="1" class="header">Input</th>
+            <th colspan="2" class="header">Results</th>
+        </tr>
+        <tr>
+            <td>Fuel</td>
+            <td>Time</td>
+            <td>NM</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="fuelInput3" value="700"></td>
+            <td class="readonly"><input type="text" id="timeResult3" readonly></td>
+            <td class="readonly"><input type="text" id="nmResult3" readonly></td>
+        </tr>
+    </table>

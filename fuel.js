@@ -179,8 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalHeight = 1755;
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
-                    right: 35 * (desiredWidth / originalWidth),
-                    bottom: 300 * (desiredHeight / originalHeight),
+                    right: 180 * (desiredWidth / originalWidth),
+                    bottom: 430 * (desiredHeight / originalHeight),
                     left: 35 * (desiredWidth / originalWidth)
                 };
             } else {
@@ -190,8 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalHeight = 1755;
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
-                    right: 0 * (desiredWidth / originalWidth),
-                    bottom: 300 * (desiredHeight / originalHeight),
+                    right: 220 * (desiredWidth / originalWidth),
+                    bottom: 430 * (desiredHeight / originalHeight),
                     left: 0 * (desiredWidth / originalWidth)
                 };
             }
