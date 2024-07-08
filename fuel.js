@@ -42,18 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalWeight = localStorage.getItem('step3_totalWeight');
         const height = localStorage.getItem('step3_height');
         const temperature = localStorage.getItem('step3_temperature');
-        const windSpeed = localStorage.getItem('step3_windSpeed');
         const speed = localStorage.getItem('step3_speed');
         const fuelConsumption = localStorage.getItem('step3_fuelConsumption');
-
+        const totalFuelWeight = localStorage.getItem('step3_totalFuelWeight');
+        const windSpeed = localStorage.getItem('step3_windSpeed');
+    
         if (totalWeight) document.getElementById("totalweight").value = totalWeight;
         if (height) document.getElementById("height").value = height;
         if (temperature) document.getElementById("temperature").value = temperature;
-        if (windSpeed) document.getElementById("wind").value = windSpeed;
         if (speed) {
             document.getElementById("speed").value = speed;
             autoFillSpeed(); // Call this to fill speed in all fields
         }
+        if (totalFuelWeight) {
+            document.getElementById("fuelEntered").value = totalFuelWeight;
+            document.getElementById("qInTanks").value = totalFuelWeight; // Fill Q in the Tanks
+        }
+        if (windSpeed) document.getElementById("windSpeed").value = windSpeed;
+
         if (fuelConsumption) {
             document.getElementById("fuelConsumption").value = fuelConsumption;
             document.getElementById("fuelConsumptionIFR").value = fuelConsumption;
@@ -63,9 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Data retrieved in Step 3:', { totalWeight, height, temperature, windSpeed, speed, fuelConsumption });
 
-        // Calculate AEO Fuel Consumption
-        calculateAEOFuelConsumption();
-
         // Clear localStorage after retrieving and using the data
         localStorage.removeItem('step3_totalWeight');
         localStorage.removeItem('step3_height');
@@ -73,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('step3_windSpeed');
         localStorage.removeItem('step3_speed');
         localStorage.removeItem('step3_fuelConsumption');
+        localStorage.removeItem('step3_totalFuelWeight');
     }
 
     function calculateAEOFuelConsumption() {
@@ -473,10 +477,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the page
     getDataFromStep2();
 
-    // Add event listeners for input changes
-    ['totalweight', 'height', 'temperature', 'speed'].forEach(id => {
-        document.getElementById(id).addEventListener('input', calculateAEOFuelConsumption);
-    });
+   // Add event listener for the "Get AEO Fuel Consumption" button
+   const calculateButton = document.getElementById('calculate-button');
+   if (calculateButton) {
+       calculateButton.addEventListener('click', calculateAEOFuelConsumption);
+   }
 
     // Fuel leak check calculation
     document.getElementById('calculateFuelLeak').addEventListener('click', function() {
