@@ -299,20 +299,30 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.arc(xPos, yPos, 5, 0, 2 * Math.PI);
         ctx.fillStyle = 'red';
         ctx.fill();
-
+        
         ctx.font = '16px Arial';
         ctx.fillText(`Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`, 10, 30);
-
+        
         ctx.strokeStyle = 'red';
         ctx.beginPath();
         ctx.moveTo(xPos, yPos);
         ctx.lineTo(xPos, canvas.height - margin.bottom);
         ctx.stroke();
-
+        
         ctx.beginPath();
         ctx.moveTo(xPos, yPos);
         ctx.lineTo(canvas.width - margin.right, yPos);
         ctx.stroke();
+        
+        // Add triangle at the end of the horizontal line
+        const triangleSize = 10;
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - margin.right, yPos);
+        ctx.lineTo(canvas.width - margin.right - triangleSize, yPos - triangleSize / 2);
+        ctx.lineTo(canvas.width - margin.right - triangleSize, yPos + triangleSize / 2);
+        ctx.closePath();
+        ctx.fill();
     }
 
     function showToast(message = "Sample Message", toastType = "info", duration = 5000, fortop = 0) {

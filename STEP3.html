@@ -108,11 +108,9 @@
             font-size: 14px;
             box-sizing: border-box;
         }
-
         table input[placeholder] {
-    background-color: #FFFFED; /* Light gray for readonly fields */
-}       
-
+            background-color: #FFFFED; /* Light gray for readonly fields */
+        }       
         .col-small { width: 8%; }
         .col-medium { width: 10%; }
         .col-large { width: 12%; }
@@ -121,6 +119,25 @@
             white-space: normal;
             word-wrap: break-word;
         }
+        /* New styles for the added tables */
+        .namespace2 table {
+            margin-bottom: 20px;
+        }
+        .namespace2 th.header {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .namespace2 .input-cell input {
+            background-color: #FFFFED;
+        }
+        .namespace2 .readonly input {
+            background-color: #f2f2f2;
+        }
+    
+        .namespace2 .highlight-yellow {
+            background-color: #FFFFE0;
+        }
+      
     </style>
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
@@ -299,13 +316,101 @@
             </table>
             <button onclick="calculateFirstTable()">Calculate</button>
         </div>
-    </div>
-    <canvas id="fuelChart" width="1241" height="1755"></canvas> 
-    <div class="toast-overlay" id="toast-overlay"></div>
-    <img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
-    <script type="module" src="./datafolder/0ft_15C.js"></script>
-    <script type="module" src="./fuel.js"></script>
-    <script type="module" src="./fuelCalculation.js"></script>
-    <script type="module" src="./datafolder/fuelLeak.js"></script>
+<!-- Fuel Leak Check Table -->
+<div class="namespace2">
+    <p style="text-align: left; font-size: 20px; font-weight: normal;">
+         <span style="color: red;">Fuel Leak </span>check
+    </p>
+    <table>
+        <tr>
+            <th colspan="3" class="header" style="font-size: 18px; font-weight: normal;">Fuel Leak check ( FMT page 1 )</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 14px;">Total Fuel</td>
+            <td colspan="2" class="input-cell"><input type="number" id="totalFuel" value="1800"></td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="highlight-green" style="font-weight: bold; font-size: 14px;">Fuel consum per H</td>
+            <td class="highlight-yellow readonly"><input type="text" id="eng1" value="ENG 1 lb" readonly style="font-weight: normal;"></td>
+            <td class="input-cell"><input type="number" id="eng1_val" value="645"></td>
+        </tr>
+        <tr>
+            <td class="highlight-yellow readonly"><input type="text" id="eng2" value="ENG 2 lb" readonly style="font-weight: normal;"></td>
+            <td class="input-cell"><input type="number" id="eng2_val" value="645"></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 14px;">Total per min</td>
+            <td colspan="2" class="readonly"><input type="text" id="totalPerMin" readonly></td>
+        </tr>
+        <tr>
+            <td class="highlight-red" style="font-weight: bold; font-size: 14px;">Minutes</td>
+            <td class="input-cell"><input type="number" id="minutes" value="60"></td>
+            <td class="readonly"><input type="text" id="calculatedTotal" readonly></td>
+        </tr>
+        <tr>
+            <td class="highlight-green" style="font-weight: bold; font-size: 14px;">Remaining Fuel</td>
+            <td colspan="2" class="readonly"><input type="text" id="remainingFuel" readonly></td>
+        </tr>
+    </table>
+</div>
+<!-- Additional Tables for Input and Results -->
+<div class="namespace2">
+    <table class="table3">
+        <tr>
+            <th colspan="1" class="header" style="font-size: 18px; font-weight: normal;">Input</th>
+            <th colspan="2" class="header" style="font-size: 18Px; font-weight: normal;">Results</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 14px;">Time (in minute)</td>
+            <td style="font-weight: bold; font-size: 14px;">Fuel</td>
+            <td style="font-weight: bold; font-size: 14px;">NM</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="timeInput1" value="55"></td>
+            <td class="readonly"><input type="text" id="fuelResult1" readonly></td>
+            <td class="readonly"><input type="text" id="nmResult1" readonly></td>
+        </tr>
+    </table>
+    <table class="table3">
+        <tr>
+            <th colspan="1" class="header" style="font-size: 18px; font-weight: normal;">Input</th>
+            <th colspan="2" class="header" style="font-size: 18px; font-weight: normal;">Results</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 14px;">NM</td>
+            <td style="font-weight: bold; font-size: 14px;">Fuel</td>
+            <td style="font-weight: bold; font-size: 14px;">Time</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="nmInput2" value="1"></td>
+            <td class="readonly"><input type="text" id="fuelResult2" readonly></td>
+            <td class="readonly"><input type="text" id="timeResult2" readonly></td>
+        </tr>
+    </table>
+    <table class="table3">
+        <tr>
+            <th colspan="1" class="header" style="font-size: 18px; font-weight: normal;">Input</th>
+            <th colspan="2" class="header" style="font-size: 18px; font-weight: normal;">Results</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 14px;">Fuel</td>
+            <td style="font-weight: bold; font-size: 14px;">Time</td>
+            <td style="font-weight: bold; font-size: 14px;">NM</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="fuelInput3" value="700"></td>
+            <td class="readonly"><input type="text" id="timeResult3" readonly></td>
+            <td class="readonly"><input type="text" id="nmResult3" readonly></td>
+        </tr>
+    </table>
+</div>
+</div>
+<canvas id="fuelChart" width="1241" height="1755"></canvas> 
+<div class="toast-overlay" id="toast-overlay"></div>
+<img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
+<script type="module" src="./datafolder/0ft_15C.js"></script>
+<script type="module" src="./fuel.js"></script>
+<script type="module" src="./fuelCalculation.js"></script>
+<script type="module" src="./datafolder/fuelLeak.js"></script>
 </body>
 </html>
