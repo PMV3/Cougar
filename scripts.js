@@ -629,132 +629,192 @@ function count_3() {
 }
 function count_4() {
   ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
-  const qatElement = document.getElementById("#qat").value;
-  const qat = parseFloat(qatElement);
+  const qat = parseFloat(document.getElementById("#qat").value);
+  const hp = parseFloat(document.getElementById("#hp").value);
+  const acweight = parseFloat(document.getElementById("#acweight").value);
 
-  const HPElement = document.getElementById("#hp").value;
-  const hp = parseFloat(HPElement);
-
-  const actualweightElement = document.getElementById("#acweight").value;
-  const acweight = parseFloat(actualweightElement);
-
-  const windElement = document.getElementById("#wind").value;
-  const wind = parseFloat(windElement);
-
-  if (!(qat >= -45 && qat <= 50 && acweight >= 13200 && acweight <= 21500)) {
+  if (!(qat >= -45 && qat <= 50 && hp >= 0 && hp <= 20000 && acweight >= 13200 && acweight <= 21500)) {
     document.getElementById("#enginhoge").value = "";
+    document.getElementById("#enginhoge_weight").value = "";
     showToast(
-      message = "I can't count Engin HOGE correctly.Input data must be correct.",
-      toastType = "danger",
-      duration = 5000,
-      fortop = showerrornum
+      "Input data is not correct for this calculation.",
+      "danger",
+      5000,
+      showerrornum++
     );
-    showerrornum += 1;
     return false;
   }
-  const qatindex_3 = parseInt(
-    qat >= -45 && qat <= -40 ? 9 : (50 - qat) / 10
-  );
-  const weightmapval_4 =
-    568 - ((21500 - acweight) / (21500 - 13200)) * (568 - 52);
 
-  const firstval_4 = getYForXanother(weightmapval_4, Qat_4[qatindex_3]);
-  const secondval_4 = getYForXanother(
-    weightmapval_4,
-    Qat_4[qatindex_3 + 1]
-  );
-  if (firstval_4 == null || secondval_4 == null) {
-    showToast(
-      message = "I can't interpolate with your input data in this Engin HOGE Chart",
-      toastType = "info",
-      duration = 5000,
-      fortop = showerrornum
-    )
-    showerrornum += 1;
-    document.getElementById("#enginhoge").value = "";
-    return;
+  // Calculate and display altitude result
+  const weightmapval_4 = 568 - ((21500 - acweight) / (21500 - 13200)) * (568 - 52);
+  const qatindex_4 = parseInt(qat >= -45 && qat <= -40 ? 9 : (50 - qat) / 10);
+  const thirdval_4 = getYForXanother(weightmapval_4, Qat_4[qatindex_4]);
+  const fourthval_4 = getYForXanother(weightmapval_4, Qat_4[qatindex_4 + 1]);
+
+  if (thirdval_4 != null && fourthval_4 != null) {
+    const enginehogemap_4 =
+      fourthval_4 +
+      ((qat - Qatindex_4[qatindex_4 + 1]) * (thirdval_4 - fourthval_4)) /
+      (Qatindex_4[qatindex_4] - Qatindex_4[qatindex_4 + 1]);
+
+    const enginehoge_4 = 20000 - ((enginehogemap_4 - 37) / (679 - 37)) * 20000;
+    document.getElementById("#enginhoge").value = enginehoge_4.toFixed(2);
+
+    // Draw altitude point and lines
+    drawFoundPoint(ctx3, weightmapval_4, enginehogemap_4);
+    drawline(
+      ctx3,
+      { x: weightmapval_4, y: 762 },
+      { x: weightmapval_4, y: enginehogemap_4 }
+    );
+    drawline(
+      ctx3,
+      { x: weightmapval_4, y: enginehogemap_4 },
+      { x: 52, y: enginehogemap_4 }
+    );
+  } else {
+    document.getElementById("#enginhoge").value = "Unable to calculate";
   }
-  const hptfmapval_4 =
-    firstval_4 -
-    ((firstval_4 - secondval_4) * (Qatindex_4[qatindex_3] - qat)) / 10;
 
-  drawFoundPoint(ctx3, weightmapval_4, hptfmapval_4);
-  drawline(
-    ctx3,
-    { x: weightmapval_4, y: 762 },
-    { x: weightmapval_4, y: hptfmapval_4 }
-  );
-  drawline(
-    ctx3,
-    { x: 51, y: hptfmapval_4 },
-    { x: weightmapval_4, y: hptfmapval_4 }
-  );
-  const hpft_4 = 20000 - ((hptfmapval_4 - 37) / (679 - 37)) * 20000;
-  document.getElementById("#enginhoge").value = hpft_4;
+  // Weight calculation
+  const hptfmapval_4 = 37 + ((679 - 37) * (20000 - hp)) / 20000;
+  const firstval_4 = getXForY(hptfmapval_4, Qat_4[qatindex_4]);
+  const secondval_4 = getXForY(hptfmapval_4, Qat_4[qatindex_4 + 1]);
+
+  if (firstval_4 != null && secondval_4 != null) {
+    const enginehogeweightmap_4 =
+      firstval_4 +
+      ((Qatindex_4[qatindex_4] - qat) * (secondval_4 - firstval_4)) /
+      (Qatindex_4[qatindex_4] - Qatindex_4[qatindex_4 + 1]);
+
+    const minWeight = 13200;
+    const maxWeight = 21500;
+    const minX = 52;
+    const maxX = 568;
+    
+    const enginehogeweight_4 = 
+      minWeight + (enginehogeweightmap_4 - minX) / (maxX - minX) * (maxWeight - minWeight);
+    
+    document.getElementById("#enginhoge_weight").value = enginehogeweight_4.toFixed(2);
+
+    // Draw weight point and lines
+    drawFoundPoint(ctx3, enginehogeweightmap_4, hptfmapval_4, "blue");
+    drawline(
+      ctx3,
+      { x: 52, y: hptfmapval_4 },
+      { x: enginehogeweightmap_4, y: hptfmapval_4 },
+      "blue"
+    );
+    drawline(
+      ctx3,
+      { x: enginehogeweightmap_4, y: hptfmapval_4 },
+      { x: enginehogeweightmap_4, y: 762 },
+      "blue"
+    );
+  } else {
+    document.getElementById("#enginhoge_weight").value = "Unable to calculate";
+    showToast(
+      "Unable to calculate TWIN ENG OGE Weight with the given inputs.",
+      "info",
+      5000,
+      showerrornum++
+    );
+  }
 }
 function count_5() {
   ctx4.clearRect(0, 0, canvas4.width, canvas4.height);
-  const qatElement = document.getElementById("#qat").value;
-  const qat = parseFloat(qatElement);
-
-  const HPElement = document.getElementById("#hp").value;
-  const hp = parseFloat(HPElement);
-
-  const actualweightElement = document.getElementById("#acweight").value;
-  const acweight = parseFloat(actualweightElement);
-
-  const windElement = document.getElementById("#wind").value;
-  const wind = parseFloat(windElement);
+  const qat = parseFloat(document.getElementById("#qat").value);
+  const hp = parseFloat(document.getElementById("#hp").value);
+  const acweight = parseFloat(document.getElementById("#acweight").value);
+  const wind = parseFloat(document.getElementById("#wind").value);
 
   if (!(qat >= -45 && qat <= 50 && acweight >= 13200 && acweight <= 21500)) {
     document.getElementById("#enginIGE").value = "";
+    document.getElementById("#enginIGE_weight").value = "";
     showToast(
-      message = "I can't count Engin IGE  correctly.Input data must be correct.",
-      toastType = "danger",
-      duration = 5000,
-      fortop = showerrornum
+      "Input data is not correct for Engine IGE calculation.",
+      "danger",
+      5000,
+      showerrornum++
     );
-    showerrornum += 1;
     return false;
   }
-  const qatindex_5 = parseInt(
-    qat >= -45 && qat <= -40 ? 9 : (50 - qat) / 10
-  );
-  const weightmapval_5 =
-    570 - ((21500 - acweight) / (21500 - 13300)) * (570 - 59);
-  const firstval_5 = getYForXanother(weightmapval_5, Qat_5[qatindex_5]);
-  const secondval_5 = getYForXanother(
-    weightmapval_5,
-    Qat_5[qatindex_5 + 1]
-  );
-  if (firstval_5 == null || secondval_5 == null) {
-    showToast(
-      message = "I can't interpolate with your input data in this Engin IGE Chart",
-      toastType = "info",
-      duration = 5000,
-      fortop = showerrornum
-    )
-    showerrornum += 1;
-    document.getElementById("#enginIGE").value = "";
-    return;
-  }
-  const hptfmapval_5 =
-    firstval_5 -
-    ((firstval_5 - secondval_5) * (Qatindex_4[qatindex_5] - qat)) / 10;
 
-  drawFoundPoint(ctx4, weightmapval_5, hptfmapval_5);
-  drawline(
-    ctx4,
-    { x: weightmapval_5, y: 755 },
-    { x: weightmapval_5, y: hptfmapval_5 }
-  );
-  drawline(
-    ctx4,
-    { x: 54, y: hptfmapval_5 },
-    { x: weightmapval_5, y: hptfmapval_5 }
-  );
-  const hpft_5 = 20000 - ((hptfmapval_5 - 28) / (674 - 28)) * 20000;
-  document.getElementById("#enginIGE").value = hpft_5;
+  const qatindex_5 = parseInt(qat >= -45 && qat <= -40 ? 9 : (50 - qat) / 10);
+
+  // Altitude calculation
+  const weightmapval_5 = 570 - ((21500 - acweight) / (21500 - 13300)) * (570 - 59);
+  const firstval_5 = getYForXanother(weightmapval_5, Qat_5[qatindex_5]);
+  const secondval_5 = getYForXanother(weightmapval_5, Qat_5[qatindex_5 + 1]);
+
+  if (firstval_5 != null && secondval_5 != null) {
+    const hptfmapval_5 =
+      firstval_5 -
+      ((firstval_5 - secondval_5) * (Qatindex_4[qatindex_5] - qat)) / 10;
+
+    const hpft_5 = 20000 - ((hptfmapval_5 - 28) / (674 - 28)) * 20000;
+    document.getElementById("#enginIGE").value = hpft_5.toFixed(2);
+
+    // Draw altitude point and lines
+    drawFoundPoint(ctx4, weightmapval_5, hptfmapval_5);
+    drawline(
+      ctx4,
+      { x: weightmapval_5, y: 755 },
+      { x: weightmapval_5, y: hptfmapval_5 }
+    );
+    drawline(
+      ctx4,
+      { x: 54, y: hptfmapval_5 },
+      { x: weightmapval_5, y: hptfmapval_5 }
+    );
+  } else {
+    document.getElementById("#enginIGE").value = "Unable to calculate";
+  }
+
+  // Weight calculation
+  const hptfmapval_5_weight = 28 + ((674 - 28) * (20000 - hp)) / 20000;
+  const firstval_5_weight = getXForY(hptfmapval_5_weight, Qat_5[qatindex_5]);
+  const secondval_5_weight = getXForY(hptfmapval_5_weight, Qat_5[qatindex_5 + 1]);
+
+  if (firstval_5_weight != null && secondval_5_weight != null) {
+    const engineIGEweightmap_5 =
+      firstval_5_weight +
+      ((Qatindex_4[qatindex_5] - qat) * (secondval_5_weight - firstval_5_weight)) /
+      (Qatindex_4[qatindex_5] - Qatindex_4[qatindex_5 + 1]);
+
+    const minWeight = 13300;
+    const maxWeight = 21500;
+    const minX = 59;
+    const maxX = 570;
+    
+    const engineIGEweight_5 = 
+      minWeight + (engineIGEweightmap_5 - minX) / (maxX - minX) * (maxWeight - minWeight);
+    
+    document.getElementById("#enginIGE_weight").value = engineIGEweight_5.toFixed(2);
+
+    // Draw weight point and lines
+    drawFoundPoint(ctx4, engineIGEweightmap_5, hptfmapval_5_weight, "blue");
+    drawline(
+      ctx4,
+      { x: 59, y: hptfmapval_5_weight },
+      { x: engineIGEweightmap_5, y: hptfmapval_5_weight },
+      "blue"
+    );
+    drawline(
+      ctx4,
+      { x: engineIGEweightmap_5, y: hptfmapval_5_weight },
+      { x: engineIGEweightmap_5, y: 755 },
+      "blue"
+    );
+  } else {
+    document.getElementById("#enginIGE_weight").value = "Unable to calculate";
+    showToast(
+      "Unable to calculate Engine IGE Weight with the given inputs.",
+      "info",
+      5000,
+      showerrornum++
+    );
+  }
 }
 function count_7() {
   ctx5.clearRect(0, 0, canvas5.width, canvas5.height);
@@ -1008,12 +1068,24 @@ function drawCoordinateSystem(ctx, zeroPoint, horizontalAxisPoint, verticalAxisP
   ctx.fillText("Y", verticalAxisPoint.x + 10, verticalAxisPoint.y + 15);
 }
 
-function drawline(ctx, point1, pint2, colore = "red") {
+function drawline(ctx, point1, point2, colore = "red") {
   ctx.beginPath();
   ctx.moveTo(point1.x, point1.y);
-  ctx.lineTo(pint2.x, pint2.y);
+  ctx.lineTo(point2.x, point2.y);
   ctx.strokeStyle = colore;
   ctx.stroke();
+
+  // Draw arrow head
+  const angle = Math.atan2(point2.y - point1.y, point2.x - point1.x);
+  const headlen = 10; // Length of arrow head in pixels
+
+  ctx.beginPath();
+  ctx.moveTo(point2.x, point2.y);
+  ctx.lineTo(point2.x - headlen * Math.cos(angle - Math.PI / 6), point2.y - headlen * Math.sin(angle - Math.PI / 6));
+  ctx.lineTo(point2.x - headlen * Math.cos(angle + Math.PI / 6), point2.y - headlen * Math.sin(angle + Math.PI / 6));
+  ctx.closePath();
+  ctx.fillStyle = colore;
+  ctx.fill();
 }
 
 function showchart(num) {
