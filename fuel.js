@@ -42,18 +42,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalWeight = localStorage.getItem('step3_totalWeight');
         const height = localStorage.getItem('step3_height');
         const temperature = localStorage.getItem('step3_temperature');
-        const windSpeed = localStorage.getItem('step3_windSpeed');
         const speed = localStorage.getItem('step3_speed');
         const fuelConsumption = localStorage.getItem('step3_fuelConsumption');
-
+        const totalFuelWeight = localStorage.getItem('step3_totalFuelWeight');
+        const windSpeed = localStorage.getItem('step3_windSpeed');
+    
         if (totalWeight) document.getElementById("totalweight").value = totalWeight;
         if (height) document.getElementById("height").value = height;
         if (temperature) document.getElementById("temperature").value = temperature;
-        if (windSpeed) document.getElementById("wind").value = windSpeed;
         if (speed) {
             document.getElementById("speed").value = speed;
             autoFillSpeed(); // Call this to fill speed in all fields
         }
+        if (totalFuelWeight) {
+            document.getElementById("fuelEntered").value = totalFuelWeight;
+            document.getElementById("qInTanks").value = totalFuelWeight; // Fill Q in the Tanks
+        }
+        if (windSpeed) document.getElementById("windSpeed").value = windSpeed;
+
         if (fuelConsumption) {
             document.getElementById("fuelConsumption").value = fuelConsumption;
             document.getElementById("fuelConsumptionIFR").value = fuelConsumption;
@@ -63,9 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Data retrieved in Step 3:', { totalWeight, height, temperature, windSpeed, speed, fuelConsumption });
 
-        // Calculate AEO Fuel Consumption
-        calculateAEOFuelConsumption();
-
         // Clear localStorage after retrieving and using the data
         localStorage.removeItem('step3_totalWeight');
         localStorage.removeItem('step3_height');
@@ -73,6 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.removeItem('step3_windSpeed');
         localStorage.removeItem('step3_speed');
         localStorage.removeItem('step3_fuelConsumption');
+        localStorage.removeItem('step3_totalFuelWeight');
     }
 
     function calculateAEOFuelConsumption() {
@@ -175,8 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalHeight = 1755;
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
-                    right: 35 * (desiredWidth / originalWidth),
-                    bottom: 300 * (desiredHeight / originalHeight),
+                    right: 180 * (desiredWidth / originalWidth),
+                    bottom: 430 * (desiredHeight / originalHeight),
                     left: 35 * (desiredWidth / originalWidth)
                 };
             } else {
@@ -186,8 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalHeight = 1755;
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
-                    right: 0 * (desiredWidth / originalWidth),
-                    bottom: 300 * (desiredHeight / originalHeight),
+                    right: 220 * (desiredWidth / originalWidth),
+                    bottom: 430 * (desiredHeight / originalHeight),
                     left: 0 * (desiredWidth / originalWidth)
                 };
             }
@@ -295,20 +299,30 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.arc(xPos, yPos, 5, 0, 2 * Math.PI);
         ctx.fillStyle = 'red';
         ctx.fill();
-
+        
         ctx.font = '16px Arial';
         ctx.fillText(`Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`, 10, 30);
-
+        
         ctx.strokeStyle = 'red';
         ctx.beginPath();
         ctx.moveTo(xPos, yPos);
         ctx.lineTo(xPos, canvas.height - margin.bottom);
         ctx.stroke();
-
+        
         ctx.beginPath();
         ctx.moveTo(xPos, yPos);
         ctx.lineTo(canvas.width - margin.right, yPos);
         ctx.stroke();
+        
+        // Add triangle at the end of the horizontal line
+        const triangleSize = 10;
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - margin.right, yPos);
+        ctx.lineTo(canvas.width - margin.right - triangleSize, yPos - triangleSize / 2);
+        ctx.lineTo(canvas.width - margin.right - triangleSize, yPos + triangleSize / 2);
+        ctx.closePath();
+        ctx.fill();
     }
 
     function showToast(message = "Sample Message", toastType = "info", duration = 5000, fortop = 0) {
@@ -473,10 +487,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize the page
     getDataFromStep2();
 
-    // Add event listeners for input changes
-    ['totalweight', 'height', 'temperature', 'speed'].forEach(id => {
-        document.getElementById(id).addEventListener('input', calculateAEOFuelConsumption);
-    });
+   // Add event listener for the "Get AEO Fuel Consumption" button
+   const calculateButton = document.getElementById('calculate-button');
+   if (calculateButton) {
+       calculateButton.addEventListener('click', calculateAEOFuelConsumption);
+   }
 
     // Fuel leak check calculation
     document.getElementById('calculateFuelLeak').addEventListener('click', function() {

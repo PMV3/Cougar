@@ -1,0 +1,88 @@
+<!-- Fuel Leak Check Table -->
+<div class="namespace2" style="width: 80%; margin: left">
+    <p style="text-align: left; font-size: 18px; font-weight: normal;">
+         <span style="color: red;">Fuel Leak </span>check
+    </p>
+    <table style="width: 100%;">
+        <tr>
+            <th colspan="3" class="header" style="font-size: 16px; font-weight: normal;">Fuel Leak check ( FMT page 1 )</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 12px;">Total Fuel</td>
+            <td colspan="2" class="input-cell"><input type="number" id="totalFuel" value="1800" style="width: 90%;"></td>
+        </tr>
+        <tr>
+            <td rowspan="2" class="highlight-green" style="font-weight: bold; font-size: 12px;">Fuel consum per H</td>
+            <td class="highlight-yellow readonly"><input type="text" id="eng1" value="ENG 1 lb" readonly style="font-weight: normal; width: 90%;"></td>
+            <td class="input-cell"><input type="number" id="eng1_val" value="645" style="width: 90%;"></td>
+        </tr>
+        <tr>
+            <td class="highlight-yellow readonly"><input type="text" id="eng2" value="ENG 2 lb" readonly style="font-weight: normal; width: 90%;"></td>
+            <td class="input-cell"><input type="number" id="eng2_val" value="645" style="width: 90%;"></td>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 12px;">Total per min</td>
+            <td colspan="2" class="readonly"><input type="text" id="totalPerMin" readonly style="width: 90%;"></td>
+        </tr>
+        <tr>
+            <td class="highlight-red" style="font-weight: bold; font-size: 12px;">Minutes</td>
+            <td class="input-cell"><input type="number" id="minutes" value="60" style="width: 90%;"></td>
+            <td class="readonly"><input type="text" id="calculatedTotal" readonly style="width: 90%;"></td>
+        </tr>
+        <tr>
+            <td class="highlight-green" style="font-weight: bold; font-size: 12px;">Remaining Fuel</td>
+            <td colspan="2" class="readonly"><input type="text" id="remainingFuel" readonly style="width: 90%;"></td>
+        </tr>
+    </table>
+</div>
+<!-- Additional Tables for Input and Results -->
+<div class="namespace2" style="width: 80%; margin: left;">
+    <table class="table3" style="width: 100%; margin-top: 10px;">
+        <tr>
+            <th colspan="1" class="header" style="font-size: 16px; font-weight: normal;">Input</th>
+            <th colspan="2" class="header" style="font-size: 16px; font-weight: normal;">Results</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 12px;">Time (in minute)</td>
+            <td style="font-weight: bold; font-size: 12px;">Fuel</td>
+            <td style="font-weight: bold; font-size: 12px;">NM</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="timeInput1" value="55" style="width: 90%;"></td>
+            <td class="readonly"><input type="text" id="fuelResult1" readonly style="width: 90%;"></td>
+            <td class="readonly"><input type="text" id="nmResult1" readonly style="width: 90%;"></td>
+        </tr>
+    </table>
+    <table class="table3" style="width: 100%; margin-top: 10px;">
+        <tr>
+            <th colspan="1" class="header" style="font-size: 16px; font-weight: normal;">Input</th>
+            <th colspan="2" class="header" style="font-size: 16px; font-weight: normal;">Results</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 12px;">NM</td>
+            <td style="font-weight: bold; font-size: 12px;">Fuel</td>
+            <td style="font-weight: bold; font-size: 12px;">Time</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="nmInput2" value="1" style="width: 90%;"></td>
+            <td class="readonly"><input type="text" id="fuelResult2" readonly style="width: 90%;"></td>
+            <td class="readonly"><input type="text" id="timeResult2" readonly style="width: 90%;"></td>
+        </tr>
+    </table>
+    <table class="table3" style="width: 100%; margin-top: 10px;">
+        <tr>
+            <th colspan="1" class="header" style="font-size: 16px; font-weight: normal;">Input</th>
+            <th colspan="2" class="header" style="font-size: 16px; font-weight: normal;">Results</th>
+        </tr>
+        <tr>
+            <td style="font-weight: bold; font-size: 12px;">Fuel</td>
+            <td style="font-weight: bold; font-size: 12px;">Time</td>
+            <td style="font-weight: bold; font-size: 12px;">NM</td>
+        </tr>
+        <tr>
+            <td class="input-cell"><input type="number" id="fuelInput3" value="700" style="width: 90%;"></td>
+            <td class="readonly"><input type="text" id="timeResult3" readonly style="width: 90%;"></td>
+            <td class="readonly"><input type="text" id="nmResult3" readonly style="width: 90%;"></td>
+        </tr>
+    </table>
+</div>

@@ -77,8 +77,8 @@ function saveDataForStep3() {
     const totalWeight = document.getElementById('ttl-weight').value;
     const height = document.getElementById('height').value;
     const temperature = document.getElementById('temperature').value;
+    const totalFuelWeight = document.getElementById('totalFuelWeight').value;
     const windSpeed = document.getElementById('wind').value;
-    const totalFuelWeight = document.getElementById('totalFuelWeight').value; // Add this line
 
 
 
@@ -86,8 +86,8 @@ function saveDataForStep3() {
     localStorage.setItem('step3_totalWeight', totalWeight);
     localStorage.setItem('step3_height', height);
     localStorage.setItem('step3_temperature', temperature);
+    localStorage.setItem('step3_totalFuelWeight', totalFuelWeight);
     localStorage.setItem('step3_windSpeed', windSpeed);
-    localStorage.setItem('step3_totalFuelWeight', totalFuelWeight); // Add this line
 }
 
 
