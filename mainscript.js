@@ -473,6 +473,10 @@ function getgraduationusingcomplexchart(){
       { x: pointAmapval, y: 503 }
     );
     drawFoundPoint(newctx2, pointAmapval, 503);
+    // Add these lines:
+newctx2.fillStyle = "blue";
+newctx2.font = "16px Arial";
+newctx2.fillText("A", pointAmapval + 5, 508);
     let pointA =-1;
     for(let i=0;i<graduationlabel.length-1;i++)
       {
@@ -551,6 +555,10 @@ function getgraduationusingcomplexchart(){
       { x: posintBmapval, y: 503 }
     );
     drawFoundPoint(newctx2,posintBmapval,503);
+    // Add these lines:
+newctx2.fillStyle = "blue";
+newctx2.font = "16px Arial";
+newctx2.fillText("B", posintBmapval + 5, 508);
     let pointB=-1;
     for(let i=0;i<graduationlabel.length-1;i++)
       {
