@@ -1,3 +1,6 @@
+function formatToTwoDecimals(value) {
+  return typeof value === 'number' && !isNaN(value) ? Number(value.toFixed(2)) : value;
+}
 const canvas = document.getElementById("curveCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -309,8 +312,8 @@ function count(num) {
     const heightloose =
       600 - ((1062 - heightloosemap) / (1062 - 642)) * 600;
 
-    document.getElementById("#heightloose").value = heightloose;
-  }
+      document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+    }
 }
 
 function count_1_1() {
@@ -510,8 +513,8 @@ function count_6() {
 
   const weightindex_6 =
     13 - ((WeightIndexMapaval_6 - 507) / (860 - 507)) * 6;
-  document.getElementById("#Wheight_index_6").value = weightindex_6;
-}
+    document.getElementById("#Wheight_index_6").value = formatToTwoDecimals(weightindex_6);
+  }
 function count_3() {
   ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
   const qatElement = document.getElementById("#qat").value;
@@ -585,8 +588,8 @@ function count_3() {
     );
     const ceilingwight_3 =
       21500 - ((477 - ceilingwightmap_3) / (477 - 35)) * (21500 - 13200);
-    document.getElementById("#ceilingweight_3").value = ceilingwight_3;
-  }
+      document.getElementById("#ceilingweight_3").value = formatToTwoDecimals(ceilingwight_3);
+    }
   const weightmapval_3 =
     477 - ((21500 - acweight) / (21500 - 13200)) * (477 - 35);
 
@@ -625,7 +628,7 @@ function count_3() {
   );
   const ceilinghp_3 = 20000 - ((ceilinghpmap_3 - 6) / (683 - 6)) * 20000;
 
-  document.getElementById("#ceilinghp_3").value = ceilinghp_3;
+  document.getElementById("#ceilinghp_3").value = formatToTwoDecimals(ceilinghp_3);
 }
 function count_4() {
   ctx3.clearRect(0, 0, canvas3.width, canvas3.height);
@@ -729,8 +732,8 @@ function count_5() {
   const wind = parseFloat(document.getElementById("#wind").value);
 
   if (!(qat >= -45 && qat <= 50 && acweight >= 13200 && acweight <= 21500)) {
-    document.getElementById("#enginIGE").value = "";
-    document.getElementById("#enginIGE_weight").value = "";
+    document.getElementById("#enginIGE").value = formatToTwoDecimals(hpft_5);
+document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIGEweight_5);
     showToast(
       "Input data is not correct for Engine IGE calculation.",
       "danger",
@@ -923,8 +926,7 @@ function count_7() {
     }
   );
   const rcval_7 = 1500 - ((868.5 - rcmapval_7) / (868.5 - 612.5)) * 1500;
-  document.getElementById("#rc").value = rcval_7;
-}
+  document.getElementById("#rc").value = formatToTwoDecimals(rcval_7);}
 const aircraftWeights = {
   9902: 13791,
   9905: 13858,

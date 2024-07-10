@@ -29,7 +29,7 @@ function updateWeight(numberId, singleWeight, weightId, mmntId, cg) {
 function calculateZeroFuelWeightMax5ftIGE() {
     const maxWeight5ftIGE = parseFloat(document.getElementById('5ft_weight').textContent.match(/\d+(\.\d+)?/)[0]) || 0;
     const zeroFuelWeight = parseFloat(document.getElementById('zfw').value) || 0;
-    zeroFuelWeightMax5ftIGE = maxWeight5ftIGE - zeroFuelWeight;
+    zeroFuelWeightMax5ftIGE = maxWeight5ftIGE - zeroFuelWeight ;
     document.getElementById('zeroFuelWeightMax5ftIGE').value = zeroFuelWeightMax5ftIGE.toFixed(2);
 }
 

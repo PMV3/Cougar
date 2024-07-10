@@ -1,3 +1,6 @@
+function formatToTwoDecimals(value) {
+  return typeof value === 'number' && !isNaN(value) ? Number(value.toFixed(2)) : value;
+}
 const newcanvas = document.getElementById("newcurveCanvas");
 const newctx = newcanvas.getContext("2d");
 
@@ -126,7 +129,7 @@ function getmaxt4calc() {
   // return;
   const Maxi_t4val = 550+(825-Y_maximapval_changed)/ (825-90)*300 ;
   
-  document.getElementById("#maxit4").value = Maxi_t4val;
+  document.getElementById("#maxit4").value = formatToTwoDecimals(Maxi_t4val);
 
   const actualt4Element = document.getElementById("#actualt4").value;
   const actualt4 = parseFloat(actualt4Element);
@@ -286,8 +289,8 @@ function getcorrectNGval() {
       if(nrXval<=val1&& nrXval>val2 )
       {
         let correctedval=nppercentlabel[i]-(val1-nrXval)/(val1-val2);
-          document.getElementById("#corrected_ng").value = correctedval;
-          return;
+        document.getElementById("#corrected_ng").value = formatToTwoDecimals(correctedval);
+        return;
       }
     }
     document.getElementById("#corrected_ng").value = "";
@@ -495,7 +498,7 @@ function getgraduationusingcomplexchart(){
       document.getElementById("#corrected_ng").style.display = 'block';
       return;
     }
-    document.getElementById("#point_A").value = pointA;
+    document.getElementById("#point_A").value = formatToTwoDecimals(pointA);
 
     const qatYmapval = 6+(464-6)*(50-qat)/90;
     const correctedngindex =  parseInt(correctedNG-85);
@@ -573,18 +576,18 @@ function getgraduationusingcomplexchart(){
         document.getElementById("#corrected_ng").style.display = 'block';
         return;
       }
-      document.getElementById("#point_B").value = pointB;
+      document.getElementById("#point_B").value = formatToTwoDecimals(pointB);
       const grosmargin = pointA-pointB;
       if(speed>=140)
-        document.getElementById("#net_margin").value = grosmargin-2;
+        document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin-2);
       else if(speed<=120)
-        document.getElementById("#net_margin").value = grosmargin;
+        document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin);
       else 
-        document.getElementById("#net_margin").value = grosmargin-1;
+        document.getElementById("#net_margin").value = formatToTwoDecimals (grosmargin-1);
 
       
-      document.getElementById("#gross_margin").value = grosmargin;
-      if(grosmargin>0)
+        document.getElementById("#gross_margin").value = formatToTwoDecimals(grosmargin);
+        if(grosmargin>0)
         document.getElementById("#engin_condition").value = "Engine is satisfactory";
       else if(grosmargin<0)
         document.getElementById("#engin_condition").value = "Engine may be defective";
@@ -592,6 +595,7 @@ function getgraduationusingcomplexchart(){
         document.getElementById("#engin_condition").value = "Same";
     // drawFoundPoint(newctx2,sixthval,qatYmapval);
     return; 
+    
 } 
 
 
