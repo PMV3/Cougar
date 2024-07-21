@@ -321,8 +321,8 @@ function count_1_1() {
   const windElement = document.getElementById("#wind").value;
   const wind = parseFloat(windElement);
   if (!(wind >= 0 && wind <= 50)) {
-    document.getElementById("#heightloose").value = "";
-    document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+    document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
     showToast(
       message = "I can not count Height Loose.Because wind is not correct",
       toastType = "danger",
@@ -349,8 +349,8 @@ function count_1_1() {
       fortop = showerrornum
     )
     showerrornum += 1;
-    document.getElementById("#heightloose").value = "";
-    document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+    document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
     return;
   }
   const sixthval = getYForX(
@@ -365,8 +365,8 @@ function count_1_1() {
       fortop = showerrornum
     )
     showerrornum += 1;
-    document.getElementById("#heightloose").value = "";
-    document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+    document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
     return;
   }
   const heightloosemap =
