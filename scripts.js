@@ -136,8 +136,8 @@ function count(num) {
       mainflag_1 = true;
 
     if (!(qat >= -50 && qat <= 50 && hp >= 0 && hp <= 10000 && acweight >= 13000 && acweight <= 21495 && wind >= 0 && wind <= 50)) {
-      document.getElementById("#heightloose").value = "";
-      document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       if (mainflag_1) {
         const val_1_1 = count_1_1();
         return val_1_1;
@@ -176,8 +176,8 @@ function count(num) {
         fortop = showerrornum
       )
       showerrornum += 1;
-      document.getElementById("#heightloose").value = "";
-      document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       return;
     }
 
@@ -194,8 +194,8 @@ function count(num) {
         fortop = showerrornum
       )
       showerrornum += 1;
-      document.getElementById("#heightloose").value = "";
-      document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       return;
     }
     const Yval =
@@ -217,8 +217,8 @@ function count(num) {
         fortop = showerrornum
       )
       showerrornum += 1;
-      document.getElementById("#heightloose").value = "";
-      document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       return;
     }
     const fourthval = getXForY(Yval, ActualWeightline[weightpos + 1]);
@@ -234,8 +234,8 @@ function count(num) {
         fortop = showerrornum
       )
       showerrornum += 1;
-      document.getElementById("#heightloose").value = "";
-      document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       return;
     }
     const wightindexMapval =
@@ -270,8 +270,8 @@ function count(num) {
         fortop = showerrornum
       )
       showerrornum += 1;
-      document.getElementById("#heightloose").value = "";
-      document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       return;
     }
     const sixthval = getYForX(
@@ -290,8 +290,8 @@ function count(num) {
         fortop = showerrornum
       )
       showerrornum += 1;
-      document.getElementById("#heightloose").value = "";
-      document.getElementById("#weighindex").value = "";
+    document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
+document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       return;
     }
     const heightloosemap =
