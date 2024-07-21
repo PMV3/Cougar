@@ -387,7 +387,7 @@ function count_1_1() {
   const heightloose =
     600 - ((1062 - heightloosemap) / (1062 - 642)) * 600;
 
-  document.getElementById("#heightloose").value = heightloose;
+  document.getElementById("#heightloose").value = formatToTwoDecimals (heightloose);
 }
 function count_6() {
   ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
