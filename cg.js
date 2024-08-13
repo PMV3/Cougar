@@ -171,6 +171,46 @@ document.addEventListener('DOMContentLoaded', function () {
     
             totalWeight += weight;
             totalMoment += moment;
+
+            // Add this part at the end of the function to calculate and display section totals
+            const sections = {
+                Crew: ['pilots', 'thirdCM', 'fe', 'gunner', 'crs1And2', 'crs3And4'],
+                OptionalEquipment: ['flir', 'hoist', 'fastRope', 'searchLight', 'mg58RH', 'mg58LH', 'extraAmmoBox', 'gun', 'gunLoaded', 'rocketLauncher', 'rocketLauncherLoaded', 'refuelingProbe', 'jdd', 'doorsArmoured', 'seatsArmoured', 'floorArmoured', 'commonSARKit', 'landSARKit', 'seaSARKit', 'transacoStretcher', 'sarKitNet', 'medicalKit'],
+                Passengers: ['passengerA', 'passengerB', 'passengerC', 'passengerD', 'passengerE', 'passengerF', 'passengerG', 'passengerH', 'passengerI', 'passengerJ', 'passengerK', 'passengerL'],
+                Stretchers: ['stretcherA', 'stretcherB', 'stretcherC', 'stretcherD'],
+                OtherLoad: ['sectionA', 'sectionB', 'sectionC', 'sectionD', 'sectionE']
+            };
+
+            for (const [sectionName, items] of Object.entries(sections)) {
+                let sectionWeight = 0;
+                let sectionMoment = 0;
+
+                items.forEach(item => {
+                    const weight = parseFloat(document.getElementById(`${item}Weight`).value) || 0;
+                    const moment = parseFloat(document.getElementById(`${item}MMNT`).value) || 0;
+                    sectionWeight += weight;
+                    sectionMoment += moment;
+                });
+
+                const sectionCG = sectionWeight > 0 ? sectionMoment / sectionWeight : 0;
+
+                // Display the totals for each section
+                document.getElementById(`total${sectionName}Weight`).value = sectionWeight.toFixed(2);
+                document.getElementById(`total${sectionName}MMNT`).value = sectionMoment.toFixed(2);
+                document.getElementById(`total${sectionName}CG`).value = sectionCG.toFixed(2);
+            }
+
+            // Calculate and display fuel totals separately
+            const fuelWeights = ['internalFuelWeight', 'sponsonWeight', 'cabinFuelWeight', 'forwardLongitudinalWeight', 'rearLongitudinalWeight', 'rearTransversalWeight'];
+            const fuelMoments = ['internalFuelMMNT', 'sponsonMMNT', 'cabinFuelMMNT', 'forwardLongitudinalMMNT', 'rearLongitudinalMMNT', 'rearTransversalMMNT'];
+
+            const totalFuelWeight = fuelWeights.reduce((sum, id) => sum + (parseFloat(document.getElementById(id).value) || 0), 0);
+            const totalFuelMoment = fuelMoments.reduce((sum, id) => sum + (parseFloat(document.getElementById(id).value) || 0), 0);
+            const totalFuelCG = totalFuelWeight > 0 ? totalFuelMoment / totalFuelWeight : 0;
+
+            document.getElementById('totalFuelWeight').value = totalFuelWeight.toFixed(2);
+            document.getElementById('totalFuelCG').value = totalFuelCG.toFixed(2);
+            document.getElementById('totalFuelMMNT').value = totalFuelMoment.toFixed(2);
         });
     
         // Calculate total fuel weight and moment
@@ -234,7 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         calculateMaxFuelToUse();
-        saveDataForStep2();
+        saveDataForStep2(); // Add this line to save data for Step 2
     }
 
     function checkCGAndWeight(weight, cg) {
@@ -243,18 +283,18 @@ document.addEventListener('DOMContentLoaded', function () {
         return isWeightOK && isCGOK;
     }
 
-    document.querySelectorAll('input').forEach(input => {
-        input.addEventListener('input', calculateCG);
-    });
+    // Trigger calculation when any relevant input changes
+    const inputs = [
+        'temperature',
+        'height',
+        'wind',
+    ];
 
-    document.getElementById('5ft_weight').addEventListener('DOMSubtreeModified', function() {
-        calculateZeroFuelWeightMax5ftIGE();
-        calculateMaxFuelToUse();
-    });
-
-    document.getElementById('zfw').addEventListener('input', function() {
-        calculateZeroFuelWeightMax5ftIGE();
-        calculateMaxFuelToUse();
+    inputs.forEach(inputId => {
+        const element = document.getElementById(inputId);
+        if (element) {
+            element.addEventListener('input', calculateWeight);
+        }
     });
 
     // Initial calculations
@@ -262,6 +302,8 @@ document.addEventListener('DOMContentLoaded', function () {
     calculateMaxFuelToUse();
     calculateCG();
 });
+
+window.addEventListener('beforeunload', saveDataForStep2);
 
 // 5ft_calculator.js content
 function findWeight(temperature, height) {
@@ -338,46 +380,5 @@ function calculateWeight() {
 
     calculateZeroFuelWeightMax5ftIGE();
     calculateMaxFuelToUse();
-    saveDataForStep2();
+    saveDataForStep2(); // Add this line to save data for Step 2
 }
-
-// Event listeners for automatic calculation
-document.addEventListener('DOMContentLoaded', function() {
-    const temperatureInput = document.getElementById('temperature');
-    const heightInput = document.getElementById('height');
-
-    function debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
-
-    const debouncedCalculateWeight = debounce(calculateWeight, 300);
-
-    temperatureInput.addEventListener('input', debouncedCalculateWeight);
-    heightInput.addEventListener('input', debouncedCalculateWeight);
-
-    // Add event listeners for fuel inputs
-    const fuelInputs = [
-        'internalFuelNumber', 'sponsonNumber', 'cabinFuelNumber',
-        'forwardLongitudinalNumber', 'rearLongitudinalNumber', 'rearTransversalNumber'
-    ];
-    fuelInputs.forEach(inputId => {
-        const element = document.getElementById(inputId);
-        if (element) {
-            element.addEventListener('input', calculateCG);
-        }
-    });
-
-    // Initial calculation
-    calculateWeight();
-});
-
-// Add event listener to save data when navigating away from the page
-window.addEventListener('beforeunload', saveDataForStep2);
