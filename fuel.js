@@ -52,11 +52,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (temperature) document.getElementById("temperature").value = temperature;
         if (speed) {
             document.getElementById("speed").value = speed;
-            autoFillSpeed(); // Call this to fill speed in all fields
+            autoFillSpeed();
         }
         if (totalFuelWeight) {
             document.getElementById("fuelEntered").value = totalFuelWeight;
-            document.getElementById("qInTanks").value = totalFuelWeight; // Fill Q in the Tanks
+            document.getElementById("qInTanks").value = totalFuelWeight;
         }
         if (windSpeed) document.getElementById("windSpeed").value = windSpeed;
 
@@ -69,7 +69,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Data retrieved in Step 3:', { totalWeight, height, temperature, windSpeed, speed, fuelConsumption });
 
-        // Clear localStorage after retrieving and using the data
         localStorage.removeItem('step3_totalWeight');
         localStorage.removeItem('step3_height');
         localStorage.removeItem('step3_temperature');
@@ -86,7 +85,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const speed = parseFloat(document.getElementById("speed").value);
 
         if (isNaN(totalWeight) || isNaN(height) || isNaN(temperature) || isNaN(speed)) {
-            showToast("Please fill in all required fields for AEO Fuel Consumption calculation.", "warning", 5000, showerrornum++);
             return;
         }
 
@@ -123,26 +121,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fuelConsumptionInput.value = `${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m`;
 
-        // Now, let's fill in the other fields:
-
-        // VFR table
         document.getElementById('fuelConsumption').value = fuelConsumptionPerMinute;
-
-        // IFR table
         document.getElementById('fuelConsumptionIFR').value = fuelConsumptionPerMinute;
-
-        // "FUEL needed" table
         document.getElementById('consumption2').value = fuelConsumptionPerHour;
-
-        // "RANGE" table
         document.getElementById('consumption').value = fuelConsumptionPerHour;
 
-        autoFillSpeed(); // Call this after calculation to ensure all speed fields are updated
+        autoFillSpeed();
 
         canvas.style.display = 'block';
         drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin);
     };
-    
 
     async function interpolateData(height, temp, inputSpeed, inputWeight) {
         let chartData, backgroundImage, originalWidth, originalHeight, margin;
@@ -314,7 +302,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(canvas.width - margin.right, yPos);
         ctx.stroke();
         
-        // Add triangle at the end of the horizontal line
         const triangleSize = 10;
         ctx.fillStyle = 'red';
         ctx.beginPath();
@@ -478,22 +465,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return formatTime(totalMinutes);
     }
 
-    // Expose functions to the global scope
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
     window.calculateFirstTable = calculateFirstTable;
     window.calculateSecondTable = calculateSecondTable;
     window.calculateMinimumFuel = calculateMinimumFuel;
     window.calculateMFQIFR = calculateMFQIFR;
 
-    // Initialize the page
     getDataFromStep2();
 
-   // Add event listener for the "Get AEO Fuel Consumption" button
-   const calculateButton = document.getElementById('calculate-button');
-   if (calculateButton) {
-       calculateButton.addEventListener('click', calculateAEOFuelConsumption);
-   }
+    const speedInput = document.getElementById('speed');
+    if (speedInput) {
+        speedInput.addEventListener('input', debounce(calculateAEOFuelConsumption, 500));
+    }
 
-    // Fuel leak check calculation
     document.getElementById('calculateFuelLeak').addEventListener('click', function() {
         const totalFuel = parseFloat(document.getElementById('totalFuel').value);
         const fuelConsumPerHour = parseFloat(document.getElementById('fuelConsumPerHour').value);
