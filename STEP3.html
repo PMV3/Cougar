@@ -137,7 +137,9 @@
         .namespace2 .highlight-yellow {
             background-color: #FFFFE0;
         }
-      
+        #speed {
+    background-color: #FFFFED; /* Light yellow color */
+}
     </style>
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
@@ -145,10 +147,10 @@
         <h1>COUGAR AS 532 A2</h1>
         <div style="width: 175%;  padding: 0px 0;">
             <nav style="display: flex; justify-content: left; gap: 10px;">
-                <button onclick="window.location.href='STEP1.html'">STEP1 (W&B)</button>
-                <button onclick="window.location.href='STEP2.html'">STEP2 (PERFORMANCE)</button>
-                <button onclick="window.location.href='STEP3.html'">STEP3 (ENDURANCE)</button>
-                <button onclick="window.location.href='FCF.html'">FCF</button>
+                <button onclick="saveDataAndGoToStep1()">STEP1 (W&B)</button>
+                <button onclick="saveDataAndGoToStep2()">STEP2 (PERFORMANCE)</button>
+                <button onclick="saveDataAndGoToStep3()">STEP3 (ENDURANCE)</button>
+                <button onclick="saveDataAndNavigate('FCF.html')">FCF</button>
             </nav>
         </div>
         <div class="row">
@@ -166,13 +168,10 @@
                 <label for="temperature"><b>Temperature (°C):</b></label>
                 <input type="number" id="temperature" class="gradient-border" placeholder="Enter Temperature">
             </div>
-        </div>
-        <div class="row">
-            <button id="calculate-button" onclick="fuelconsumption()">Get AEO Fuel Consumption</button>
-        </div>
-        <div class="column">
-            <label for="fuelconsumption"><b>AEO Fuel Consumption (lbs):</b></label>
-            <input type="text" class="gradient-border" placeholder="The result of AEO Fuel Consumption." name="fuelconsumption" id="fuelconsumption" readonly>
+            </div>
+            <div class="column">
+                <label for="fuelconsumption"><b>AEO Fuel Consumption (lbs):</b></label>
+                <input type="text" class="gradient-border" placeholder="The result of AEO Fuel Consumption." name="fuelconsumption" id="fuelconsumption" readonly>
         </div>
         <!-- VFR Calculation -->
         <div class="column">
@@ -320,6 +319,8 @@
 <canvas id="fuelChart" width="1241" height="1755"></canvas> 
 <div class="toast-overlay" id="toast-overlay"></div>
 <img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
+<script src="dataPersistence.js"></script>
+<script src="navigation.js"></script>
 <script type="module" src="./datafolder/0ft_15C.js"></script>
 <script type="module" src="./fuel.js"></script>
 <script type="module" src="./fuelCalculation.js"></script>

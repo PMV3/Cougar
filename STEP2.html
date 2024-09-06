@@ -95,13 +95,10 @@
         <!-- Navigation Bar -->
         <div style="width: 175%;  padding: 0px 0;">
           <nav style="display: flex; justify-content: left; gap: 10px;">
-            <button onclick="window.location.href='STEP1.html'">STEP1 (W&B)</button>
-            <button onclick="window.location.href='STEP2.html'">STEP2 (PERFORMANCE)</button>
+            <button onclick="saveDataAndGoToStep1()">STEP1 (W&B)</button>
+            <button onclick="saveDataAndGoToStep2()">STEP2 (PERFORMANCE)</button>
             <button onclick="saveDataAndGoToStep3()">STEP3 (ENDURANCE)</button>
-            <button onclick="window.location.href='FCF.html'">FCF</button>
-
-                        <!-- Add more buttons as needed -->
-
+            <button onclick="saveDataAndNavigate('FCF.html')">FCF</button>
           </nav>
         </div>      
       <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
@@ -175,7 +172,7 @@
                 />
               </div>
             </div>
-            <div id="#for1" style="display: none;">
+            <div id="#for1" style="display: block;">
               <hr/>
               <div class="row">
                 <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"><b>WEIGHT INDEX</b></label>
@@ -191,7 +188,7 @@
             <div id="#for2">
               <hr />
               <div class="row">
-                <label for="Ceiling Weight"><b>Ceiling Weight(lb):</b></label>
+                <label for="Ceiling Weight"><b>SERVICE CEILING Weight(lb):</b></label>
                 <input
                   type="text"
                   placeholder="THE result of Ceiling Weight"
@@ -201,7 +198,7 @@
                 />
               </div>
               <div class="row">
-                <label for="Ceiling HP"><b>Ceiling Elevation(ft):</b></label>
+                <label for="Ceiling HP"><b>SERVICE CEILING Elevation(ft):</b></label>
                 <input
                   type="text"
                   placeholder="THE result of Ceiling Altitude"
@@ -325,7 +322,8 @@
     </div>
     <div class="toast-overlay" id="toast-overlay"></div>
 
-    
+    <script src="dataPersistence.js"></script>
+    <script src="navigation.js"></script>
     <script src="./datafolder/heightloosemap.js"></script>
     <script src="./datafolder/weightindex.js"></script>
     <script src="./datafolder/serviceCeiling.js"></script>
