@@ -29,23 +29,31 @@ function getStorageItem(key) {
 
 function saveAllData() {
     console.log('Saving all data...');
-    var dataToSave = {};
-
-    var inputs = document.querySelectorAll('input, select');
-    for (var i = 0; i < inputs.length; i++) {
-        var input = inputs[i];
-        if (input.id) {
-            dataToSave[input.id] = input.value;
-        }
-    }
+    var dataToSave = getAllInputData();
 
     if (window.location.href.includes('STEP1.html')) {
         saveStep1Data(dataToSave);
         saveFuelTableData();
+    } else if (window.location.href.includes('STEP2.html')) {
+        saveStep2Data(dataToSave);
+    } else if (window.location.href.includes('STEP3.html')) {
+        saveStep3Data(dataToSave);
     }
 
     setStorageItem('allData', dataToSave);
     console.log('Saved data:', dataToSave);
+}
+
+function getAllInputData() {
+    var data = {};
+    var inputs = document.querySelectorAll('input, select');
+    for (var i = 0; i < inputs.length; i++) {
+        var input = inputs[i];
+        if (input.id) {
+            data[input.id] = input.value;
+        }
+    }
+    return data;
 }
 
 function loadAllData() {
@@ -125,6 +133,7 @@ function saveStep1Data(dataToSave) {
 
     setStorageItem('step1SpecificData', step1Data);
     setStorageItem('allData', dataToSave);  // Save all data including the new fields
+    console.log('Step 1 data saved:', step1Data);
 }
 
 function saveFuelTableData() {
@@ -153,6 +162,7 @@ function saveFuelTableData() {
 
 function loadStep1Data() {
     var savedData = getStorageItem('step1SpecificData') || {};
+    console.log('Loading Step 1 data:', savedData);
 
     // Load collapsible section states and content
     var collapsibleSections = savedData.collapsibleSections || {};
@@ -206,6 +216,7 @@ function loadStep1Data() {
 
 function loadFuelTableData() {
     var fuelData = getStorageItem('fuelData') || {};
+    console.log('Loading Fuel Table data:', fuelData);
     var fuelInputs = [
         'internalFuelSingleWeight', 'internalFuelWeight',
         'sponsonSingleWeight', 'sponsonWeight',
@@ -228,38 +239,104 @@ function loadFuelTableData() {
     }
 }
 
+function saveStep2Data(dataToSave) {
+    var step2Data = {
+        inputs: dataToSave,
+        calculatedValues: {}
+    };
+
+    // Save calculated values
+    var calculatedFields = [
+        'heightloose', 'weighindex', 'Wheight_index_6', 
+        'ceilingweight_3', 'ceilinghp_3', 
+        'enginhoge', 'enginhoge_weight', 
+        'enginIGE', 'enginIGE_weight', 
+        'rc'
+    ];
+    
+    for (var i = 0; i < calculatedFields.length; i++) {
+        var field = calculatedFields[i];
+        var element = document.getElementById(field);
+        if (element) {
+            step2Data.calculatedValues[field] = element.value || element.textContent;
+        }
+    }
+
+    setStorageItem('step2SpecificData', step2Data);
+    console.log('Step 2 data saved:', step2Data);
+}
+
 function loadStep2Data(savedData) {
+    console.log('Loading Step 2 data:', savedData);
+    var step2Data = getStorageItem('step2SpecificData') || {};
+    
+    // Load input fields
     var step2Fields = ['#acweight', '#wind', '#qat', '#hp'];
     var step2SourceFields = ['ttl-weight', 'wind', 'temperature', 'height'];
+    
     for (var i = 0; i < step2Fields.length; i++) {
         var element = document.getElementById(step2Fields[i]);
         if (element) {
-            element.value = savedData[step2SourceFields[i]] || '';
+            element.value = (step2Data.inputs && step2Data.inputs[step2SourceFields[i]]) || 
+                            savedData[step2SourceFields[i]] || 
+                            '';
         }
     }
+
+    // Load calculated values
+    if (step2Data.calculatedValues) {
+        for (var field in step2Data.calculatedValues) {
+            if (step2Data.calculatedValues.hasOwnProperty(field)) {
+                var element = document.getElementById(field);
+                if (element) {
+                    element.value = step2Data.calculatedValues[field];
+                }
+            }
+        }
+    }
+
+    // Trigger calculations to update any dependent fields
+    if (typeof performCalculations === 'function') {
+        performCalculations();
+    }
+}
+
+function saveStep3Data(dataToSave) {
+    setStorageItem('step3SpecificData', dataToSave);
+    console.log('Step 3 data saved:', dataToSave);
 }
 
 function loadStep3Data(savedData) {
     var step1Data = getStorageItem('step1SpecificData') || {};
+    var step2Data = getStorageItem('step2SpecificData') || {};
+    var step3Data = getStorageItem('step3SpecificData') || {};
+    var fuelData = step2Data.fuelData || getStorageItem('fuelData') || {};
+
+    console.log('Loading Step 3 data:', { savedData: savedData, step1Data: step1Data, step2Data: step2Data, step3Data: step3Data, fuelData: fuelData });
+
     var step3Fields = ['totalweight', 'windSpeed', 'temperature', 'height', 'fuelEntered', 'speed'];
     var sourceFields = ['ttl-weight', 'wind', 'temperature', 'height', 'totalFuelWeight', 'speed'];
-    
+
     for (var i = 0; i < step3Fields.length; i++) {
         var element = document.getElementById(step3Fields[i]);
         if (element) {
-            // Try to get data from Step 2 first, then from Step 1
-            var value = savedData[sourceFields[i]] || (step1Data.inputs ? step1Data.inputs[sourceFields[i]] : '') || '';
+            var value = step3Data[step3Fields[i]] || 
+                        (step2Data.inputs ? step2Data.inputs[sourceFields[i]] : '') || 
+                        savedData[sourceFields[i]] || 
+                        (step1Data.inputs ? step1Data.inputs[sourceFields[i]] : '') || '';
+
+            if (step3Fields[i] === 'fuelEntered') {
+                value = fuelData.totalFuelWeight || value;
+            }
+
             element.value = value;
         }
     }
 
-    // Load fuel consumption if available
     var fuelConsumptionElement = document.getElementById('fuelConsumption');
-    if (fuelConsumptionElement && savedData.fuelConsumption) {
-        fuelConsumptionElement.value = savedData.fuelConsumption;
+    if (fuelConsumptionElement) {
+        fuelConsumptionElement.value = step3Data.fuelConsumption || savedData.fuelConsumption || '';
     }
-
-    console.log('Loaded Step 3 data:', { savedData: savedData, step1Data: step1Data });
 }
 
 function saveDataAndNavigate(destination) {
@@ -269,18 +346,19 @@ function saveDataAndNavigate(destination) {
 }
 
 function saveDataAndGoToStep1() {
-    saveDataAndNavigate('STEP1.html');
+    saveAllData();
+    window.location.href = 'STEP1.html';
 }
 
 function saveDataAndGoToStep2() {
-    saveDataAndNavigate('STEP2.html');
+    saveAllData();
+    window.location.href = 'STEP2.html';
 }
 
 function saveDataAndGoToStep3() {
-    if (window.location.href.includes('STEP1.html')) {
-        saveStep1Data({});  // Save Step 1 specific data
-    }
-    saveDataAndNavigate('STEP3.html');
+    saveStep2Data(getAllInputData());
+    saveAllData();
+    window.location.href = 'STEP3.html';
 }
 
 function clearAllData() {
@@ -293,25 +371,21 @@ function clearAllData() {
 function newCalculation() {
     clearAllData();
 
-    // Reset all input fields across all steps
     var inputs = document.querySelectorAll('input:not([type="button"]):not([type="submit"]):not([type="reset"])');
     for (var i = 0; i < inputs.length; i++) {
         inputs[i].value = '';
     }
 
-    // Reset all select elements to their first option
     var selects = document.querySelectorAll('select');
     for (var j = 0; j < selects.length; j++) {
         selects[j].selectedIndex = 0;
     }
 
-    // Clear any result displays
     var resultElements = document.querySelectorAll('.result-display, .calculation-result');
     for (var k = 0; k < resultElements.length; k++) {
         resultElements[k].textContent = '';
     }
 
-    // Clear specific elements
     var elementsToReset = {
         '#5ft_weight': '',
         '#maxWeightDisplay': '',
@@ -330,33 +404,28 @@ function newCalculation() {
         }
     }
 
-    // Clear and reset canvases (for Step 2)
     var canvases = document.querySelectorAll('canvas');
     for (var l = 0; l < canvases.length; l++) {
         var ctx = canvases[l].getContext('2d');
         ctx.clearRect(0, 0, canvases[l].width, canvases[l].height);
     }
 
-    // Remove any error messages or notifications
     var toasts = document.querySelectorAll('.toast');
     for (var m = 0; m < toasts.length; m++) {
         toasts[m].remove();
     }
 
-    // Reset any dynamic content (like added equipment or passengers)
     var dynamicLists = document.querySelectorAll('.dynamic-list');
     for (var n = 0; n < dynamicLists.length; n++) {
         dynamicLists[n].innerHTML = '';
     }
 
-    // Recalculate or reinitialize any necessary values
     if (typeof updateTotalWeight === 'function') {
         updateTotalWeight();
     }
 
     console.log('New calculation started. All fields cleared across all steps.');
 
-    // Force page reload after a brief timeout
     setTimeout(function() {
         window.location.reload(true);
     }, 100);
@@ -368,13 +437,11 @@ function updateWeight(numberId, singleWeight, weightId, momentId, cgLocation) {
     var totalWeight = number * singleWeight;
     var moment = totalWeight * cgLocation;
 
-    // Update weight and moment fields
     var weightElement = document.getElementById(weightId);
     var momentElement = document.getElementById(momentId);
     if (weightElement) weightElement.value = totalWeight.toFixed(2);
     if (momentElement) momentElement.value = moment ? moment.toFixed(2) : 'NaN';
 
-    // Recalculate the total fuel weight and moment
     calculateTotalFuel();
 }
 
@@ -466,11 +533,25 @@ function updateStep3Fields() {
     }
 }
 
+function performCalculations() {
+    if (typeof count_6 === 'function') count_6();
+    if (typeof count === 'function') count(1);
+    if (typeof count_3 === 'function') count_3();
+    if (typeof count_4 === 'function') count_4();
+    if (typeof count_5 === 'function') count_5();
+    if (typeof count_7 === 'function') count_7();
+    if (typeof showchart === 'function') showchart(0);
+
+    // After calculations, save the results
+    saveStep2Data(getAllInputData());
+}
+
 // Event listeners
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData().then(function() {
         console.log('Data loaded successfully');
-        if (window.location.href.includes('STEP2.html') && typeof performCalculations === 'function') {
+        if (window.location.href.includes('STEP2.html')) {
+            loadStep2Data(getStorageItem('allData') || {});
             performCalculations();
         }
         if (window.location.href.includes('STEP1.html')) {
