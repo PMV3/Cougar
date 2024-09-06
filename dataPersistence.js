@@ -227,6 +227,28 @@ function loadFuelTableData() {
         }
     }
 }
+function saveStep2Data(dataToSave) {
+    var step2Data = {
+        inputs: dataToSave,
+        calculatedValues: {}
+    };
+
+    // Save calculated values
+    var calculatedFields = ['heightloose', 'weighindex', 'Wheight_index_6', 'ceilingweight_3', 'ceilinghp_3', 'enginhoge', 'enginhoge_weight', 'enginIGE', 'enginIGE_weight', 'rc'];
+    for (var i = 0; i < calculatedFields.length; i++) {
+        var field = calculatedFields[i];
+        var element = document.getElementById(field);
+        if (element) {
+            step2Data.calculatedValues[field] = element.value || element.textContent;
+        }
+    }
+
+    // Retrieve and store fuel data from Step 1 (if available)
+    var fuelData = getStorageItem('fuelData') || {};
+    step2Data.fuelData = fuelData;  // Ensure fuel data is passed through
+
+    setStorageItem('step2SpecificData', step2Data);
+}
 
 function loadStep2Data(savedData) {
     var step2Fields = ['#acweight', '#wind', '#qat', '#hp'];
@@ -241,14 +263,25 @@ function loadStep2Data(savedData) {
 
 function loadStep3Data(savedData) {
     var step1Data = getStorageItem('step1SpecificData') || {};
+    var step2Data = getStorageItem('step2SpecificData') || {};
+    var fuelData = step2Data.fuelData || getStorageItem('fuelData') || {};  // Fuel data coming from Step 2
+
     var step3Fields = ['totalweight', 'windSpeed', 'temperature', 'height', 'fuelEntered', 'speed'];
     var sourceFields = ['ttl-weight', 'wind', 'temperature', 'height', 'totalFuelWeight', 'speed'];
-    
+
     for (var i = 0; i < step3Fields.length; i++) {
         var element = document.getElementById(step3Fields[i]);
         if (element) {
             // Try to get data from Step 2 first, then from Step 1
-            var value = savedData[sourceFields[i]] || (step1Data.inputs ? step1Data.inputs[sourceFields[i]] : '') || '';
+            var value = step2Data.inputs ? step2Data.inputs[sourceFields[i]] : '' || 
+                        savedData[sourceFields[i]] || 
+                        (step1Data.inputs ? step1Data.inputs[sourceFields[i]] : '') || '';
+
+            // Special handling for fuel
+            if (step3Fields[i] === 'fuelEntered') {
+                value = fuelData.totalFuelWeight || value;  // Load fuel data from Step 2 (or fallback to Step 1)
+            }
+
             element.value = value;
         }
     }
@@ -259,8 +292,9 @@ function loadStep3Data(savedData) {
         fuelConsumptionElement.value = savedData.fuelConsumption;
     }
 
-    console.log('Loaded Step 3 data:', { savedData: savedData, step1Data: step1Data });
+    console.log('Loaded Step 3 data:', { savedData: savedData, step1Data: step1Data, step2Data: step2Data, fuelData: fuelData });
 }
+
 
 function saveDataAndNavigate(destination) {
     console.log('Navigating to ' + destination);
