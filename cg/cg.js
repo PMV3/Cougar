@@ -1,11 +1,3 @@
-// Assign functions to window object for global access
-Object.assign(window, {
-    saveDataAndGoToStep1,
-    saveDataAndGoToStep2,
-    saveDataAndGoToStep3,
-    saveDataAndNavigate
-    // ... other functions ...
-});
 let zeroFuelWeightMax5ftIGE = 0;
 
 function updateWeight(numberId, singleWeight, weightId, mmntId, cg) {
@@ -32,16 +24,22 @@ function calculateZeroFuelWeightMax5ftIGE() {
 
     if (zeroFuelWeightMax5ftIGE >= 6700.00) {
         inputField.value = "Maximum Fuel: 6700 lbs (Limit reached)";
-        inputField.style.fontFamily = "'Times New Roman', Times, serif";
-        inputField.style.fontSize = "16px";
-        inputField.style.fontWeight = "normal";
-        inputField.style.color = "black";
+        window.maxAllowedFuel = 6700;
     } else {
         inputField.value = zeroFuelWeightMax5ftIGE.toFixed(2);
-        inputField.style.fontFamily = "'Times New Roman', Times, serif";
-        inputField.style.fontSize = "16px";
-        inputField.style.fontWeight = "normal";
-        inputField.style.color = "black";
+        window.maxAllowedFuel = zeroFuelWeightMax5ftIGE;
+    }
+
+    inputField.style.fontFamily = "'Times New Roman', Times, serif";
+    inputField.style.fontSize = "16px";
+    inputField.style.fontWeight = "normal";
+    inputField.style.color = "black";
+
+
+    // Update the Max Weight 5FT IGE display
+    const maxWeight5ftIGEElement = document.getElementById('maxWeight5ftIGE');
+    if (maxWeight5ftIGEElement) {
+        maxWeight5ftIGEElement.textContent = `Maximum weight: ${maxWeight5ftIGE.toFixed(2)} lbs`;
     }
 }
 
@@ -251,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Chart drawer not available or drawResult is not a function");
         }
    
-        calculateMaxFuelToUse();
+        calculateZeroFuelWeightMax5ftIGE();
         saveAllData();
     }
 
@@ -267,16 +265,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('5ft_weight').addEventListener('DOMSubtreeModified', function() {
         calculateZeroFuelWeightMax5ftIGE();
-        calculateMaxFuelToUse();
     });
 
     document.getElementById('zfw').addEventListener('input', function() {
         calculateZeroFuelWeightMax5ftIGE();
-        calculateMaxFuelToUse();
+        calculateCG();
     });
 
     calculateZeroFuelWeightMax5ftIGE();
-    calculateMaxFuelToUse();
     calculateCG();
 });
 
@@ -353,7 +349,7 @@ function calculateWeight() {
     }
 
     calculateZeroFuelWeightMax5ftIGE();
-    calculateMaxFuelToUse();
+    calculateCG();
     saveAllData();
 }
 
@@ -367,7 +363,6 @@ document.addEventListener('DOMContentLoaded', function() {
      const heightInput = document.getElementById('height');
      
      if (temperatureInput && heightInput) {
-         // Add input event listeners to recalculate weight when either input changes
          temperatureInput.addEventListener('input', calculateWeight);
          heightInput.addEventListener('input', calculateWeight);
      }
