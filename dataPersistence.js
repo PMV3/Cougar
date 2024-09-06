@@ -238,6 +238,28 @@ function loadFuelTableData() {
         }
     }
 }
+function saveStep2Data(dataToSave) {
+    var step2Data = {
+        inputs: dataToSave,
+        calculatedValues: {}
+    };
+
+    // Save calculated values
+    var calculatedFields = ['heightloose', 'weighindex', 'Wheight_index_6', 'ceilingweight_3', 'ceilinghp_3', 'enginhoge', 'enginhoge_weight', 'enginIGE', 'enginIGE_weight', 'rc'];
+    for (var i = 0; i < calculatedFields.length; i++) {
+        var field = calculatedFields[i];
+        var element = document.getElementById(field);
+        if (element) {
+            step2Data.calculatedValues[field] = element.value || element.textContent;
+        }
+    }
+
+    // Retrieve and store fuel data from Step 1 (if available)
+    var fuelData = getStorageItem('fuelData') || {};
+    step2Data.fuelData = fuelData;  // Ensure fuel data is passed through
+
+    setStorageItem('step2SpecificData', step2Data);
+}
 
 function saveStep2Data(dataToSave) {
     var step2Data = {
@@ -338,6 +360,7 @@ function loadStep3Data(savedData) {
         fuelConsumptionElement.value = step3Data.fuelConsumption || savedData.fuelConsumption || '';
     }
 }
+
 
 function saveDataAndNavigate(destination) {
     console.log('Navigating to ' + destination);
