@@ -35,12 +35,100 @@ function calculateZeroFuelWeightMax5ftIGE() {
     inputField.style.fontWeight = "normal";
     inputField.style.color = "black";
 
-
-    // Update the Max Weight 5FT IGE display
+    setMaxFuelLimit(window.maxAllowedFuel);
+    
     const maxWeight5ftIGEElement = document.getElementById('maxWeight5ftIGE');
     if (maxWeight5ftIGEElement) {
         maxWeight5ftIGEElement.textContent = `Maximum weight: ${maxWeight5ftIGE.toFixed(2)} lbs`;
     }
+}
+
+function setMaxFuelLimit(maxFuel) {
+    const fuelInputs = [
+        'internalFuelSingleWeight', 
+        'sponsonSingleWeight', 
+        'cabinFuelSingleWeight', 
+        'forwardLongitudinalSingleWeight', 
+        'rearLongitudinalSingleWeight', 
+        'rearTransversalSingleWeight'
+    ];
+
+    let totalFuel = 0;
+
+    fuelInputs.forEach(inputId => {
+        const inputElement = document.getElementById(inputId);
+        if (inputElement) {
+            let inputValue = parseFloat(inputElement.value) || 0;
+            
+            if (totalFuel + inputValue > maxFuel) {
+                inputValue = maxFuel - totalFuel;
+                inputElement.value = inputValue.toFixed(2);
+            }
+            
+            totalFuel += inputValue;
+
+            // Set Fuel quantity Lb equal to SINGLE WEIGHT
+            const weightId = inputId.replace('SingleWeight', 'Weight');
+            const weightElement = document.getElementById(weightId);
+            if (weightElement) {
+                weightElement.value = inputValue.toFixed(2);
+            }
+
+            inputElement.setAttribute('max', maxFuel - (totalFuel - inputValue));
+        }
+    });
+
+    updateTotalFuel();
+}
+
+function updateTotalFuel() {
+    const fuelInputs = [
+        'internalFuelSingleWeight', 
+        'sponsonSingleWeight', 
+        'cabinFuelSingleWeight', 
+        'forwardLongitudinalSingleWeight', 
+        'rearLongitudinalSingleWeight', 
+        'rearTransversalSingleWeight'
+    ];
+
+    const cgLocations = [
+        173.46, // Internal Fuel CG
+        269.92, // Sponson CG
+        335.51, // Cabin Fuel CG
+        149.2,  // Forward Longitudinal CG
+        226.7,  // Rear Longitudinal CG
+        268.5   // Rear Transversal CG
+    ];
+
+    let totalFuelWeight = 0;
+    let totalFuelMoment = 0;
+
+    fuelInputs.forEach((inputId, index) => {
+        const inputElement = document.getElementById(inputId);
+        const fuelWeight = parseFloat(inputElement.value) || 0;
+        const cgLocation = cgLocations[index];
+
+        const fuelMoment = fuelWeight * cgLocation;
+        totalFuelWeight += fuelWeight;
+        totalFuelMoment += fuelMoment;
+
+        // Update corresponding weight input
+        const weightId = inputId.replace('SingleWeight', 'Weight');
+        const weightElement = document.getElementById(weightId);
+        if (weightElement) {
+            weightElement.value = fuelWeight.toFixed(2);
+        }
+
+        const momentElement = document.getElementById(`${inputId}Moment`);
+        if (momentElement) {
+            momentElement.value = fuelMoment.toFixed(2);
+        }
+    });
+
+    document.getElementById('totalFuelWeight').value = totalFuelWeight.toFixed(2);
+    document.getElementById('totalFuelMoment').value = totalFuelMoment.toFixed(2);
+
+    calculateCG(); // Ensure CG is recalculated after updating fuel
 }
 
 function saveDataAndGoToStep2() {
@@ -149,10 +237,10 @@ document.addEventListener('DOMContentLoaded', function () {
             const cg = section.cg;
             const weight = number * singleWeight;
             const moment = weight * cg;
-    
+
             weightElement.value = weight.toFixed(2);
             momentElement.value = moment.toFixed(2);
-    
+
             totalWeight += weight;
             totalMoment += moment;
         });
@@ -185,50 +273,42 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const fuelWeights = ['internalFuelWeight', 'sponsonWeight', 'cabinFuelWeight', 'forwardLongitudinalWeight', 'rearLongitudinalWeight', 'rearTransversalWeight'];
         const fuelMoments = ['internalFuelMMNT', 'sponsonMMNT', 'cabinFuelMMNT', 'forwardLongitudinalMMNT', 'rearLongitudinalMMNT', 'rearTransversalMMNT'];
-    
+
         let totalFuelWeight = 0;
         let totalFuelMoment = 0;
-    
+
         for (let i = 0; i < fuelWeights.length; i++) {
             let weight = parseFloat(document.getElementById(fuelWeights[i]).value) || 0;
             let moment = parseFloat(document.getElementById(fuelMoments[i]).value) || 0;
-    
-            if (totalFuelWeight + weight > 6700) {
-                const remainingWeight = 6700 - totalFuelWeight;
-                totalFuelWeight = 6700;
-                totalFuelMoment += remainingWeight * moment / weight;
-                break;
-            } else {
-                totalFuelWeight += weight;
-                totalFuelMoment += moment;
-            }
+
+            totalFuelWeight += weight;
+            totalFuelMoment += moment;
         }
-    
+
+        // Cap the total fuel weight at the maximum allowed fuel
+        totalFuelWeight = Math.min(totalFuelWeight, window.maxAllowedFuel);
+
         const totalFuelWeightElement = document.getElementById('totalFuelWeight');
-        if (totalFuelWeight === 6700) {
-            totalFuelWeightElement.value = "6700.00 (LIMIT REACHED)";
-        } else {
-            totalFuelWeightElement.value = totalFuelWeight.toFixed(2);
-        }
-    
+        totalFuelWeightElement.value = totalFuelWeight.toFixed(2);
+
         const totalFuelCG = totalFuelWeight > 0 ? totalFuelMoment / totalFuelWeight : 0;
         document.getElementById('totalFuelCG').value = totalFuelCG.toFixed(2);
         document.getElementById('totalFuelMMNT').value = totalFuelMoment.toFixed(2);
-    
+
         const emptyWeight = parseFloat(document.getElementById('emptyWeight').value) || 0;
         const zfw = totalWeight + emptyWeight;
-        const ttlWeight = zfw + totalFuelWeight;
+        const ttlWeight = zfw + totalFuelWeight; // Use totalFuelWeight here
         const emptyWeightCG = parseFloat(document.getElementById('emptyWeightCG').value) || 0;
         const aircraftMoment = emptyWeight * emptyWeightCG;
         const ttlMoment = totalMoment + aircraftMoment + totalFuelMoment;
-    
+
         const cg = ttlWeight > 0 ? ttlMoment / ttlWeight : 0;
-    
+
         document.getElementById('zfw').value = zfw.toFixed(2);
         document.getElementById('ttl-weight').value = ttlWeight.toFixed(2);
         document.getElementById('ttl-mmnt').value = ttlMoment.toFixed(2);
         document.getElementById('cg-summary').value = cg.toFixed(2);
-    
+
         const isCGOK = checkCGAndWeight(ttlWeight, cg);
         const cgStatusElement = document.getElementById('cg-status');
         if (isCGOK) {
@@ -238,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function () {
             cgStatusElement.textContent = "Center of Gravity: NOT OK";
             cgStatusElement.style.color = "red";
         }
-    
+
         if (window.chartDrawer && typeof window.chartDrawer.drawResult === 'function') {
             if (ttlWeight > 0 && !isNaN(cg)) {
                 window.chartDrawer.drawResult(ttlWeight, cg);
@@ -248,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             console.error("Chart drawer not available or drawResult is not a function");
         }
-   
+
         calculateZeroFuelWeightMax5ftIGE();
         saveAllData();
     }
@@ -270,6 +350,30 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('zfw').addEventListener('input', function() {
         calculateZeroFuelWeightMax5ftIGE();
         calculateCG();
+    });
+
+    const fuelInputs = [
+        'internalFuelNumber', 'sponsonNumber', 'cabinFuelNumber',
+        'forwardLongitudinalNumber', 'rearLongitudinalNumber', 'rearTransversalNumber'
+    ];
+    const singleWeightInputs = [
+        'internalFuelSingleWeight', 'sponsonSingleWeight', 'cabinFuelSingleWeight',
+        'forwardLongitudinalSingleWeight', 'rearLongitudinalSingleWeight', 'rearTransversalSingleWeight'
+    ];
+
+    fuelInputs.forEach((inputId, index) => {
+        const element = document.getElementById(inputId);
+        const singleWeightElement = document.getElementById(singleWeightInputs[index]);
+        if (element && singleWeightElement) {
+            element.addEventListener('input', function() {
+                if (this.value && this.value !== '0') {
+                    singleWeightElement.value = '1';
+                } else {
+                    singleWeightElement.value = '0';
+                }
+                calculateCG();
+            });
+        }
     });
 
     calculateZeroFuelWeightMax5ftIGE();
@@ -317,10 +421,8 @@ function findWeightForHeight(tempData, height) {
 }
 
 function calculateWeight() {
-    console.log("Calculate Weight function called");
     const temperature = parseFloat(document.getElementById('temperature').value);
     const height = parseFloat(document.getElementById('height').value);
-    console.log("Temperature:", temperature, "Height:", height);
     const resultDiv = document.getElementById('5ft_weight');
 
     if (isNaN(temperature) || isNaN(height)) {
@@ -338,9 +440,7 @@ function calculateWeight() {
         return;
     }
 
-    console.log("Calculating weight...");
     const weight = findWeight(temperature, height);
-    console.log("Calculated weight:", weight);
 
     if (weight >= 21495) {
         resultDiv.textContent = `Maximum weight: 21495.00 lbs (Limit reached)`;
@@ -358,25 +458,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (calculateButton) {
         calculateButton.addEventListener('click', calculateWeight);
     }
-     // Automatically calculate weight when temperature or height is changed
-     const temperatureInput = document.getElementById('temperature');
-     const heightInput = document.getElementById('height');
-     
-     if (temperatureInput && heightInput) {
-         temperatureInput.addEventListener('input', calculateWeight);
-         heightInput.addEventListener('input', calculateWeight);
-     }
-
-    const fuelInputs = [
-        'internalFuelNumber', 'sponsonNumber', 'cabinFuelNumber',
-        'forwardLongitudinalNumber', 'rearLongitudinalNumber', 'rearTransversalNumber'
-    ];
-    fuelInputs.forEach(inputId => {
-        const element = document.getElementById(inputId);
-        if (element) {
-            element.addEventListener('input', calculateCG);
-        }
-    });
+    
+    const temperatureInput = document.getElementById('temperature');
+    const heightInput = document.getElementById('height');
+    
+    if (temperatureInput && heightInput) {
+        temperatureInput.addEventListener('input', calculateWeight);
+        heightInput.addEventListener('input', calculateWeight);
+    }
 });
 
 window.addEventListener('beforeunload', saveAllData);
