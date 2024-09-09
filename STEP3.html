@@ -165,11 +165,48 @@
     transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.header-logo {
+    width: 150px;
+    height: auto;
+}
+
+.title-container {
+    text-align: center;
+    flex-grow: 1;
+}
+
+.main-title {
+    font-size: 36px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    font-size: 24px;
+    font-weight: normal;
+    color: #555;
+}
     </style>
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
-        <h1>PMV 3 ( COUGAR AS 532 A2 )</h1>
+        <div class="header-container">
+            <img src="/wing.png" alt="Left Logo" class="header-logo">
+            <div class="title-container">
+                <h1 class="main-title">PMV 3</h1>
+                <h2 class="subtitle">COUGAR AS 532 A2</h2>
+            </div>
+            <img src="/sqau.png" alt="Right Logo" class="header-logo">
+        </div>
+        
         <div style="width: 175%;  padding: 0px 0;">
             <nav class="steps">
                 <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
@@ -317,9 +354,9 @@
                     <th class="col-small">Reserve</th>
                     <th class="col-small">Needed</th>
                     <th class="col-medium">Consumption/Hour</th>
-                    <th class="col-small">Flight</th>
+                    <th class="col-small">legs</th>
                     <th class="col-small">On site</th>
-                    <th class="col-small">Legs</th>
+                    <th class="col-small">Flight</th>
                 </tr>
                 <tr>
                     <td><input type="number" id="qInTanks" placeholder="Enter"></td>
