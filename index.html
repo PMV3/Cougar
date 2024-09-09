@@ -664,18 +664,17 @@ button {
                     <td><input type="text" id="medicalKitWeight" value="" readonly></td>
                     <td>257</td>
                     <td><input type="text" id="medicalKitMMNT" value="" readonly></td>
-                    <tr>
-                        <td>Total</td>
-                        <td colspan="2"></td>
-                        <td><input type="text" id="totalOptionalEquipmentWeight" readonly></td>
-                        <td><input type="text" id="totalOptionalEquipmentCG" readonly></td>
-                        <td><input type="text" id="totalOptionalEquipmentMMNT" readonly></td>
-                    </tr>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td><input type="text" id="totalOptionalEquipmentWeight" readonly></td>
+                    <td><input type="text" id="totalOptionalEquipmentCG" readonly></td>
+                    <td><input type="text" id="totalOptionalEquipmentMMNT" readonly></td>
+                </tr>
             </table>
         </div>
     </div>
-
-   
 
     <div class="collapsible-section">
         <div class="section-header" onclick="toggleSection('passengersSection')">
@@ -786,13 +785,14 @@ button {
                     <td><input type="text" id="passengerLWeight" value="" readonly></td>
                     <td>293.53</td>
                     <td><input type="text" id="passengerLMMNT" value="" readonly></td>
-                    <tr>
-                        <td>Total</td>
-                        <td colspan="2"></td>
-                        <td><input type="text" id="totalPassengersWeight" readonly></td>
-                        <td><input type="text" id="totalPassengersCG" readonly></td>
-                        <td><input type="text" id="totalPassengersMMNT" readonly></td>
-                    </tr>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td><input type="text" id="totalPassengersWeight" readonly></td>
+                    <td><input type="text" id="totalPassengersCG" readonly></td>
+                    <td><input type="text" id="totalPassengersMMNT" readonly></td>
+                </tr>
             </table>
         </div>
     </div>
@@ -842,13 +842,14 @@ button {
                     <td><input type="text" id="stretcherDWeight" value="" readonly></td>
                     <td>259.84</td>
                     <td><input type="text" id="stretcherDMMNT" value="" readonly></td>
-                    <tr>
-                        <td>Total</td>
-                        <td colspan="2"></td>
-                        <td><input type="text" id="totalStretchersWeight" readonly></td>
-                        <td><input type="text" id="totalStretchersCG" readonly></td>
-                        <td><input type="text" id="totalStretchersMMNT" readonly></td>
-                    </tr>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td><input type="text" id="totalStretchersWeight" readonly></td>
+                    <td><input type="text" id="totalStretchersCG" readonly></td>
+                    <td><input type="text" id="totalStretchersMMNT" readonly></td>
+                </tr>
             </table>
         </div>
     </div>
@@ -906,34 +907,32 @@ button {
                     <td><input type="text" id="sectionEWeight" value="" readonly></td>
                     <td>260</td>
                     <td><input type="text" id="sectionEMMNT" value="" readonly></td>
-                    <tr>
-                        <td>Total</td>
-                        <td colspan="2"></td>
-                        <td><input type="text" id="totalOtherLoadWeight" readonly></td>
-                        <td><input type="text" id="totalOtherLoadCG" readonly></td>
-                        <td><input type="text" id="totalOtherLoadMMNT" readonly></td>
-                    </tr>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td><input type="text" id="totalOtherLoadWeight" readonly></td>
+                    <td><input type="text" id="totalOtherLoadCG" readonly></td>
+                    <td><input type="text" id="totalOtherLoadMMNT" readonly></td>
+                </tr>
             </table>
         </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <button id="calculateButton" style="width: 49%;"> Max Weight 5FT IGE</button>
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <div id="5ft_weight" class="gradient-border" style="background-color: #ffffff; margin-top: 0px; width: 48.2%; height: auto; min-height: 25px;"></div>            </div>
     </div>
-        <div class="form-row">
-            <div class="form-group">
-                <button id="calculateButton" onclick="calculateZeroFuelWeightMax5ftIGE()" style="width: 102%;">Max Weight 5ft IGE - Zero Fuel Weight = MAX FUEL TO USE</button>
-                <input type="text" id="zeroFuelWeightMax5ftIGE" readonly class="gradient-border" style="background-color: #ffffff;margin-top: 10px; width: 100%;height: auto; min-height: 25px;" name="temperature">
-                
-               
-
+    <div class="form-row">
+        <div class="form-group full-width">
+            <button id="calculateButton" style="width: 49%;"> Max Weight 5FT IGE</button>
         </div>
-        
+    </div>
+    <div class="form-row">
+        <div class="form-group full-width">
+            <div id="5ft_weight" class="gradient-border" style="background-color: #ffffff; margin-top: 0px; width: 48.2%; height: auto; min-height: 25px;"></div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group">
+            <button id="calculateButton" onclick="calculateZeroFuelWeightMax5ftIGE()" style="width: 102%;">Max Weight 5ft IGE - Zero Fuel Weight = MAX FUEL TO USE</button>
+            <input type="text" id="zeroFuelWeightMax5ftIGE" readonly class="gradient-border" style="background-color: #ffffff;margin-top: 10px; width: 100%;height: auto; min-height: 25px;" name="temperature">
+        </div>
     </div>
     <div class="collapsible-section">
         <div class="section-header" onclick="toggleSection('fuelSection')">
@@ -942,101 +941,97 @@ button {
         <div id="fuelSection" class="section-content">
             <table>
                 <tr>
-                    <table>
-                        <tr>
-                            <th>FUEL CG COMPUTATION</th>
-                            <th>SINGLE WEIGHT</th>
-                            <th>NUMBER</th>
-                            <th>Fuel quantity Lb</th>
-                            <th>CG Location</th>
-                            <th>Moment (in.lb)</th>
-                        </tr>
-                        <tr>
-                            <td>Internal fuel tank (3969 lb)</td>
-                            <td><input type="text" id="internalFuelSingleWeight" value="0" oninput="updateWeight('internalFuelNumber', parseFloat(this.value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)"style="background-color: #FFFFED;"></td>
-                            <td><input type="text" id="internalFuelNumber" value="1" readonly oninput="updateWeight('internalFuelNumber', parseFloat(document.getElementById('internalFuelSingleWeight').value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)" ></td>
-                            <td><input type="text" id="internalFuelWeight" value="0.00" readonly></td>
-                            <td>173.46</td>
-                            <td><input type="text" id="internalFuelMMNT" value="433650.00" readonly></td>
-                        </tr>
-                        <tr>
-                            <td>LH & RH sponson (1044 lb)</td>
-                            <td><input type="text" id="sponsonSingleWeight" value="0" oninput="updateWeight('sponsonNumber', parseFloat(this.value), 'sponsonWeight', 'sponsonMMNT', 269.92)"style="background-color: #FFFFED;"></td>
-                            <td><input type="text" id="sponsonNumber" value="1" readonly oninput="updateWeight('sponsonNumber', parseFloat(document.getElementById('sponsonSingleWeight').value), 'sponsonWeight', 'sponsonMMNT', 269.92)" ></td>
-                            <td><input type="text" id="sponsonWeight" value="0.00" readonly></td>
-                            <td>269.92</td>
-                            <td><input type="text" id="sponsonMMNT" value="0.00" readonly></td>
-                        </tr>
-                        <tr>
-                            <td>Cabin fuel tank (1723 lb)</td>
-                            <td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateWeight('cabinFuelNumber', parseFloat(this.value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"style="background-color: #FFFFED;"></td>
-                            <td><input type="text" id="cabinFuelNumber" value="1" readonly oninput="updateWeight('cabinFuelNumber', parseFloat(document.getElementById('cabinFuelSingleWeight').value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"></td>
-                            <td><input type="text" id="cabinFuelWeight" value="0.00" readonly></td>
-                            <td>335.51</td>
-                            <td><input type="text" id="cabinFuelMMNT" value="0.00" readonly></td>
-                        </tr>
-                        <tr>
-                            <td>Forward longitudinal ferry fuel tank (2*827lb)</td>
-                            <td><input type="text" id="forwardLongitudinalSingleWeight" value="0" oninput="updateWeight('forwardLongitudinalNumber', parseFloat(this.value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)"style="background-color: #FFFFED;"></td>
-                            <td><input type="text" id="forwardLongitudinalNumber" value="1" readonly oninput="updateWeight('forwardLongitudinalNumber', parseFloat(document.getElementById('forwardLongitudinalSingleWeight').value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)" ></td>
-                            <td><input type="text" id="forwardLongitudinalWeight" value="0.00" readonly></td>
-                            <td>149.2</td>
-                            <td><input type="text" id="forwardLongitudinalMMNT" value="0.00" readonly></td>
-                        </tr>
-                        <tr>
-                            <td>Rear longitudinal ferry fuel tank (2*827lb)</td>
-                            <td><input type="text" id="rearLongitudinalSingleWeight" value="0" oninput="updateWeight('rearLongitudinalNumber', parseFloat(this.value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)"style="background-color: #FFFFED;"></td>
-                            <td><input type="text" id="rearLongitudinalNumber" value="1" readonly oninput="updateWeight('rearLongitudinalNumber', parseFloat(document.getElementById('rearLongitudinalSingleWeight').value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)" ></td>
-                            <td><input type="text" id="rearLongitudinalWeight" value="0.00" readonly></td>
-                            <td>226.7</td>
-                            <td><input type="text" id="rearLongitudinalMMNT" value="0.00" readonly></td>
-                        </tr>
-                        <tr>
-                            <td>Rear transversal ferry fuel tank (827 lb)</td>
-                            <td><input type="text" id="rearTransversalSingleWeight" value="0" oninput="updateWeight('rearTransversalNumber', parseFloat(this.value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)"style="background-color: #FFFFED;"></td>
-                            <td><input type="text" id="rearTransversalNumber" value="1" readonly oninput="updateWeight('rearTransversalNumber', parseFloat(document.getElementById('rearTransversalSingleWeight').value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)" ></td>
-                            <td><input type="text" id="rearTransversalWeight" value="0.00" readonly></td>
-                            <td>268.5</td>
-                            <td><input type="text" id="rearTransversalMMNT" value="0.00" readonly></td>
-                        </tr>
-                        <tr>
-                            <td>Total</td>
-                            <td colspan="2"></td>
-                            <td><input type="text" id="totalFuelWeight" readonly></td>
-                            <td><input type="text" id="totalFuelCG" readonly></td>
-                            <td><input type="text" id="totalFuelMMNT" readonly></td>
-                        </tr>
-                    </table>
+                    <th>FUEL CG COMPUTATION</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>Fuel quantity Lb</th>
+                    <th>CG Location</th>
+                    <th>Moment (in.lb)</th>
+                </tr>
+                <tr>
+                    <td>Internal fuel tank (3969 lb)</td>
+                    <td><input type="text" id="internalFuelSingleWeight" value="0" oninput="updateWeight('internalFuelNumber', parseFloat(this.value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="internalFuelNumber" value="1" readonly oninput="updateWeight('internalFuelNumber', parseFloat(document.getElementById('internalFuelSingleWeight').value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)"></td>
+                    <td><input type="text" id="internalFuelWeight" value="0.00" readonly></td>
+                    <td>173.46</td>
+                    <td><input type="text" id="internalFuelMMNT" value="433650.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>LH & RH sponson (1044 lb)</td>
+                    <td><input type="text" id="sponsonSingleWeight" value="0" oninput="updateWeight('sponsonNumber', parseFloat(this.value), 'sponsonWeight', 'sponsonMMNT', 269.92)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sponsonNumber" value="1" readonly oninput="updateWeight('sponsonNumber', parseFloat(document.getElementById('sponsonSingleWeight').value), 'sponsonWeight', 'sponsonMMNT', 269.92)"></td>
+                    <td><input type="text" id="sponsonWeight" value="0.00" readonly></td>
+                    <td>269.92</td>
+                    <td><input type="text" id="sponsonMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>Cabin fuel tank (1723 lb)</td>
+                    <td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateWeight('cabinFuelNumber', parseFloat(this.value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="cabinFuelNumber" value="1" readonly oninput="updateWeight('cabinFuelNumber', parseFloat(document.getElementById('cabinFuelSingleWeight').value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"></td>
+                    <td><input type="text" id="cabinFuelWeight" value="0.00" readonly></td>
+                    <td>335.51</td>
+                    <td><input type="text" id="cabinFuelMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>Forward longitudinal ferry fuel tank (2*827lb)</td>
+                    <td><input type="text" id="forwardLongitudinalSingleWeight" value="0" oninput="updateWeight('forwardLongitudinalNumber', parseFloat(this.value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="forwardLongitudinalNumber" value="1" readonly oninput="updateWeight('forwardLongitudinalNumber', parseFloat(document.getElementById('forwardLongitudinalSingleWeight').value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)"></td>
+                    <td><input type="text" id="forwardLongitudinalWeight" value="0.00" readonly></td>
+                    <td>149.2</td>
+                    <td><input type="text" id="forwardLongitudinalMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>Rear longitudinal ferry fuel tank (2*827lb)</td>
+                    <td><input type="text" id="rearLongitudinalSingleWeight" value="0" oninput="updateWeight('rearLongitudinalNumber', parseFloat(this.value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="rearLongitudinalNumber" value="1" readonly oninput="updateWeight('rearLongitudinalNumber', parseFloat(document.getElementById('rearLongitudinalSingleWeight').value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)"></td>
+                    <td><input type="text" id="rearLongitudinalWeight" value="0.00" readonly></td>
+                    <td>226.7</td>
+                    <td><input type="text" id="rearLongitudinalMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>Rear transversal ferry fuel tank (827 lb)</td>
+                    <td><input type="text" id="rearTransversalSingleWeight" value="0" oninput="updateWeight('rearTransversalNumber', parseFloat(this.value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="rearTransversalNumber" value="1" readonly oninput="updateWeight('rearTransversalNumber', parseFloat(document.getElementById('rearTransversalSingleWeight').value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)"></td>
+                    <td><input type="text" id="rearTransversalWeight" value="0.00" readonly></td>
+                    <td>268.5</td>
+                    <td><input type="text" id="rearTransversalMMNT" value="0.00" readonly></td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td colspan="2"></td>
+                    <td><input type="text" id="totalFuelWeight" readonly></td>
+                    <td><input type="text" id="totalFuelCG" readonly></td>
+                    <td><input type="text" id="totalFuelMMNT" readonly></td>
+                </tr>
+            </table>
         </div>
     </div>
-            <div class="section-box">
-                <h3 class="colored-heading">Summary</h3>
-                <div class="summary-box-horizontal">
-                    <div class="summary-item-horizontal">
-                        <label>Zero Fuel Weight:</label>
-                        <input type="text" id="zfw" value="3816.00" readonly class="summary-input summary-input-orange">
-                    </div>
-                    <div class="summary-item-horizontal">
-                        <label>Total Weight:</label>
-                        <input type="text" id="ttl-weight" value="21926.00" readonly class="summary-input summary-input-green">
-                    </div>
-                    <div class="summary-item-horizontal">
-                        <label>Center of Gravity:</label>
-                        <input type="text" id="cg-summary" value="NaN" readonly class="summary-input summary-input-white">
-                    </div>
-                    <div class="summary-item-horizontal">
-                        <label>Total Moment:</label>
-                        <input type="text" id="ttl-mmnt" value="NaN" readonly class="summary-input summary-input-beige">
-                    </div>
-                </div>
-                    <div class="image-section" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
-                        <div id="cg-status"></div>
-                        <img id="chart-image" src="cg.png" alt="Weight and Balance Chart" style="display: block; width: 100%; height: auto;">
-                        <canvas id="chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                    </div>
-                </div>
+    <div class="section-box">
+        <h3 class="colored-heading">Summary</h3>
+        <div class="summary-box-horizontal">
+            <div class="summary-item-horizontal">
+                <label>Zero Fuel Weight:</label>
+                <input type="text" id="zfw" value="3816.00" readonly class="summary-input summary-input-orange">
             </div>
-            
+            <div class="summary-item-horizontal">
+                <label>Total Weight:</label>
+                <input type="text" id="ttl-weight" value="21926.00" readonly class="summary-input summary-input-green">
+            </div>
+            <div class="summary-item-horizontal">
+                <label>Center of Gravity:</label>
+                <input type="text" id="cg-summary" value="NaN" readonly class="summary-input summary-input-white">
+            </div>
+            <div class="summary-item-horizontal">
+                <label>Total Moment:</label>
+                <input type="text" id="ttl-mmnt" value="NaN" readonly class="summary-input summary-input-beige">
+            </div>
+        </div>
+        <div class="image-section" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
+            <div id="cg-status"></div>
+            <img id="chart-image" src="cg.png" alt="Weight and Balance Chart" style="display: block; width: 100%; height: auto;">
+            <canvas id="chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+        </div>
+    </div>
     </div>
     <div class="row">
         <section id="aircraft-layout">
@@ -1051,9 +1046,8 @@ button {
         <section id="additional-layout-3">
             <img src="5.png" alt="Additional Layout 3" style="max-width: 800px; height: auto;">
         </section>
-    
     </div>
-        </div>
+    </div>
     </div>
     <script src="dataPersistence.js"></script>
     <script src="navigation.js"></script>
@@ -1062,6 +1056,7 @@ button {
     <script src="5ft_ige/5ft_ige.js"></script>
     <script src="newCalculation.js"></script>
     <script src="step1DataHandler.js"></script>
+    <script src="IndexDataHandler.js"></script>
     <script>
         function toggleSection(sectionId) {
             var content = document.getElementById(sectionId);
@@ -1075,28 +1070,178 @@ button {
             }
         }
 
+        function saveIndexData() {
+            const indexData = {
+                inputs: {},
+                collapsibleSections: {},
+                summaryData: {}
+            };
+
+            // Save all input fields except those in the fuel table
+            document.querySelectorAll('input, select').forEach(input => {
+                if (input.id && !input.closest('#fuelSection')) {
+                    indexData.inputs[input.id] = input.value;
+                }
+            });
+
+            // Save collapsible section states and content
+            const sections = ['Crew', 'OptionalEquipment', 'Passengers', 'StretchersLitters', 'OtherLoad', 'Fuel'];
+            sections.forEach(section => {
+                const sectionElement = document.getElementById(`${section}Section`);
+                if (sectionElement) {
+                    indexData.collapsibleSections[section] = {
+                        collapsed: sectionElement.style.display === 'none',
+                        content: section !== 'Fuel' ? sectionElement.innerHTML : ''
+                    };
+                }
+            });
+
+            // Save summary data
+            ['zfw', 'ttl-weight', 'cg-summary', 'ttl-mmnt'].forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    indexData.summaryData[id] = element.value || element.textContent;
+                }
+            });
+
+            // Save additional elements
+            indexData.maxWeight5FTIGE = document.getElementById('5ft_weight') ? document.getElementById('5ft_weight').textContent : '';
+            indexData.maxFuelToUse = document.getElementById('zeroFuelWeightMax5ftIGE') ? document.getElementById('zeroFuelWeightMax5ftIGE').value : '';
+            indexData.cgStatus = document.getElementById('cg-status') ? document.getElementById('cg-status').textContent : '';
+
+            localStorage.setItem('indexSpecificData', JSON.stringify(indexData));
+        }
+
+        function saveFuelTableData() {
+            const fuelData = {};
+            const fuelInputs = [
+                'internalFuelSingleWeight', 'internalFuelWeight',
+                'sponsonSingleWeight', 'sponsonWeight',
+                'cabinFuelSingleWeight', 'cabinFuelWeight',
+                'forwardLongitudinalSingleWeight', 'forwardLongitudinalWeight',
+                'rearLongitudinalSingleWeight', 'rearLongitudinalWeight',
+                'rearTransversalSingleWeight', 'rearTransversalWeight',
+                'totalFuelWeight', 'totalFuelCG', 'totalFuelMMNT'
+            ];
+
+            fuelInputs.forEach(id => {
+                const inputElement = document.getElementById(id);
+                if (inputElement) {
+                    fuelData[id] = inputElement.value;
+                }
+            });
+
+            localStorage.setItem('fuelData', JSON.stringify(fuelData));
+            console.log('Fuel data saved:', fuelData);
+        }
+
+        function loadIndexData() {
+            const savedData = JSON.parse(localStorage.getItem('indexSpecificData') || '{}');
+
+            // Load all input fields except those in the fuel table
+            Object.entries(savedData.inputs || {}).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element && !element.closest('#fuelSection')) {
+                    element.value = value;
+                }
+            });
+
+            // Load collapsible section states and content
+            Object.entries(savedData.collapsibleSections || {}).forEach(([section, data]) => {
+                const sectionElement = document.getElementById(`${section}Section`);
+                if (sectionElement) {
+                    sectionElement.style.display = data.collapsed ? 'none' : 'block';
+                    if (section !== 'Fuel') {
+                        sectionElement.innerHTML = data.content;
+                    }
+                    // Update the toggle button text
+                    const toggleButton = sectionElement.previousElementSibling;
+                    if (toggleButton) {
+                        toggleButton.textContent = toggleButton.textContent.replace(data.collapsed ? "▲" : "▼", data.collapsed ? "▼" : "▲");
+                    }
+                }
+            });
+
+            // Load summary data
+            Object.entries(savedData.summaryData || {}).forEach(([id, value]) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    if (element.tagName === 'INPUT') {
+                        element.value = value;
+                    } else {
+                        element.textContent = value;
+                    }
+                }
+            });
+
+            // Load additional elements
+            if (savedData.maxWeight5FTIGE) document.getElementById('5ft_weight').textContent = savedData.maxWeight5FTIGE;
+            if (savedData.maxFuelToUse) document.getElementById('zeroFuelWeightMax5ftIGE').value = savedData.maxFuelToUse;
+            if (savedData.cgStatus) document.getElementById('cg-status').textContent = savedData.cgStatus;
+        }
+
+        function loadFuelTableData() {
+            const fuelData = JSON.parse(localStorage.getItem('fuelData') || '{}');
+            const fuelInputs = [
+                'internalFuelSingleWeight', 'internalFuelWeight',
+                'sponsonSingleWeight', 'sponsonWeight',
+                'cabinFuelSingleWeight', 'cabinFuelWeight',
+                'forwardLongitudinalSingleWeight', 'forwardLongitudinalWeight',
+                'rearLongitudinalSingleWeight', 'rearLongitudinalWeight',
+                'rearTransversalSingleWeight', 'rearTransversalWeight',
+                'totalFuelWeight', 'totalFuelCG', 'totalFuelMMNT'
+            ];
+
+            fuelInputs.forEach(id => {
+                const inputElement = document.getElementById(id);
+                if (inputElement && fuelData[id] !== undefined) {
+                    inputElement.value = fuelData[id];
+                    // Dispatch input event to trigger calculations
+                    inputElement.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            });
+        }
+
+        function saveIndexAndNavigate(destination) {
+            saveIndexData();
+            saveFuelTableData();
+            window.location.href = destination;
+        }
 
         function setActiveStep(element, stepId) {
-    document.querySelectorAll('.step').forEach(step => {
-        step.classList.remove('active');
-    });
-    element.classList.add('active');
-    
-    switch(stepId) {
-        case 'STEP1':
-            saveDataAndGoToStep1();
-            break;
-        case 'STEP2':
-            saveDataAndGoToStep2();
-            break;
-        case 'STEP3':
-            saveDataAndGoToStep3();
-            break;
-        case 'FCF':
-            saveDataAndNavigate('FCF.html');
-            break;
-    }
-}
+            document.querySelectorAll('.step').forEach(step => {
+                step.classList.remove('active');
+            });
+            element.classList.add('active');
+            
+            switch(stepId) {
+                case 'STEP1':
+                    saveIndexAndNavigate('STEP1.html');
+                    break;
+                case 'STEP2':
+                    saveIndexAndNavigate('STEP2.html');
+                    break;
+                case 'STEP3':
+                    saveIndexAndNavigate('STEP3.html');
+                    break;
+                case 'FCF':
+                    saveIndexAndNavigate('FCF.html');
+                    break;
+            }
+        }
+
+        // Load data when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            loadIndexData();
+            loadFuelTableData();
+            initializeInputListeners();
+        });
+
+        // Save data before unloading the page
+        window.addEventListener('beforeunload', () => {
+            saveIndexData();
+            saveFuelTableData();
+        });
     </script>
 </body>
 </html>
