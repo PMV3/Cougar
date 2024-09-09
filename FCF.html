@@ -114,41 +114,34 @@
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
-.title-container {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.main-title {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.subtitle {
-    font-size: 24px;
-    font-weight: normal;
-    color: #555;
-}
-
-
-
 .header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0px;
-}
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0px;
+        }
 
-.header-logo {
-    width: 150px; /* Adjust this value as needed */
-    height: auto;
-}
+        .header-logo {
+            width: 150px;
+            height: auto;
+        }
 
-.title-container {
-    text-align: center;
-    flex-grow: 1;
-}
+        .title-container {
+            text-align: center;
+            flex-grow: 1;
+        }
+
+        .main-title {
+            font-size: 36px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: normal;
+            color: #555;
+        }
 
     </style>
      <link rel="stylesheet" href="./styles.css" />
@@ -172,7 +165,7 @@
   
   <!-- Rest of your existing code -->
       
-      <nav class="steps" style="display: flex; justify-content: left; gap: 10px; width: 1600px;">
+      <nav class="steps" style="width: 175%;  padding: 0px 0;">
         <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
         <button class="step" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
         <button class="step" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
