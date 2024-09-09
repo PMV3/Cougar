@@ -140,17 +140,42 @@
         #speed {
     background-color: #FFFFED; /* Light yellow color */
 }
+
+.steps {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+}
+.step {
+    background-color: #04aa6d;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: white;
+    padding: 14px 20px;
+    margin: 6px 0;
+    border: none;
+    cursor: pointer;
+    width: 13.8%;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+.step:hover {
+    opacity: 1;
+}
+.step.active {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
     </style>
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
         <h1>PMV 3 ( COUGAR AS 532 A2 )</h1>
         <div style="width: 175%;  padding: 0px 0;">
-            <nav style="display: flex; justify-content: left; gap: 10px;">
-                <button onclick="saveDataAndGoToStep1()">STEP1 (W&B)</button>
-                <button onclick="saveDataAndGoToStep2()">STEP2 (PERFORMANCE)</button>
-                <button onclick="saveDataAndGoToStep3()">STEP3 (ENDURANCE)</button>
-                <button onclick="saveDataAndNavigate('FCF.html')">FCF</button>
+            <nav class="steps">
+                <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
+                <button class="step" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
+                <button class="step active" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
+                <button class="step" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
         </div>
         <div class="row">
@@ -327,5 +352,27 @@
 <script type="module" src="./datafolder/fuelLeak.js"></script>
 <script src="step3DataHandler.js"></script>
 
+<script> function setActiveStep(element, stepId) {
+    document.querySelectorAll('.step').forEach(step => {
+        step.classList.remove('active');
+    });
+    element.classList.add('active');
+    
+    switch(stepId) {
+        case 'STEP1':
+            saveDataAndGoToStep1();
+            break;
+        case 'STEP2':
+            saveDataAndGoToStep2();
+            break;
+        case 'STEP3':
+            saveDataAndGoToStep3();
+            break;
+        case 'FCF':
+            saveDataAndNavigate('FCF.html');
+            break;
+    }
+}
+</script>
 </body>
 </html>

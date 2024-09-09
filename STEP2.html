@@ -79,6 +79,33 @@
   background-color: #ccc; /* Light gray color */
   margin: 15px 0; /* Adjust top and bottom margins as needed */
 }
+
+
+
+.steps {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+}
+.step {
+    background-color: #04aa6d;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: white;
+    padding: 14px 20px;
+    margin: 6px 0;
+    border: none;
+    cursor: pointer;
+    width: 13.8%;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+.step:hover {
+    opacity: 1;
+}
+.step.active {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
     </style>
      <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -94,13 +121,13 @@
       <body style="display: flex; gap: 20px; min-width: 1887px;">
         <!-- Navigation Bar -->
         <div style="width: 175%;  padding: 0px 0;">
-          <nav style="display: flex; justify-content: left; gap: 10px;">
-            <button onclick="saveDataAndGoToStep1()">STEP1 (W&B)</button>
-            <button onclick="saveDataAndGoToStep2()">STEP2 (PERFORMANCE)</button>
-            <button onclick="saveDataAndGoToStep3()">STEP3 (ENDURANCE)</button>
-            <button onclick="saveDataAndNavigate('FCF.html')">FCF</button>
-          </nav>
-        </div>      
+          <nav class="steps">
+            <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
+            <button class="step active" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
+            <button class="step" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
+            <button class="step" onclick="setActiveStep(this, 'FCF')">FCF</button>
+        </nav>
+    </div>
       <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
         <div class="w-50">
           <div class="row">
@@ -336,5 +363,26 @@
     <script src="./scripts.js"></script>
     <script src="step2DataHandler.js"></script>
 
+    <script> function setActiveStep(element, stepId) {
+      document.querySelectorAll('.step').forEach(step => {
+          step.classList.remove('active');
+      });
+      element.classList.add('active');
+      
+      switch(stepId) {
+          case 'STEP1':
+              saveDataAndGoToStep1();
+              break;
+          case 'STEP2':
+              saveDataAndGoToStep2();
+              break;
+          case 'STEP3':
+              saveDataAndGoToStep3();
+              break;
+          case 'FCF':
+              saveDataAndNavigate('FCF.html');
+              break;
+      }
+  }</script>
   </body>
 </html>
