@@ -144,13 +144,13 @@ document.addEventListener('DOMContentLoaded', function () {
     const tailNumberSelect = document.getElementById('tail-number');
     const aircraftData = {
         9901: { weight: 13560, cog: 191.82 },
-        9902: { weight: 13790, cog: 188.23 },
+        9902: { weight: 13799, cog: 188.23 },
         9903: { weight: 13460, cog: 188.50 },
         9904: { weight: 13646, cog: 189.3 },
         9905: { weight: 13855, cog: 188.95 },
-        9909: { weight: 13787, cog: 188.72 },
+        9909: { weight: 14467, cog: 185.72 },
         9910: { weight: 14096, cog: 187.38 },
-        9911: { weight: 13660, cog: 188.62 },
+        9911: { weight: 13669, cog: 186.98 },
     };
 
     tailNumberSelect.addEventListener('change', function () {
