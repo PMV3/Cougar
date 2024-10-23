@@ -140,7 +140,31 @@ function getmaxt4calc() {
     document.getElementById("#Enginconditionone").value = "Engine may be defective";
   else if(grosmargin==0)
     document.getElementById("#Enginconditionone").value = "Same";
+ 
+  // Revised code to draw the actual T4 line
+  const actualT4Ymapval = 825 - (825 - 90) * (actualt4 - 550) / 300;
+
+  drawline(
+    newctx1,
+    { x: qat_maximapval, y: actualT4Ymapval },
+    { x: 97, y: actualT4Ymapval }, 
+    "blue" // Set the horizontal line color to blue
+  );
+
+  drawFoundPointTriangle(newctx1, 97, actualT4Ymapval, type = 1, colore = "blue");
+
+  drawline(
+    newctx1,
+    { x: qat_maximapval, y: actualT4Ymapval },
+    { x: qat_maximapval, y: Y_maximapval_changed }
+  );
+
+
+  newctx1.fillStyle = "blue";
+  newctx1.font = "18px Arial ";
+  newctx1.fillText("ACTUAL T4", qat_maximapval + 5, actualT4Ymapval + 20);
 }
+
 
 
 function getcorrectNGval() {
