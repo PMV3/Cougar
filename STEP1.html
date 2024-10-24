@@ -1,17 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YW913537F4');
-</script>
     <meta charset="UTF-8" />
-    <title>PMV 3</title>
+    <title>Helicopter Chart Interpretation</title>
     <style>
         canvas {
             border: 1px solid black;
@@ -278,83 +269,22 @@ button {
             -moz-appearance: textfield;
             appearance: textfield;
         }
-        .steps {
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-}
-.step {
-    background-color: #04aa6d;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: white;
-    padding: 14px 20px;
-    margin: 6px 0;
-    border: none;
-    cursor: pointer;
-    width: 13.8%;
-    opacity: 0.9;
-    transition: all 0.3s ease;
-}
-.step:hover {
-    opacity: 1;
-}
-.step.active {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-.header-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0px;
-        }
 
-        .header-logo {
-            width: 150px;
-            height: auto;
-        }
-
-        .title-container {
-            text-align: center;
-            flex-grow: 1;
-        }
-
-        .main-title {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            font-size: 24px;
-            font-weight: normal;
-            color: #555;
-        }
     </style>
 </head>
 <body style="display: flex; gap: 20px; min-width: 1887px;">
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
-        <div class="header-container">
-            <img src="/wing.png" alt="Left Logo" class="header-logo">
-            <div class="title-container">
-                <h1 class="main-title">PMV 3</h1>
-                <h2 class="subtitle">COUGAR AS 532 A2</h2>
-            </div>
-            <img src="/sqau.png" alt="Right Logo" class="header-logo">
-        </div>
-        
+        <h1>PMV 3 ( COUGAR AS 532 A2 )</h1>
         <div style="width: 175%;  padding: 0px 0;">
-            <nav class="steps">
-                <button class="step active" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
-                <button class="step" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
-                <button class="step" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
-                <button class="step" onclick="setActiveStep(this, 'FCF')">FCF</button>
+            <nav style="display: flex; justify-content: left; gap: 10px;">
+                <button onclick="window.location.href='STEP1.html'">STEP1 (W&B)</button>
+                <button onclick="saveDataAndGoToStep2()">STEP2 (PERFORMANCE)</button>
+                <button onclick="window.location.href='STEP3.html'">STEP3 (ENDURANCE)</button>
+                <button onclick="window.location.href='FCF.html'">FCF</button>
+
             </nav>
         </div>
-        
         <div class="section-box">
-            <button id="newCalculationBtn" class="btn btn-primary">New Flight</button>
-
             <div class="form-row">
                 <div class="form-group" style="width: 49%;">
                     <label for="tail-number" class="label-style">Aircraft Tail Number:</label>
@@ -372,17 +302,17 @@ button {
                 </div>
                 <div class="form-group" style="width: 48%;">
                     <label for="wind">Wind (kt):</label>
-                    <input type="number" id="wind" class="gradient-border" style="background-color: #FFFFED; width: 100%;" name="wind" placeholder="Enter Wind Speed">
+                    <input type="number" id="wind" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="wind" placeholder="Enter Wind Speed">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group">
                     <label for="temperature">Temperature (°C):</label>
-                    <input type="number" id="temperature" class="gradient-border" style="background-color: #FFFFED; width: 100%;" name="temperature" placeholder="Enter OAT">
+                    <input type="number" id="temperature" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="temperature" placeholder="Enter OAT">
                 </div>
                 <div class="form-group">
                     <label for="height"> Pressure Altitude (ft):</label>
-                    <input type="number" id="height" class="gradient-border" style="background-color: #FFFFED; width: 100%;" name="height" placeholder="Enter Altitude">
+                    <input type="number" id="height" class="gradient-border" style="background-color: #ffffff; width: 100%;" name="height" placeholder="Enter Altitude">
          
         </div>
             </div>
@@ -624,46 +554,46 @@ button {
                     <td><input type="text" id="commonSARKitWeight" value="" readonly></td>
                     <td>257</td>
                     <td><input type="text" id="commonSARKitMMNT" value="" readonly></td>
-                    <tr>
-                        <td>LAND SAR KIT</td>
-                        <td>135</td>
-                        <td><input type="text" id="landSARKitNumber" value="" oninput="updateWeight('landSARKitNumber', 135, 'landSARKitWeight', 'landSARKitMMNT', 257)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="landSARKitWeight" value="" readonly></td>
-                        <td>257</td>
-                        <td><input type="text" id="landSARKitMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>SEA SAR KIT</td>
-                        <td>149</td>
-                        <td><input type="text" id="seaSARKitNumber" value="" oninput="updateWeight('seaSARKitNumber', 149, 'seaSARKitWeight', 'seaSARKitMMNT', 257)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="seaSARKitWeight" value="" readonly></td>
-                        <td>257</td>
-                        <td><input type="text" id="seaSARKitMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>TRANSACO STRETCHER</td>
-                        <td>91</td>
-                        <td><input type="text" id="transacoStretcherNumber" value="" oninput="updateWeight('transacoStretcherNumber', 91, 'transacoStretcherWeight', 'transacoStretcherMMNT', 257)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="transacoStretcherWeight" value="" readonly></td>
-                        <td>257</td>
-                        <td><input type="text" id="transacoStretcherMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>SAR KIT NET</td>
-                        <td>13</td>
-                        <td><input type="text" id="sarKitNetNumber" value="" oninput="updateWeight('sarKitNetNumber', 13, 'sarKitNetWeight', 'sarKitNetMMNT', 257)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="sarKitNetWeight" value="" readonly></td>
-                        <td>257</td>
-                        <td><input type="text" id="sarKitNetMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>MEDICAL KIT ASSEMBLY</td>
-                        <td>70</td>
-                        <td><input type="text" id="medicalKitNumber" value="" oninput="updateWeight('medicalKitNumber', 70, 'medicalKitWeight', 'medicalKitMMNT', 257)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="medicalKitWeight" value="" readonly></td>
-                        <td>257</td>
-                        <td><input type="text" id="medicalKitMMNT" value="" readonly></td>
-                    </tr>
+                </tr>
+                <tr>
+                    <td>LAND SAR KIT</td>
+                    <td>135</td>
+                    <td><input type="text" id="landSARKitNumber" value="" oninput="updateWeight('landSARKitNumber', 135, 'landSARKitWeight', 'landSARKitMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="landSARKitWeight" value="" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="landSARKitMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>SEA SAR KIT</td>
+                    <td>149</td>
+                    <td><input type="text" id="seaSARKitNumber" value="" oninput="updateWeight('seaSARKitNumber', 149, 'seaSARKitWeight', 'seaSARKitMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="seaSARKitWeight" value="" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="seaSARKitMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>TRANSACO STRETCHER</td>
+                    <td>91</td>
+                    <td><input type="text" id="transacoStretcherNumber" value="" oninput="updateWeight('transacoStretcherNumber', 91, 'transacoStretcherWeight', 'transacoStretcherMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="transacoStretcherWeight" value="" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="transacoStretcherMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>SAR KIT NET</td>
+                    <td>13</td>
+                    <td><input type="text" id="sarKitNetNumber" value="" oninput="updateWeight('sarKitNetNumber', 13, 'sarKitNetWeight', 'sarKitNetMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sarKitNetWeight" value="" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="sarKitNetMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>MEDICAL KIT ASSEMBLY</td>
+                    <td>70</td>
+                    <td><input type="text" id="medicalKitNumber" value="" oninput="updateWeight('medicalKitNumber', 70, 'medicalKitWeight', 'medicalKitMMNT', 257)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="medicalKitWeight" value="" readonly></td>
+                    <td>257</td>
+                    <td><input type="text" id="medicalKitMMNT" value="" readonly></td>
                     <tr>
                         <td>Total</td>
                         <td colspan="2"></td>
@@ -671,120 +601,121 @@ button {
                         <td><input type="text" id="totalOptionalEquipmentCG" readonly></td>
                         <td><input type="text" id="totalOptionalEquipmentMMNT" readonly></td>
                     </tr>
-                </table>
-            </div>
+            </table>
         </div>
-    
-        <div class="collapsible-section">
-            <div class="section-header" onclick="toggleSection('passengersSection')">
-                Passengers ▼
-            </div>
-            <div id="passengersSection" class="section-content">
-                <table>
-                    <tr>
-                        <th>PASSENGERS</th>
-                        <th>SINGLE WEIGHT</th>
-                        <th>NUMBER</th>
-                        <th>WEIGHT (LB)</th>
-                        <th>CG (IN)</th>
-                        <th>MMNT (LB/IN)</th>
-                    </tr>
-                    <tr>
-                        <td>A</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerANumber" value="" oninput="updateWeight('passengerANumber', 250, 'passengerAWeight', 'passengerAMMNT', 96.69)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerAWeight" value="" readonly></td>
-                        <td>96.69</td>
-                        <td><input type="text" id="passengerAMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>B</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerBNumber" value="" oninput="updateWeight('passengerBNumber', 250, 'passengerBWeight', 'passengerBMMNT', 113.71)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerBWeight" value="" readonly></td>
-                        <td>113.71</td>
-                        <td><input type="text" id="passengerBMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>C</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerCNumber" value="" oninput="updateWeight('passengerCNumber', 250, 'passengerCWeight', 'passengerCMMNT', 131.59)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerCWeight" value="" readonly></td>
-                        <td>131.59</td>
-                        <td><input type="text" id="passengerCMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>D</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerDNumber" value="" oninput="updateWeight('passengerDNumber', 250, 'passengerDWeight', 'passengerDMMNT', 149.72)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerDWeight" value="" readonly></td>
-                        <td>149.72</td>
-                        <td><input type="text" id="passengerDMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>E</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerENumber" value="" oninput="updateWeight('passengerENumber', 250, 'passengerEWeight', 'passengerEMMNT', 166.27)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerEWeight" value="" readonly></td>
-                        <td>166.27</td>
-                        <td><input type="text" id="passengerEMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>F</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerFNumber" value="" oninput="updateWeight('passengerFNumber', 250, 'passengerFWeight', 'passengerFMMNT', 185.18)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerFWeight" value="" readonly></td>
-                        <td>185.18</td>
-                        <td><input type="text" id="passengerFMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>G</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerGNumber" value="" oninput="updateWeight('passengerGNumber', 250, 'passengerGWeight', 'passengerGMMNT', 201.73)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerGWeight" value="" readonly></td>
-                        <td>201.73</td>
-                        <td><input type="text" id="passengerGMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>H</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerHNumber" value="" oninput="updateWeight('passengerHNumber', 250, 'passengerHWeight', 'passengerHMMNT', 220.64)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerHWeight" value="" readonly></td>
-                        <td>220.64</td>
-                        <td><input type="text" id="passengerHMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>I</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerINumber" value="" oninput="updateWeight('passengerINumber', 250, 'passengerIWeight', 'passengerIMMNT', 237.19)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerIWeight" value="" readonly></td>
-                        <td>237.19</td>
-                        <td><input type="text" id="passengerIMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>J</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerJNumber" value="" oninput="updateWeight('passengerJNumber', 250, 'passengerJWeight', 'passengerJMMNT', 257.28)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerJWeight" value="" readonly></td>
-                        <td>257.28</td>
-                        <td><input type="text" id="passengerJMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>K</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerKNumber" value="" oninput="updateWeight('passengerKNumber', 250, 'passengerKWeight', 'passengerKMMNT', 273.83)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerKWeight" value="" readonly></td>
-                        <td>273.83</td>
-                        <td><input type="text" id="passengerKMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>L</td>
-                        <td>250</td>
-                        <td><input type="text" id="passengerLNumber" value="" oninput="updateWeight('passengerLNumber', 250, 'passengerLWeight', 'passengerLMMNT', 293.53)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="passengerLWeight" value="" readonly></td>
-                        <td>293.53</td>
-                        <td><input type="text" id="passengerLMMNT" value="" readonly></td>
-                    </tr>
+    </div>
+
+   
+
+    <div class="collapsible-section">
+        <div class="section-header" onclick="toggleSection('passengersSection')">
+            Passengers ▼
+        </div>
+        <div id="passengersSection" class="section-content">
+            <table>
+                <tr>
+                    <th>PASSENGERS</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>A</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerANumber" value="" oninput="updateWeight('passengerANumber', 250, 'passengerAWeight', 'passengerAMMNT', 96.69)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerAWeight" value="" readonly></td>
+                    <td>96.69</td>
+                    <td><input type="text" id="passengerAMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerBNumber" value="" oninput="updateWeight('passengerBNumber', 250, 'passengerBWeight', 'passengerBMMNT', 113.71)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerBWeight" value="" readonly></td>
+                    <td>113.71</td>
+                    <td><input type="text" id="passengerBMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerCNumber" value="" oninput="updateWeight('passengerCNumber', 250, 'passengerCWeight', 'passengerCMMNT', 131.59)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerCWeight" value="" readonly></td>
+                    <td>131.59</td>
+                    <td><input type="text" id="passengerCMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>D</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerDNumber" value="" oninput="updateWeight('passengerDNumber', 250, 'passengerDWeight', 'passengerDMMNT', 149.72)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerDWeight" value="" readonly></td>
+                    <td>149.72</td>
+                    <td><input type="text" id="passengerDMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>E</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerENumber" value="" oninput="updateWeight('passengerENumber', 250, 'passengerEWeight', 'passengerEMMNT', 166.27)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerEWeight" value="" readonly></td>
+                    <td>166.27</td>
+                    <td><input type="text" id="passengerEMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>F</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerFNumber" value="" oninput="updateWeight('passengerFNumber', 250, 'passengerFWeight', 'passengerFMMNT', 185.18)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerFWeight" value="" readonly></td>
+                    <td>185.18</td>
+                    <td><input type="text" id="passengerFMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>G</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerGNumber" value="" oninput="updateWeight('passengerGNumber', 250, 'passengerGWeight', 'passengerGMMNT', 201.73)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerGWeight" value="" readonly></td>
+                    <td>201.73</td>
+                    <td><input type="text" id="passengerGMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>H</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerHNumber" value="" oninput="updateWeight('passengerHNumber', 250, 'passengerHWeight', 'passengerHMMNT', 220.64)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerHWeight" value="" readonly></td>
+                    <td>220.64</td>
+                    <td><input type="text" id="passengerHMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>I</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerINumber" value="" oninput="updateWeight('passengerINumber', 250, 'passengerIWeight', 'passengerIMMNT', 237.19)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerIWeight" value="" readonly></td>
+                    <td>237.19</td>
+                    <td><input type="text" id="passengerIMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>J</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerJNumber" value="" oninput="updateWeight('passengerJNumber', 250, 'passengerJWeight', 'passengerJMMNT', 257.28)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerJWeight" value="" readonly></td>
+                    <td>257.28</td>
+                    <td><input type="text" id="passengerJMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>K</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerKNumber" value="" oninput="updateWeight('passengerKNumber', 250, 'passengerKWeight', 'passengerKMMNT', 273.83)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerKWeight" value="" readonly></td>
+                    <td>273.83</td>
+                    <td><input type="text" id="passengerKMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>L</td>
+                    <td>250</td>
+                    <td><input type="text" id="passengerLNumber" value="" oninput="updateWeight('passengerLNumber', 250, 'passengerLWeight', 'passengerLMMNT', 293.53)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="passengerLWeight" value="" readonly></td>
+                    <td>293.53</td>
+                    <td><input type="text" id="passengerLMMNT" value="" readonly></td>
                     <tr>
                         <td>Total</td>
                         <td colspan="2"></td>
@@ -792,56 +723,55 @@ button {
                         <td><input type="text" id="totalPassengersCG" readonly></td>
                         <td><input type="text" id="totalPassengersMMNT" readonly></td>
                     </tr>
-                </table>
-            </div>
+            </table>
         </div>
-    
-        <div class="collapsible-section">
-            <div class="section-header" onclick="toggleSection('stretchersSection')">
-                Stretchers / Litters ▼
-            </div>
-            <div id="stretchersSection" class="section-content">
-                <table>
-                    <tr>
-                        <th>STRETCHERS / LITTERS</th>
-                        <th>SINGLE WEIGHT</th>
-                        <th>NUMBER</th>
-                        <th>WEIGHT (LB)</th>
-                        <th>CG (IN)</th>
-                        <th>MMNT (LB/IN)</th>
-                    </tr>
-                    <tr>
-                        <td>A STATION (up to 3 litters)</td>
-                        <td>220</td>
-                        <td><input type="text" id="stretcherANumber" value="" oninput="updateWeight('stretcherANumber', 220, 'stretcherAWeight', 'stretcherAMMNT', 126.87)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="stretcherAWeight" value="" readonly></td>
-                        <td>126.87</td>
-                        <td><input type="text" id="stretcherAMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>B STATION (up to 3 litters)</td>
-                        <td>220</td>
-                        <td><input type="text" id="stretcherBNumber" value="" oninput="updateWeight('stretcherBNumber', 220, 'stretcherBWeight', 'stretcherBMMNT', 135.14)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="stretcherBWeight" value="" readonly></td>
-                        <td>135.14</td>
-                        <td><input type="text" id="stretcherBMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>C STATION (up to 3 litters)</td>
-                        <td>220</td>
-                        <td><input type="text" id="stretcherCNumber" value="" oninput="updateWeight('stretcherCNumber', 220, 'stretcherCWeight', 'stretcherCMMNT', 225.76)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="stretcherCWeight" value="" readonly></td>
-                        <td>225.76</td>
-                        <td><input type="text" id="stretcherCMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>D STATION (up to 3 litters)</td>
-                        <td>220</td>
-                        <td><input type="text" id="stretcherDNumber" value="" oninput="updateWeight('stretcherDNumber', 220, 'stretcherDWeight', 'stretcherDMMNT', 259.84)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="stretcherDWeight" value="" readonly></td>
-                        <td>259.84</td>
-                        <td><input type="text" id="stretcherDMMNT" value="" readonly></td>
-                    </tr>
+    </div>
+
+    <div class="collapsible-section">
+        <div class="section-header" onclick="toggleSection('stretchersSection')">
+            Stretchers / Litters ▼
+        </div>
+        <div id="stretchersSection" class="section-content">
+            <table>
+                <tr>
+                    <th>STRETCHERS / LITTERS</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>A STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherANumber" value="" oninput="updateWeight('stretcherANumber', 220, 'stretcherAWeight', 'stretcherAMMNT', 126.87)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherAWeight" value="" readonly></td>
+                    <td>126.87</td>
+                    <td><input type="text" id="stretcherAMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>B STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherBNumber" value="" oninput="updateWeight('stretcherBNumber', 220, 'stretcherBWeight', 'stretcherBMMNT', 135.14)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherBWeight" value="" readonly></td>
+                    <td>135.14</td>
+                    <td><input type="text" id="stretcherBMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>C STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherCNumber" value="" oninput="updateWeight('stretcherCNumber', 220, 'stretcherCWeight', 'stretcherCMMNT', 225.76)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherCWeight" value="" readonly></td>
+                    <td>225.76</td>
+                    <td><input type="text" id="stretcherCMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>D STATION (up to 3 litters)</td>
+                    <td>220</td>
+                    <td><input type="text" id="stretcherDNumber" value="" oninput="updateWeight('stretcherDNumber', 220, 'stretcherDWeight', 'stretcherDMMNT', 259.84)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="stretcherDWeight" value="" readonly></td>
+                    <td>259.84</td>
+                    <td><input type="text" id="stretcherDMMNT" value="" readonly></td>
                     <tr>
                         <td>Total</td>
                         <td colspan="2"></td>
@@ -849,64 +779,63 @@ button {
                         <td><input type="text" id="totalStretchersCG" readonly></td>
                         <td><input type="text" id="totalStretchersMMNT" readonly></td>
                     </tr>
-                </table>
-            </div>
+            </table>
         </div>
-    
-        <div class="collapsible-section">
-            <div class="section-header" onclick="toggleSection('otherLoadSection')">
-                Other Load ▼
-            </div>
-            <div id="otherLoadSection" class="section-content">
-                <table>
-                    <tr>
-                        <th>OTHER LOAD</th>
-                        <th>SINGLE WEIGHT</th>
-                        <th>NUMBER</th>
-                        <th>WEIGHT (LB)</th>
-                        <th>CG (IN)</th>
-                        <th>MMNT (LB/IN)</th>
-                    </tr>
-                    <tr>
-                        <td>section A</td>
-                        <td><input type="text" id="sectionAWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionANumber" value="" oninput="updateWeight('sectionANumber', parseFloat(document.getElementById('sectionAWeightSingle').value) || 0, 'sectionAWeight', 'sectionAMMNT', 120)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="sectionAWeight" value="" readonly></td>
-                        <td>120</td>
-                        <td><input type="text" id="sectionAMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>section B</td>
-                        <td><input type="text" id="sectionBWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionBNumber" value="" oninput="updateWeight('sectionBNumber', parseFloat(document.getElementById('sectionBWeightSingle').value) || 0, 'sectionBWeight', 'sectionBMMNT', 140)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="sectionBWeight" value="" readonly></td>
-                        <td>140</td>
-                        <td><input type="text" id="sectionBMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>section C</td>
-                        <td><input type="text" id="sectionCWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionCNumber" value="" oninput="updateWeight('sectionCNumber', parseFloat(document.getElementById('sectionCWeightSingle').value) || 0, 'sectionCWeight', 'sectionCMMNT', 180)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="sectionCWeight" value="" readonly></td>
-                        <td>180</td>
-                        <td><input type="text" id="sectionCMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>section D</td>
-                        <td><input type="text" id="sectionDWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionDNumber" value="" oninput="updateWeight('sectionDNumber', parseFloat(document.getElementById('sectionDWeightSingle').value) || 0, 'sectionDWeight', 'sectionDMMNT', 220)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="sectionDWeight" value="" readonly></td>
-                        <td>220</td>
-                        <td><input type="text" id="sectionDMMNT" value="" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>section E</td>
-                        <td><input type="text" id="sectionEWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionENumber" value="" oninput="updateWeight('sectionENumber', parseFloat(document.getElementById('sectionEWeightSingle').value) || 0, 'sectionEWeight', 'sectionEMMNT', 260)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="sectionEWeight" value="" readonly></td>
-                        <td>260</td>
-                        <td><input type="text" id="sectionEMMNT" value="" readonly></td>
-                    </tr>
+    </div>
+
+    <div class="collapsible-section">
+        <div class="section-header" onclick="toggleSection('otherLoadSection')">
+            Other Load ▼
+        </div>
+        <div id="otherLoadSection" class="section-content">
+            <table>
+                <tr>
+                    <th>OTHER LOAD</th>
+                    <th>SINGLE WEIGHT</th>
+                    <th>NUMBER</th>
+                    <th>WEIGHT (LB)</th>
+                    <th>CG (IN)</th>
+                    <th>MMNT (LB/IN)</th>
+                </tr>
+                <tr>
+                    <td>section A</td>
+                    <td><input type="text" id="sectionAWeightSingle" value=""></td>
+                    <td><input type="text" id="sectionANumber" value="" oninput="updateWeight('sectionANumber', parseFloat(document.getElementById('sectionAWeightSingle').value) || 0, 'sectionAWeight', 'sectionAMMNT', 120)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionAWeight" value="" readonly></td>
+                    <td>120</td>
+                    <td><input type="text" id="sectionAMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>section B</td>
+                    <td><input type="text" id="sectionBWeightSingle" value=""></td>
+                    <td><input type="text" id="sectionBNumber" value="" oninput="updateWeight('sectionBNumber', parseFloat(document.getElementById('sectionBWeightSingle').value) || 0, 'sectionBWeight', 'sectionBMMNT', 140)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionBWeight" value="" readonly></td>
+                    <td>140</td>
+                    <td><input type="text" id="sectionBMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>section C</td>
+                    <td><input type="text" id="sectionCWeightSingle" value=""></td>
+                    <td><input type="text" id="sectionCNumber" value="" oninput="updateWeight('sectionCNumber', parseFloat(document.getElementById('sectionCWeightSingle').value) || 0, 'sectionCWeight', 'sectionCMMNT', 180)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionCWeight" value="" readonly></td>
+                    <td>180</td>
+                    <td><input type="text" id="sectionCMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>section D</td>
+                    <td><input type="text" id="sectionDWeightSingle" value=""></td>
+                    <td><input type="text" id="sectionDNumber" value="" oninput="updateWeight('sectionDNumber', parseFloat(document.getElementById('sectionDWeightSingle').value) || 0, 'sectionDWeight', 'sectionDMMNT', 220)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionDWeight" value="" readonly></td>
+                    <td>220</td>
+                    <td><input type="text" id="sectionDMMNT" value="" readonly></td>
+                </tr>
+                <tr>
+                    <td>section E</td>
+                    <td><input type="text" id="sectionEWeightSingle" value=""></td>
+                    <td><input type="text" id="sectionENumber" value="" oninput="updateWeight('sectionENumber', parseFloat(document.getElementById('sectionEWeightSingle').value) || 0, 'sectionEWeight', 'sectionEMMNT', 260)" style="background-color: #FFFFED;"></td>
+                    <td><input type="text" id="sectionEWeight" value="" readonly></td>
+                    <td>260</td>
+                    <td><input type="text" id="sectionEMMNT" value="" readonly></td>
                     <tr>
                         <td>Total</td>
                         <td colspan="2"></td>
@@ -914,123 +843,129 @@ button {
                         <td><input type="text" id="totalOtherLoadCG" readonly></td>
                         <td><input type="text" id="totalOtherLoadMMNT" readonly></td>
                     </tr>
-                </table>
-            </div>
+            </table>
         </div>
-        <div class="form-row">
-            <div class="form-group full-width">
-                <button id="calculateButton" style="width: 49%;"> Max Weight 5FT IGE</button>
             </div>
-        </div>
-        <div class="form-row">
-            <div class="form-group full-width">
-                <div id="5ft_weight" class="gradient-border" style="background-color: #ffffff; margin-top: 0px; width: 48.2%; height: auto; min-height: 25px;"></div>
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <button id="calculateButton" style="width: 49%;"> Max Weight 5FT IGE</button>
+                </div>
             </div>
-        </div>
+            <div class="form-row">
+                <div class="form-group full-width">
+                    <div id="5ft_weight" class="gradient-border" style="background-color: #ffffff; margin-top: 0px; width: 48.2%; height: auto; min-height: 25px;"></div>            </div>
+    </div>
         <div class="form-row">
             <div class="form-group">
-                <button id="calculateButton" onclick="calculateZeroFuelWeightMax5ftIGE()" style="width: 102%;">Max Weight 5ft IGE - Zero Fuel Weight = MAX FUEL TO USE</button>
-                <input type="text" id="zeroFuelWeightMax5ftIGE" readonly class="gradient-border" style="background-color: #ffffff;margin-top: 10px; width: 100%;height: auto; min-height: 25px;" name="temperature">
-            </div>
+                <label for="zeroFuelWeightMax5ftIGE">Max Weight 5ft IGE - Zero Fuel Weight = MAX FUEL TO USE</label>
+                <input type="number" id="zeroFuelWeightMax5ftIGE" readonly class="gradient-border" style="background-color: #ffffff; width: 100%;" name="temperature">
+          
+       
         </div>
-        <div class="collapsible-section">
-            <div class="section-header" onclick="toggleSection('fuelSection')">
-                Fuel ▼
-            </div>
-            <div id="fuelSection" class="section-content">
-                <table>
-                    <tr>
-                        <th>FUEL CG COMPUTATION</th>
-                        <th>SINGLE WEIGHT</th>
-                        <th>NUMBER</th>
-                        <th>Fuel quantity Lb</th>
-                        <th>CG Location</th>
-                        <th>Moment (in.lb)</th>
-                    </tr>
-                    <tr>
-                        <td>Internal fuel tank (3969 lb)</td>
-                        <td><input type="text" id="internalFuelSingleWeight" value="0" oninput="updateWeight('internalFuelNumber', parseFloat(this.value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="internalFuelNumber" value="1" readonly oninput="updateWeight('internalFuelNumber', parseFloat(document.getElementById('internalFuelSingleWeight').value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)" ></td>
-                        <td><input type="text" id="internalFuelWeight" value="0.00" readonly></td>
-                        <td>173.46</td>
-                        <td><input type="text" id="internalFuelMMNT" value="433650.00" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>LH & RH sponson (1044 lb)</td>
-                        <td><input type="text" id="sponsonSingleWeight" value="0" oninput="updateWeight('sponsonNumber', parseFloat(this.value), 'sponsonWeight', 'sponsonMMNT', 269.92)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="sponsonNumber" value="1" readonly oninput="updateWeight('sponsonNumber', parseFloat(document.getElementById('sponsonSingleWeight').value), 'sponsonWeight', 'sponsonMMNT', 269.92)" ></td>
-                        <td><input type="text" id="sponsonWeight" value="0.00" readonly></td>
-                        <td>269.92</td>
-                        <td><input type="text" id="sponsonMMNT" value="0.00" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>Cabin fuel tank (1723 lb)</td>
-                        <td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateWeight('cabinFuelNumber', parseFloat(this.value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="cabinFuelNumber" value="1" readonly oninput="updateWeight('cabinFuelNumber', parseFloat(document.getElementById('cabinFuelSingleWeight').value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"></td>
-                        <td><input type="text" id="cabinFuelWeight" value="0.00" readonly></td>
-                        <td>335.51</td>
-                        <td><input type="text" id="cabinFuelMMNT" value="0.00" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>Forward longitudinal ferry fuel tank (2*827lb)</td>
-                        <td><input type="text" id="forwardLongitudinalSingleWeight" value="0" oninput="updateWeight('forwardLongitudinalNumber', parseFloat(this.value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="forwardLongitudinalNumber" value="1" readonly oninput="updateWeight('forwardLongitudinalNumber', parseFloat(document.getElementById('forwardLongitudinalSingleWeight').value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)" ></td>
-                        <td><input type="text" id="forwardLongitudinalWeight" value="0.00" readonly></td>
-                        <td>149.2</td>
-                        <td><input type="text" id="forwardLongitudinalMMNT" value="0.00" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>Rear longitudinal ferry fuel tank (2*827lb)</td>
-                        <td><input type="text" id="rearLongitudinalSingleWeight" value="0" oninput="updateWeight('rearLongitudinalNumber', parseFloat(this.value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="rearLongitudinalNumber" value="1" readonly oninput="updateWeight('rearLongitudinalNumber', parseFloat(document.getElementById('rearLongitudinalSingleWeight').value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)" ></td>
-                        <td><input type="text" id="rearLongitudinalWeight" value="0.00" readonly></td>
-                        <td>226.7</td>
-                        <td><input type="text" id="rearLongitudinalMMNT" value="0.00" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>Rear transversal ferry fuel tank (827 lb)</td>
-                        <td><input type="text" id="rearTransversalSingleWeight" value="0" oninput="updateWeight('rearTransversalNumber', parseFloat(this.value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)" style="background-color: #FFFFED;"></td>
-                        <td><input type="text" id="rearTransversalNumber" value="1" readonly oninput="updateWeight('rearTransversalNumber', parseFloat(document.getElementById('rearTransversalSingleWeight').value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)" ></td>
-                        <td><input type="text" id="rearTransversalWeight" value="0.00" readonly></td>
-                        <td>268.5</td>
-                        <td><input type="text" id="rearTransversalMMNT" value="0.00" readonly></td>
-                    </tr>
-                    <tr>
-                        <td>Total</td>
-                        <td colspan="2"></td>
-                        <td><input type="text" id="totalFuelWeight" readonly></td>
-                        <td><input type="text" id="totalFuelCG" readonly></td>
-                        <td><input type="text" id="totalFuelMMNT" readonly></td>
-                    </tr>
-                </table>
-            </div>
+        
+    </div>
+    <div class="collapsible-section">
+        <div class="section-header" onclick="toggleSection('fuelSection')">
+            Fuel ▼
         </div>
-        <div class="section-box">
-            <h3 class="colored-heading">Summary</h3>
-            <div class="summary-box-horizontal">
-                <div class="summary-item-horizontal">
-                    <label>Zero Fuel Weight:</label>
-                    <input type="text" id="zfw" value="3816.00" readonly class="summary-input summary-input-orange">
-                </div>
-                <div class="summary-item-horizontal">
-                    <label>Total Weight:</label>
-                    <input type="text" id="ttl-weight" value="21926.00" readonly class="summary-input summary-input-green">
-                </div>
-                <div class="summary-item-horizontal">
-                    <label>Center of Gravity:</label>
-                    <input type="text" id="cg-summary" value="NaN" readonly class="summary-input summary-input-white">
-                </div>
-                <div class="summary-item-horizontal">
-                    <label>Total Moment:</label>
-                    <input type="text" id="ttl-mmnt" value="NaN" readonly class="summary-input summary-input-beige">
-                </div>
-            </div>
-            <div class="image-section" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
-                <div id="cg-status"></div>
-                <img id="chart-image" src="cg.png" alt="Weight and Balance Chart" style="display: block; width: 100%; height: auto;">
-                <canvas id="chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-            </div>
+        <div id="fuelSection" class="section-content">
+            <table>
+                <tr>
+                    <table>
+                        <tr>
+                            <th>FUEL CG COMPUTATION</th>
+                            <th>SINGLE WEIGHT</th>
+                            <th>NUMBER</th>
+                            <th>Fuel quantity Lb</th>
+                            <th>CG Location</th>
+                            <th>Moment (in.lb)</th>
+                        </tr>
+                        <tr>
+                            <td>Internal fuel tank (3969 lb)</td>
+                            <td><input type="text" id="internalFuelSingleWeight" value="0" oninput="updateWeight('internalFuelNumber', parseFloat(this.value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)"style="background-color: #FFFFED;"></td>
+                            <td><input type="text" id="internalFuelNumber" value="1" readonly oninput="updateWeight('internalFuelNumber', parseFloat(document.getElementById('internalFuelSingleWeight').value), 'internalFuelWeight', 'internalFuelMMNT', 173.46)" ></td>
+                            <td><input type="text" id="internalFuelWeight" value="0.00" readonly></td>
+                            <td>173.46</td>
+                            <td><input type="text" id="internalFuelMMNT" value="433650.00" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>LH & RH sponson (1044 lb)</td>
+                            <td><input type="text" id="sponsonSingleWeight" value="0" oninput="updateWeight('sponsonNumber', parseFloat(this.value), 'sponsonWeight', 'sponsonMMNT', 269.92)"style="background-color: #FFFFED;"></td>
+                            <td><input type="text" id="sponsonNumber" value="1" readonly oninput="updateWeight('sponsonNumber', parseFloat(document.getElementById('sponsonSingleWeight').value), 'sponsonWeight', 'sponsonMMNT', 269.92)" ></td>
+                            <td><input type="text" id="sponsonWeight" value="0.00" readonly></td>
+                            <td>269.92</td>
+                            <td><input type="text" id="sponsonMMNT" value="0.00" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>Cabin fuel tank (1723 lb)</td>
+                            <td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateWeight('cabinFuelNumber', parseFloat(this.value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"style="background-color: #FFFFED;"></td>
+                            <td><input type="text" id="cabinFuelNumber" value="1" readonly oninput="updateWeight('cabinFuelNumber', parseFloat(document.getElementById('cabinFuelSingleWeight').value), 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"></td>
+                            <td><input type="text" id="cabinFuelWeight" value="0.00" readonly></td>
+                            <td>335.51</td>
+                            <td><input type="text" id="cabinFuelMMNT" value="0.00" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>Forward longitudinal ferry fuel tank (2*827lb)</td>
+                            <td><input type="text" id="forwardLongitudinalSingleWeight" value="0" oninput="updateWeight('forwardLongitudinalNumber', parseFloat(this.value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)"style="background-color: #FFFFED;"></td>
+                            <td><input type="text" id="forwardLongitudinalNumber" value="1" readonly oninput="updateWeight('forwardLongitudinalNumber', parseFloat(document.getElementById('forwardLongitudinalSingleWeight').value), 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)" ></td>
+                            <td><input type="text" id="forwardLongitudinalWeight" value="0.00" readonly></td>
+                            <td>149.2</td>
+                            <td><input type="text" id="forwardLongitudinalMMNT" value="0.00" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>Rear longitudinal ferry fuel tank (2*827lb)</td>
+                            <td><input type="text" id="rearLongitudinalSingleWeight" value="0" oninput="updateWeight('rearLongitudinalNumber', parseFloat(this.value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)"style="background-color: #FFFFED;"></td>
+                            <td><input type="text" id="rearLongitudinalNumber" value="1" readonly oninput="updateWeight('rearLongitudinalNumber', parseFloat(document.getElementById('rearLongitudinalSingleWeight').value), 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)" ></td>
+                            <td><input type="text" id="rearLongitudinalWeight" value="0.00" readonly></td>
+                            <td>226.7</td>
+                            <td><input type="text" id="rearLongitudinalMMNT" value="0.00" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>Rear transversal ferry fuel tank (827 lb)</td>
+                            <td><input type="text" id="rearTransversalSingleWeight" value="0" oninput="updateWeight('rearTransversalNumber', parseFloat(this.value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)"style="background-color: #FFFFED;"></td>
+                            <td><input type="text" id="rearTransversalNumber" value="1" readonly oninput="updateWeight('rearTransversalNumber', parseFloat(document.getElementById('rearTransversalSingleWeight').value), 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)" ></td>
+                            <td><input type="text" id="rearTransversalWeight" value="0.00" readonly></td>
+                            <td>268.5</td>
+                            <td><input type="text" id="rearTransversalMMNT" value="0.00" readonly></td>
+                        </tr>
+                        <tr>
+                            <td>Total</td>
+                            <td colspan="2"></td>
+                            <td><input type="text" id="totalFuelWeight" readonly></td>
+                            <td><input type="text" id="totalFuelCG" readonly></td>
+                            <td><input type="text" id="totalFuelMMNT" readonly></td>
+                        </tr>
+                    </table>
         </div>
+    </div>
+            <div class="section-box">
+                <h3 class="colored-heading">Summary</h3>
+                <div class="summary-box-horizontal">
+                    <div class="summary-item-horizontal">
+                        <label>Zero Fuel Weight:</label>
+                        <input type="text" id="zfw" value="3816.00" readonly class="summary-input summary-input-orange">
+                    </div>
+                    <div class="summary-item-horizontal">
+                        <label>Total Weight:</label>
+                        <input type="text" id="ttl-weight" value="21926.00" readonly class="summary-input summary-input-green">
+                    </div>
+                    <div class="summary-item-horizontal">
+                        <label>Center of Gravity:</label>
+                        <input type="text" id="cg-summary" value="NaN" readonly class="summary-input summary-input-white">
+                    </div>
+                    <div class="summary-item-horizontal">
+                        <label>Total Moment:</label>
+                        <input type="text" id="ttl-mmnt" value="NaN" readonly class="summary-input summary-input-beige">
+                    </div>
+                </div>
+                    <div class="image-section" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
+                        <div id="cg-status"></div>
+                        <img id="chart-image" src="cg.png" alt="Weight and Balance Chart" style="display: block; width: 100%; height: auto;">
+                        <canvas id="chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                    </div>
+                </div>
+            </div>
+            
     </div>
     <div class="row">
         <section id="aircraft-layout">
@@ -1045,16 +980,14 @@ button {
         <section id="additional-layout-3">
             <img src="5.png" alt="Additional Layout 3" style="max-width: 800px; height: auto;">
         </section>
+    
     </div>
         </div>
     </div>
-    <script src="dataPersistence.js"></script>
-    <script src="navigation.js"></script>
     <script src="cg/cg-drawer.js"></script>
     <script src="cg/cg.js"></script>
     <script src="5ft_ige/5ft_ige.js"></script>
-    <script src="newCalculation.js"></script>
-    <script src="step1DataHandler.js"></script>
+   
     <script>
         function toggleSection(sectionId) {
             var content = document.getElementById(sectionId);
@@ -1067,28 +1000,6 @@ button {
                 header.textContent = header.textContent.replace("▲", "▼");
             }
         }
-    
-        function setActiveStep(element, stepId) {
-            document.querySelectorAll('.step').forEach(step => {
-                step.classList.remove('active');
-            });
-            element.classList.add('active');
-            
-            switch(stepId) {
-                case 'STEP1':
-                    saveDataAndGoToStep1();
-                    break;
-                case 'STEP2':
-                    saveDataAndGoToStep2();
-                    break;
-                case 'STEP3':
-                    saveDataAndGoToStep3();
-                    break;
-                case 'FCF':
-                    saveDataAndNavigate('FCF.html');
-                    break;
-            }
-        }
     </script>
-    </body>
-    </html>
+</body>
+</html>
