@@ -134,38 +134,13 @@ function getmaxt4calc() {
   const actualt4Element = document.getElementById("#actualt4").value;
   const actualt4 = parseFloat(actualt4Element);
   const differencet4 =  Maxi_t4val-actualt4;
-  if (differencet4>0) {
+  if(differencet4>0)
     document.getElementById("#Enginconditionone").value = "Engine is satisfactory";
-  } else if (differencet4<0) {
-           document.getElementById("#Enginconditionone").value = "Engine may be defective";
-         } else if (grosmargin==0) {
-                  document.getElementById("#Enginconditionone").value = "Same";
-                }
- 
-  // Revised code to draw the actual T4 line
-  const actualT4Ymapval = 825 - (825 - 90) * (actualt4 - 550) / 300;
-
-  drawline(
-    newctx1,
-    { x: qat_maximapval, y: actualT4Ymapval },
-    { x: 97, y: actualT4Ymapval }, 
-    "blue" // Set the horizontal line color to blue
-  );
-
-  drawFoundPointTriangle(newctx1, 97, actualT4Ymapval, type = 1, colore = "blue");
-
-  drawline(
-    newctx1,
-    { x: qat_maximapval, y: actualT4Ymapval },
-    { x: qat_maximapval, y: Y_maximapval_changed }
-  );
-
-
-  newctx1.fillStyle = "blue";
-  newctx1.font = "18px Arial ";
-  newctx1.fillText("ACTUAL T4", qat_maximapval + 5, actualT4Ymapval + 20);
+  else if(differencet4<0)
+    document.getElementById("#Enginconditionone").value = "Engine may be defective";
+  else if(grosmargin==0)
+    document.getElementById("#Enginconditionone").value = "Same";
 }
-
 
 
 function getcorrectNGval() {
@@ -351,7 +326,7 @@ function getgraduationusingcomplexchart(){
       document.getElementById("#engin_condition").value = "";
       document.getElementById("#corrected_ng").style.display = 'block';
       showToast(
-        message = "I can not count, Because one of the input data is not correct",
+        message = "I can not count Graduation.Because input data is not correct",
         toastType = "danger",
         duration = 5000,
         fortop = showerrornum
@@ -611,23 +586,21 @@ newctx2.fillText("B", posintBmapval + 5, 508);
       }
       document.getElementById("#point_B").value = formatToTwoDecimals(pointB);
       const grosmargin = pointA-pointB;
-      if (speed>=140) {
+      if(speed>=140)
         document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin-2);
-      } else if (speed<=120) {
-               document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin);
-             } else {
-               document.getElementById("#net_margin").value = formatToTwoDecimals (grosmargin-1);
-             }
+      else if(speed<=120)
+        document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin);
+      else 
+        document.getElementById("#net_margin").value = formatToTwoDecimals (grosmargin-1);
 
       
         document.getElementById("#gross_margin").value = formatToTwoDecimals(grosmargin);
-        if (grosmargin>0) {
-          document.getElementById("#engin_condition").value = "Engine is satisfactory";
-        } else if (grosmargin<0) {
-                 document.getElementById("#engin_condition").value = "Engine may be defective";
-               } else if (grosmargin==0) {
-                        document.getElementById("#engin_condition").value = "Same";
-                      }
+        if(grosmargin>0)
+        document.getElementById("#engin_condition").value = "Engine is satisfactory";
+      else if(grosmargin<0)
+        document.getElementById("#engin_condition").value = "Engine may be defective";
+      else if(grosmargin==0)
+        document.getElementById("#engin_condition").value = "Same";
     // drawFoundPoint(newctx2,sixthval,qatYmapval);
     return; 
     
