@@ -326,7 +326,7 @@ function getgraduationusingcomplexchart(){
       document.getElementById("#engin_condition").value = "";
       document.getElementById("#corrected_ng").style.display = 'block';
       showToast(
-        message = "I can not count, Because one of the input data is not correct",
+        message = "I can not count Graduation.Because input data is not correct",
         toastType = "danger",
         duration = 5000,
         fortop = showerrornum
