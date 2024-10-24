@@ -134,12 +134,13 @@ function getmaxt4calc() {
   const actualt4Element = document.getElementById("#actualt4").value;
   const actualt4 = parseFloat(actualt4Element);
   const differencet4 =  Maxi_t4val-actualt4;
-  if(differencet4>0)
+  if (differencet4>0) {
     document.getElementById("#Enginconditionone").value = "Engine is satisfactory";
-  else if(differencet4<0)
-    document.getElementById("#Enginconditionone").value = "Engine may be defective";
-  else if(grosmargin==0)
-    document.getElementById("#Enginconditionone").value = "Same";
+  } else if (differencet4<0) {
+           document.getElementById("#Enginconditionone").value = "Engine may be defective";
+         } else if (grosmargin==0) {
+                  document.getElementById("#Enginconditionone").value = "Same";
+                }
  
   // Revised code to draw the actual T4 line
   const actualT4Ymapval = 825 - (825 - 90) * (actualt4 - 550) / 300;
@@ -610,21 +611,23 @@ newctx2.fillText("B", posintBmapval + 5, 508);
       }
       document.getElementById("#point_B").value = formatToTwoDecimals(pointB);
       const grosmargin = pointA-pointB;
-      if(speed>=140)
+      if (speed>=140) {
         document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin-2);
-      else if(speed<=120)
-        document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin);
-      else 
-        document.getElementById("#net_margin").value = formatToTwoDecimals (grosmargin-1);
+      } else if (speed<=120) {
+               document.getElementById("#net_margin").value = formatToTwoDecimals(grosmargin);
+             } else {
+               document.getElementById("#net_margin").value = formatToTwoDecimals (grosmargin-1);
+             }
 
       
         document.getElementById("#gross_margin").value = formatToTwoDecimals(grosmargin);
-        if(grosmargin>0)
-        document.getElementById("#engin_condition").value = "Engine is satisfactory";
-      else if(grosmargin<0)
-        document.getElementById("#engin_condition").value = "Engine may be defective";
-      else if(grosmargin==0)
-        document.getElementById("#engin_condition").value = "Same";
+        if (grosmargin>0) {
+          document.getElementById("#engin_condition").value = "Engine is satisfactory";
+        } else if (grosmargin<0) {
+                 document.getElementById("#engin_condition").value = "Engine may be defective";
+               } else if (grosmargin==0) {
+                        document.getElementById("#engin_condition").value = "Same";
+                      }
     // drawFoundPoint(newctx2,sixthval,qatYmapval);
     return; 
     
