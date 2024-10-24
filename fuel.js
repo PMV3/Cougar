@@ -1,3 +1,15 @@
+document.addEventListener('DOMContentLoaded', function() {
+    loadAllData();
+});
+// Assign functions to window object for global access
+Object.assign(window, {
+    saveDataAndGoToStep1,
+    saveDataAndGoToStep2,
+    saveDataAndGoToStep3,
+    saveDataAndNavigate
+    // ... other functions ...
+});
+
 import { foraoe_8_FuelConsumption_15C } from './datafolder/0ft_15C.js';
 import { foraoe_8_FuelConsumption_30C } from './datafolder/0ft_30C.js';
 import { foraoe_8_FuelConsumption_6000ft_15C } from './datafolder/6000ft_15C.js';
@@ -42,18 +54,24 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalWeight = localStorage.getItem('step3_totalWeight');
         const height = localStorage.getItem('step3_height');
         const temperature = localStorage.getItem('step3_temperature');
-        const windSpeed = localStorage.getItem('step3_windSpeed');
         const speed = localStorage.getItem('step3_speed');
         const fuelConsumption = localStorage.getItem('step3_fuelConsumption');
-
+        const totalFuelWeight = localStorage.getItem('step3_totalFuelWeight');
+        const windSpeed = localStorage.getItem('step3_windSpeed');
+    
         if (totalWeight) document.getElementById("totalweight").value = totalWeight;
         if (height) document.getElementById("height").value = height;
         if (temperature) document.getElementById("temperature").value = temperature;
-        if (windSpeed) document.getElementById("wind").value = windSpeed;
         if (speed) {
             document.getElementById("speed").value = speed;
-            autoFillSpeed(); // Call this to fill speed in all fields
+            autoFillSpeed();
         }
+        if (totalFuelWeight) {
+            document.getElementById("fuelEntered").value = totalFuelWeight;
+            document.getElementById("qInTanks").value = totalFuelWeight;
+        }
+        if (windSpeed) document.getElementById("windSpeed").value = windSpeed;
+
         if (fuelConsumption) {
             document.getElementById("fuelConsumption").value = fuelConsumption;
             document.getElementById("fuelConsumptionIFR").value = fuelConsumption;
@@ -63,16 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         console.log('Data retrieved in Step 3:', { totalWeight, height, temperature, windSpeed, speed, fuelConsumption });
 
-        // Calculate AEO Fuel Consumption
-        calculateAEOFuelConsumption();
-
-        // Clear localStorage after retrieving and using the data
         localStorage.removeItem('step3_totalWeight');
         localStorage.removeItem('step3_height');
         localStorage.removeItem('step3_temperature');
         localStorage.removeItem('step3_windSpeed');
         localStorage.removeItem('step3_speed');
         localStorage.removeItem('step3_fuelConsumption');
+        localStorage.removeItem('step3_totalFuelWeight');
     }
 
     function calculateAEOFuelConsumption() {
@@ -82,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const speed = parseFloat(document.getElementById("speed").value);
 
         if (isNaN(totalWeight) || isNaN(height) || isNaN(temperature) || isNaN(speed)) {
-            showToast("Please fill in all required fields for AEO Fuel Consumption calculation.", "warning", 5000, showerrornum++);
             return;
         }
 
@@ -119,26 +133,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         fuelConsumptionInput.value = `${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m`;
 
-        // Now, let's fill in the other fields:
-
-        // VFR table
         document.getElementById('fuelConsumption').value = fuelConsumptionPerMinute;
-
-        // IFR table
         document.getElementById('fuelConsumptionIFR').value = fuelConsumptionPerMinute;
-
-        // "FUEL needed" table
         document.getElementById('consumption2').value = fuelConsumptionPerHour;
-
-        // "RANGE" table
         document.getElementById('consumption').value = fuelConsumptionPerHour;
 
-        autoFillSpeed(); // Call this after calculation to ensure all speed fields are updated
+        autoFillSpeed();
 
         canvas.style.display = 'block';
         drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin);
     };
-    
 
     async function interpolateData(height, temp, inputSpeed, inputWeight) {
         let chartData, backgroundImage, originalWidth, originalHeight, margin;
@@ -175,8 +179,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalHeight = 1755;
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
-                    right: 35 * (desiredWidth / originalWidth),
-                    bottom: 300 * (desiredHeight / originalHeight),
+                    right: 180 * (desiredWidth / originalWidth),
+                    bottom: 430 * (desiredHeight / originalHeight),
                     left: 35 * (desiredWidth / originalWidth)
                 };
             } else {
@@ -186,8 +190,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 originalHeight = 1755;
                 margin = {
                     top: 0 * (desiredHeight / originalHeight),
-                    right: 0 * (desiredWidth / originalWidth),
-                    bottom: 300 * (desiredHeight / originalHeight),
+                    right: 220 * (desiredWidth / originalWidth),
+                    bottom: 430 * (desiredHeight / originalHeight),
                     left: 0 * (desiredWidth / originalWidth)
                 };
             }
@@ -295,20 +299,29 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.arc(xPos, yPos, 5, 0, 2 * Math.PI);
         ctx.fillStyle = 'red';
         ctx.fill();
-
+        
         ctx.font = '16px Arial';
         ctx.fillText(`Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`, 10, 30);
-
+        
         ctx.strokeStyle = 'red';
         ctx.beginPath();
         ctx.moveTo(xPos, yPos);
         ctx.lineTo(xPos, canvas.height - margin.bottom);
         ctx.stroke();
-
+        
         ctx.beginPath();
         ctx.moveTo(xPos, yPos);
         ctx.lineTo(canvas.width - margin.right, yPos);
         ctx.stroke();
+        
+        const triangleSize = 10;
+        ctx.fillStyle = 'red';
+        ctx.beginPath();
+        ctx.moveTo(canvas.width - margin.right, yPos);
+        ctx.lineTo(canvas.width - margin.right - triangleSize, yPos - triangleSize / 2);
+        ctx.lineTo(canvas.width - margin.right - triangleSize, yPos + triangleSize / 2);
+        ctx.closePath();
+        ctx.fill();
     }
 
     function showToast(message = "Sample Message", toastType = "info", duration = 5000, fortop = 0) {
@@ -464,21 +477,30 @@ document.addEventListener('DOMContentLoaded', () => {
         return formatTime(totalMinutes);
     }
 
-    // Expose functions to the global scope
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+
     window.calculateFirstTable = calculateFirstTable;
     window.calculateSecondTable = calculateSecondTable;
     window.calculateMinimumFuel = calculateMinimumFuel;
     window.calculateMFQIFR = calculateMFQIFR;
 
-    // Initialize the page
     getDataFromStep2();
 
-    // Add event listeners for input changes
-    ['totalweight', 'height', 'temperature', 'speed'].forEach(id => {
-        document.getElementById(id).addEventListener('input', calculateAEOFuelConsumption);
-    });
+    const speedInput = document.getElementById('speed');
+    if (speedInput) {
+        speedInput.addEventListener('input', debounce(calculateAEOFuelConsumption, 500));
+    }
 
-    // Fuel leak check calculation
     document.getElementById('calculateFuelLeak').addEventListener('click', function() {
         const totalFuel = parseFloat(document.getElementById('totalFuel').value);
         const fuelConsumPerHour = parseFloat(document.getElementById('fuelConsumPerHour').value);

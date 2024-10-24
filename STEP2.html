@@ -1,8 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+     <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YW913537F4');
+</script>
     <meta charset="UTF-8" />
-    <title>Helicopter Chart Interpretation</title>
+    <title>PMV 3</title>
     <style>
       canvas {
         border: 1px solid black;
@@ -73,6 +82,67 @@
       .w-50 {
         width: 50%;
       }
+      hr {
+  border: none;
+  height: 1px;
+  background-color: #ccc; /* Light gray color */
+  margin: 15px 0; /* Adjust top and bottom margins as needed */
+}
+
+
+
+.steps {
+    display: flex;
+    justify-content: left;
+    gap: 10px;
+}
+.step {
+    background-color: #04aa6d;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    color: white;
+    padding: 14px 20px;
+    margin: 6px 0;
+    border: none;
+    cursor: pointer;
+    width: 13.8%;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+}
+.step:hover {
+    opacity: 1;
+}
+.step.active {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+.header-container {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 0px;
+      }
+
+      .header-logo {
+          width: 150px;
+          height: auto;
+      }
+
+      .title-container {
+          text-align: center;
+          flex-grow: 1;
+      }
+
+      .main-title {
+          font-size: 36px;
+          font-weight: bold;
+          margin-bottom: 5px;
+      }
+
+      .subtitle {
+          font-size: 24px;
+          font-weight: normal;
+          color: #555;
+      }
     </style>
      <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -84,20 +154,24 @@
       padding: 10px;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)"
       >
-      <h1>COUGAR AS 532 A2</h1>
-      <body style="display: flex; gap: 20px; min-width: 1887px;">
-        <!-- Navigation Bar -->
-        <div style="width: 175%;  padding: 0px 0;">
-          <nav style="display: flex; justify-content: left; gap: 10px;">
-            <button onclick="window.location.href='STEP1.html'">STEP1</button>
-            <button onclick="window.location.href='STEP2.html'">STEP2</button>
-            <button onclick="saveDataAndGoToStep3()">Go to Step 3</button>
-            <button onclick="window.location.href='FCF.html'">FCF</button>
-
-                        <!-- Add more buttons as needed -->
-
-          </nav>
-        </div>      
+      <div class="header-container">
+        <img src="/wing.png" alt="Left Logo" class="header-logo">
+        <div class="title-container">
+            <h1 class="main-title">PMV 3</h1>
+            <h2 class="subtitle">COUGAR AS 532 A2</h2>
+        </div>
+        <img src="/sqau.png" alt="Right Logo" class="header-logo">
+      </div>
+      
+      <!-- Navigation Bar -->
+      <div style="width: 175%;  padding: 0px 0;">
+        <nav class="steps">
+          <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
+          <button class="step active" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
+          <button class="step" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
+          <button class="step" onclick="setActiveStep(this, 'FCF')">FCF</button>
+        </nav>
+      </div>
       <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
         <div class="w-50">
           <div class="row">
@@ -116,6 +190,7 @@
           <input type="hidden" name="qat" id="#qat" value="Enter OAT">
           <input type="hidden" name="hp" id="#hp" value="Enter Altitude">
           <input type="hidden" name="wind" id="#wind" value="Enter Wind Speed">
+          
 
     
           
@@ -123,7 +198,7 @@
       </div>
       <div class="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
         <button type="button" onclick="totalcount()" class="signupbtn">
-          GETTING<br/>TOTAL
+          TOTAL<br/>PERFORMANCE
         </button>
         <button type="button" onclick="heightloosebuttondown()" class="signupbtn">
           HEIGHT <br/>LOSS
@@ -147,111 +222,128 @@
         </hr>
         <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px;">
           <div class="w-50">
-            
-              <div id = "#for0">
-                <div class="row" style="display: none;">
-                  <label for="WEIGHT INDEX"><b>WEIGHT INDEX</b></label>
-                  <input
-                    type="text"
-                    placeholder="The result of WEIGTH INDEX"
-                    name="weigtindex"
-                    id="#weighindex"
-                    required
-                  />
-                </div>
-                <div class="row">
-                  <label for="HEIGHT LOSS"><b>HEIGHT LOSS</b></label>
-                  <input
-                    type="text"
-                    placeholder="THE result of HEIGHT LOSS"
-                    name="heightloose"
-                    id="#heightloose"
-                    required
-                  />
-                </div>
+            <div id="#for0">
+              <div class="row" style="display: none;">
+                <label for="WEIGHT INDEX"><b>WEIGHT INDEX</b></label>
+                <input
+                  type="text"
+                  placeholder="The result of WEIGTH INDEX"
+                  name="weigtindex"
+                  id="#weighindex"
+                  required
+                />
               </div>
-              <div id="#for1" style="display: none;">
-                <hr/>
-                <div class="row">
-                  
-                  <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
-                    ><b>WEIGHT INDEX</b></label
-                  >
-                  <input
-                    type="text"
-                    placeholder="THE result of WEIGHT INDEX"
-                    name="Wheight_index_6"
-                    id="#Wheight_index_6"
-                    required
-                  />
-                </div>
-              </div>
-              <div id="#for2">
-                <hr />
-                <div class="row">
-                  <label for="Ceiling Weight"><b>Ceiling Weight(lb):</b></label>
-                  <input
-                    type="text"
-                    placeholder="THE result of Ceiling Weight"
-                    name="ceilingweight_3"
-                    id="#ceilingweight_3"
-                    required
-                  />
-                </div>
-                <div class="row">
-                  <label for="Ceiling HP"><b>Ceiling Elevation(ft):</b></label>
-                  <input
-                    type="text"
-                    placeholder="THE result of Ceiling Altitude"
-                    name="ceilinghp_3"
-                    id="#ceilinghp_3"
-                    required
-                  />
-                </div>
+              <div class="row">
+                <label for="HEIGHT LOSS"><b>HEIGHT LOSS</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of HEIGHT LOSS"
+                  name="heightloose"
+                  id="#heightloose"
+                  required
+                />
               </div>
             </div>
+            <div id="#for1" style="display: block;">
+              <hr/>
+              <div class="row">
+                <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"><b>WEIGHT INDEX</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of WEIGHT INDEX"
+                  name="Wheight_index_6"
+                  id="#Wheight_index_6"
+                  required
+                />
+              </div>
+            </div>
+            <div id="#for2">
+              <hr />
+              <div class="row">
+                <label for="Ceiling Weight"><b>SERVICE CEILING Weight(lb):</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of Ceiling Weight"
+                  name="ceilingweight_3"
+                  id="#ceilingweight_3"
+                  required
+                />
+              </div>
+              <div class="row">
+                <label for="Ceiling HP"><b>SERVICE CEILING Elevation(ft):</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of Ceiling Altitude"
+                  name="ceilinghp_3"
+                  id="#ceilinghp_3"
+                  required
+                />
+              </div>
+            </div>
+          </div>
           
-            <div class="w-50">            
-                <div id="#for3">
-                  <div class="row">
-                    <label for="ENGINE HOGE"><b>TWIN ENG OGE(ft):</b></label>
-                    <input
-                      type="text"
-                      placeholder="THE result of twin ENG OGE."
-                      name="enginhoge"
-                      id="#enginhoge"
-                      required
-                    />
-                  </div>
-                </div>
-                <div id="#for4">
-                  <!-- <hr /> -->
-                  <div class="row">
-                    <label for="ENGINE IGE"><b>TWIN ENG IGE(ft):</b></label>
-                    <input
-                      type="text"
-                      placeholder="THE result of twin ENG IGE."
-                      name="enginIGE"
-                      id="#enginIGE"
-                      required
-                    />
-                  </div>
-                </div>
-                <div id="#for5">
-                  <hr />
-                  <div class="row">
-                    <label for="RC"><b>OEI V/S AT Vy(ft/min):</b></label>
-                    <input
-                      type="text"
-                      placeholder="THE result of R/C."
-                      name="rc"
-                      id="#rc"
-                      required
-                    />
-                  </div>
-                </div>
+          <div class="w-50">            
+            <div id="#for3">
+              <div class="row">
+                <label for="ENGINE HOGE"><b>TWIN ENG OGE Elevation(ft):</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of twin ENG OGE."
+                  name="enginhoge"
+                  id="#enginhoge"
+                  required
+                />
+              </div>
+              <div class="row">
+                <label for="ENGINE HOGE WEIGHT"><b>TWIN ENG OGE Weight(lb):</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of twin ENG OGE weight."
+                  name="enginhoge_weight"
+                  id="#enginhoge_weight"
+                  required
+                />
+              </div>
+              <hr> <!-- Line between IGE Weight and OEI V/S AT Vy -->
+
+            </div>
+            <div id="#for4">
+              <div class="row">
+                <label for="ENGINE IGE"><b>TWIN ENG IGE Elevation(ft):</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of twin ENG IGE."
+                  name="enginIGE"
+                  id="#enginIGE"
+                  required
+                />
+              </div>
+              <div class="row">
+                <label for="ENGINE IGE WEIGHT"><b>TWIN ENG IGE Weight(lb):</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of twin ENG IGE weight."
+                  name="enginIGE_weight"
+                  id="#enginIGE_weight"
+                  required
+                />
               </div>
             </div>
+            <div id="#for5">
+              <hr />
+              <div class="row">
+                <label for="RC"><b>OEI V/S AT Vy(ft/min):</b></label>
+                <input
+                  type="text"
+                  placeholder="THE result of R/C."
+                  name="rc"
+                  id="#rc"
+                  required
+                />
+              </div>
+            </div>
+          </div>
+        </div>
           </div>
         </div>
       </div>
@@ -302,7 +394,8 @@
     </div>
     <div class="toast-overlay" id="toast-overlay"></div>
 
-    
+    <script src="dataPersistence.js"></script>
+    <script src="navigation.js"></script>
     <script src="./datafolder/heightloosemap.js"></script>
     <script src="./datafolder/weightindex.js"></script>
     <script src="./datafolder/serviceCeiling.js"></script>
@@ -312,5 +405,28 @@
     <script src="./datafolder/newIGE.js"></script>
     <script src="./datafolder/serviceclimbing.js"></script>
     <script src="./scripts.js"></script>
+    <script src="step2DataHandler.js"></script>
+
+    <script> function setActiveStep(element, stepId) {
+      document.querySelectorAll('.step').forEach(step => {
+          step.classList.remove('active');
+      });
+      element.classList.add('active');
+      
+      switch(stepId) {
+          case 'STEP1':
+              saveDataAndGoToStep1();
+              break;
+          case 'STEP2':
+              saveDataAndGoToStep2();
+              break;
+          case 'STEP3':
+              saveDataAndGoToStep3();
+              break;
+          case 'FCF':
+              saveDataAndNavigate('FCF.html');
+              break;
+      }
+  }</script>
   </body>
 </html>
