@@ -29,7 +29,7 @@ function updateWeight(numberId, singleWeight, weightId, mmntId, cg) {
 function calculateZeroFuelWeightMax5ftIGE() {
     const maxWeight5ftIGE = parseFloat(document.getElementById('5ft_weight').textContent.match(/\d+(\.\d+)?/)[0]) || 0;
     const zeroFuelWeight = parseFloat(document.getElementById('zfw').value) || 0;
-    zeroFuelWeightMax5ftIGE = maxWeight5ftIGE - zeroFuelWeight ;
+    zeroFuelWeightMax5ftIGE = maxWeight5ftIGE - zeroFuelWeight;
     document.getElementById('zeroFuelWeightMax5ftIGE').value = zeroFuelWeightMax5ftIGE.toFixed(2);
 }
 
@@ -77,8 +77,8 @@ function saveDataForStep3() {
     const totalWeight = document.getElementById('ttl-weight').value;
     const height = document.getElementById('height').value;
     const temperature = document.getElementById('temperature').value;
-    const totalFuelWeight = document.getElementById('totalFuelWeight').value;
     const windSpeed = document.getElementById('wind').value;
+    const totalFuelWeight = document.getElementById('totalFuelWeight').value; // Add this line
 
 
 
@@ -86,8 +86,8 @@ function saveDataForStep3() {
     localStorage.setItem('step3_totalWeight', totalWeight);
     localStorage.setItem('step3_height', height);
     localStorage.setItem('step3_temperature', temperature);
-    localStorage.setItem('step3_totalFuelWeight', totalFuelWeight);
     localStorage.setItem('step3_windSpeed', windSpeed);
+    localStorage.setItem('step3_totalFuelWeight', totalFuelWeight); // Add this line
 }
 
 

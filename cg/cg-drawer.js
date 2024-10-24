@@ -82,11 +82,13 @@ class ChartDrawer {
         // Draw vertical line from bottom to weight
         this.drawLine(xPixel, this.chartBottom, xPixel, yPixel, 'red');
         
-        // Draw horizontal line with triangle from CG to right edge
-        this.drawHorizontalLineWithTriangle(xPixel, yPixel, this.chartRight - xPixel, 'red');
+        // Draw horizontal line from CG to right edge
+        this.drawLine(xPixel, yPixel, this.chartRight, yPixel, 'red');
         
         // Draw intersection point
         this.drawPoint(xPixel, yPixel, 'red');
+    
+        
     }
 
     calculateXPixel(cg) {
@@ -117,25 +119,6 @@ class ChartDrawer {
         this.ctx.font = '20px Arial';
         this.ctx.fillStyle = 'black';
         this.ctx.fillText(text, x, y);
-    }
-
-    drawTriangle(x, y, size, color) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(x, y);
-        this.ctx.lineTo(x, y - size / 2);
-        this.ctx.lineTo(x + size, y);
-        this.ctx.lineTo(x, y + size / 2);
-        this.ctx.closePath();
-        this.ctx.fillStyle = color;
-        this.ctx.fill();
-    }
-
-    drawHorizontalLineWithTriangle(startX, startY, length, color) {
-        // Draw the horizontal line
-        this.drawLine(startX, startY, startX + length, startY, color);
-        
-        // Draw the triangle at the end of the line
-        this.drawTriangle(startX + length, startY, 10, color);
     }
 }
 

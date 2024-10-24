@@ -73,17 +73,6 @@
       .w-50 {
         width: 50%;
       }
-            /* Remove arrows from number inputs */
-            input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-        }
     </style>
      <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -97,9 +86,9 @@
       >
       <h1 style="text-align: left; color: rgb(0, 0, 0);">COUGAR AS 532 A2</h1>
       
-      <nav style="display: flex; justify-content: left; gap: 10px;width: 1600px">
+      <nav style="display: flex; justify-content: left; gap: 10px;width: 1650px">
         <button onclick="window.location.href='STEP1.html'">STEP1</button>
-        <button onclick="window.location.href='STEP2.html'">STEP2</button>
+        <button onclick="saveDataAndGoToStep2()">STEP2</button>
         <button onclick="window.location.href='STEP3.html'">STEP3</button>
         <button onclick="window.location.href='FCF.html'">FCF</button>
 
@@ -194,10 +183,10 @@
           CORRECT <br/>NG
         </button>
         <button type="button" onclick="getgraduation()" class="signupbtn">
-          ENGINE POWER <br/>CHECK
+          GET <br/>GRADUATIN
         </button>
         <button type="button" onclick="getmaxt4()" class="signupbtn">
-          ENGINE <br/>CONDITION
+          MAXI<br/>T4
         </button>
         
       </div>

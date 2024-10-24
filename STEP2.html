@@ -73,12 +73,6 @@
       .w-50 {
         width: 50%;
       }
-      hr {
-  border: none;
-  height: 1px;
-  background-color: #ccc; /* Light gray color */
-  margin: 15px 0; /* Adjust top and bottom margins as needed */
-}
     </style>
      <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -95,9 +89,9 @@
         <!-- Navigation Bar -->
         <div style="width: 175%;  padding: 0px 0;">
           <nav style="display: flex; justify-content: left; gap: 10px;">
-            <button onclick="window.location.href='STEP1.html'">STEP1 (W&B)</button>
-            <button onclick="window.location.href='STEP2.html'">STEP2 (PERFORMANCE)</button>
-            <button onclick="saveDataAndGoToStep3()">STEP3 (ENDURANCE)</button>
+            <button onclick="window.location.href='STEP1.html'">STEP1</button>
+            <button onclick="window.location.href='STEP2.html'">STEP2</button>
+            <button onclick="saveDataAndGoToStep3()">Go to Step 3</button>
             <button onclick="window.location.href='FCF.html'">FCF</button>
 
                         <!-- Add more buttons as needed -->
@@ -129,7 +123,7 @@
       </div>
       <div class="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
         <button type="button" onclick="totalcount()" class="signupbtn">
-          TOTAL<br/>PERFORMANCE
+          GETTING<br/>TOTAL
         </button>
         <button type="button" onclick="heightloosebuttondown()" class="signupbtn">
           HEIGHT <br/>LOSS
@@ -153,128 +147,111 @@
         </hr>
         <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px;">
           <div class="w-50">
-            <div id="#for0">
-              <div class="row" style="display: none;">
-                <label for="WEIGHT INDEX"><b>WEIGHT INDEX</b></label>
-                <input
-                  type="text"
-                  placeholder="The result of WEIGTH INDEX"
-                  name="weigtindex"
-                  id="#weighindex"
-                  required
-                />
+            
+              <div id = "#for0">
+                <div class="row" style="display: none;">
+                  <label for="WEIGHT INDEX"><b>WEIGHT INDEX</b></label>
+                  <input
+                    type="text"
+                    placeholder="The result of WEIGTH INDEX"
+                    name="weigtindex"
+                    id="#weighindex"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  <label for="HEIGHT LOSS"><b>HEIGHT LOSS</b></label>
+                  <input
+                    type="text"
+                    placeholder="THE result of HEIGHT LOSS"
+                    name="heightloose"
+                    id="#heightloose"
+                    required
+                  />
+                </div>
               </div>
-              <div class="row">
-                <label for="HEIGHT LOSS"><b>HEIGHT LOSS</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of HEIGHT LOSS"
-                  name="heightloose"
-                  id="#heightloose"
-                  required
-                />
+              <div id="#for1" style="display: none;">
+                <hr/>
+                <div class="row">
+                  
+                  <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
+                    ><b>WEIGHT INDEX</b></label
+                  >
+                  <input
+                    type="text"
+                    placeholder="THE result of WEIGHT INDEX"
+                    name="Wheight_index_6"
+                    id="#Wheight_index_6"
+                    required
+                  />
+                </div>
+              </div>
+              <div id="#for2">
+                <hr />
+                <div class="row">
+                  <label for="Ceiling Weight"><b>Ceiling Weight(lb):</b></label>
+                  <input
+                    type="text"
+                    placeholder="THE result of Ceiling Weight"
+                    name="ceilingweight_3"
+                    id="#ceilingweight_3"
+                    required
+                  />
+                </div>
+                <div class="row">
+                  <label for="Ceiling HP"><b>Ceiling Elevation(ft):</b></label>
+                  <input
+                    type="text"
+                    placeholder="THE result of Ceiling Altitude"
+                    name="ceilinghp_3"
+                    id="#ceilinghp_3"
+                    required
+                  />
+                </div>
               </div>
             </div>
-            <div id="#for1" style="display: none;">
-              <hr/>
-              <div class="row">
-                <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"><b>WEIGHT INDEX</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of WEIGHT INDEX"
-                  name="Wheight_index_6"
-                  id="#Wheight_index_6"
-                  required
-                />
-              </div>
-            </div>
-            <div id="#for2">
-              <hr />
-              <div class="row">
-                <label for="Ceiling Weight"><b>Ceiling Weight(lb):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of Ceiling Weight"
-                  name="ceilingweight_3"
-                  id="#ceilingweight_3"
-                  required
-                />
-              </div>
-              <div class="row">
-                <label for="Ceiling HP"><b>Ceiling Elevation(ft):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of Ceiling Altitude"
-                  name="ceilinghp_3"
-                  id="#ceilinghp_3"
-                  required
-                />
-              </div>
-            </div>
-          </div>
           
-          <div class="w-50">            
-            <div id="#for3">
-              <div class="row">
-                <label for="ENGINE HOGE"><b>TWIN ENG OGE Elevation(ft):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG OGE."
-                  name="enginhoge"
-                  id="#enginhoge"
-                  required
-                />
-              </div>
-              <div class="row">
-                <label for="ENGINE HOGE WEIGHT"><b>TWIN ENG OGE Weight(lb):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG OGE weight."
-                  name="enginhoge_weight"
-                  id="#enginhoge_weight"
-                  required
-                />
-              </div>
-              <hr> <!-- Line between IGE Weight and OEI V/S AT Vy -->
-
-            </div>
-            <div id="#for4">
-              <div class="row">
-                <label for="ENGINE IGE"><b>TWIN ENG IGE Elevation(ft):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG IGE."
-                  name="enginIGE"
-                  id="#enginIGE"
-                  required
-                />
-              </div>
-              <div class="row">
-                <label for="ENGINE IGE WEIGHT"><b>TWIN ENG IGE Weight(lb):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG IGE weight."
-                  name="enginIGE_weight"
-                  id="#enginIGE_weight"
-                  required
-                />
+            <div class="w-50">            
+                <div id="#for3">
+                  <div class="row">
+                    <label for="ENGINE HOGE"><b>TWIN ENG OGE(ft):</b></label>
+                    <input
+                      type="text"
+                      placeholder="THE result of twin ENG OGE."
+                      name="enginhoge"
+                      id="#enginhoge"
+                      required
+                    />
+                  </div>
+                </div>
+                <div id="#for4">
+                  <!-- <hr /> -->
+                  <div class="row">
+                    <label for="ENGINE IGE"><b>TWIN ENG IGE(ft):</b></label>
+                    <input
+                      type="text"
+                      placeholder="THE result of twin ENG IGE."
+                      name="enginIGE"
+                      id="#enginIGE"
+                      required
+                    />
+                  </div>
+                </div>
+                <div id="#for5">
+                  <hr />
+                  <div class="row">
+                    <label for="RC"><b>OEI V/S AT Vy(ft/min):</b></label>
+                    <input
+                      type="text"
+                      placeholder="THE result of R/C."
+                      name="rc"
+                      id="#rc"
+                      required
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-            <div id="#for5">
-              <hr />
-              <div class="row">
-                <label for="RC"><b>OEI V/S AT Vy(ft/min):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of R/C."
-                  name="rc"
-                  id="#rc"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-        </div>
           </div>
         </div>
       </div>

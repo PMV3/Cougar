@@ -71,13 +71,21 @@ function calculateWeight() {
     }
 }
 
-// Automatically trigger calculation on input changes
+// Event listener for the calculate button
 document.addEventListener('DOMContentLoaded', function() {
-    const temperatureInput = document.getElementById('temperature');
-    const heightInput = document.getElementById('height');
-
-    if (temperatureInput && heightInput) {
-        temperatureInput.addEventListener('input', calculateWeight);
-        heightInput.addEventListener('input', calculateWeight);
+    const calculateButton = document.getElementById('calculateButton');
+    if (calculateButton) {
+        calculateButton.addEventListener('click', calculateWeight);
     }
 });
+
+
+
+
+
+
+
+
+
+
+
