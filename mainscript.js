@@ -763,3 +763,41 @@ function showchart(num) {
     newcanvas1.style.display = "none";
   }
 }
+// Define limits for each field
+const limits = {
+  torque: { min: 36, max: 60 },
+  nr_rpm: { min: 245, max: 275 },
+  actualNg: { min: 84, max: 100 },
+  actualt4: { min: 400, max: 850 }, // Assuming example limits, adjust as needed
+  qat: { min: -45, max: 50 },
+  hp: { min: 0, max: 15000 },
+  speed: { min: 100, max: 200 } // Assuming example limits, adjust as needed
+};
+
+// Function to validate and show error message if out of range
+function validateInput(fieldId, min, max) {
+  const inputElement = document.getElementById(fieldId);
+  const value = parseFloat(inputElement.value);
+
+  if (value < min || value > max) {
+      inputElement.style.borderColor = "red";
+      inputElement.setCustomValidity(`Value must be between ${min} and ${max}.`);
+  } else {
+      inputElement.style.borderColor = "";
+      inputElement.setCustomValidity("");
+  }
+
+  // Trigger validation feedback
+  inputElement.reportValidity();
+}
+
+// Add event listeners to each field to validate on input change
+document.querySelectorAll('input[type="number"]').forEach(input => {
+  input.addEventListener('input', function() {
+      const fieldId = this.name;
+      const fieldLimits = limits[fieldId];
+      if (fieldLimits) {
+          validateInput(`#${fieldId}`, fieldLimits.min, fieldLimits.max);
+      }
+  });
+});
