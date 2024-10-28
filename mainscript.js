@@ -7,13 +7,8 @@ const newctx = newcanvas.getContext("2d");
 const newcanvas1 = document.getElementById("newcurveCanvas1");
 const newctx1 = newcanvas1.getContext("2d");
 
-
 const newcanvas2 = document.getElementById("newcurveCanvas2");
 const newctx2 = newcanvas2.getContext("2d");
-
-const newcanvas4 = document.getElementById("newcurveCanvas4");
-const newctx4 = newcanvas4.getContext("2d");
-
 
 
 
@@ -50,16 +45,8 @@ function getgraduation() {
 function getmaxt4() {
   errorpanclear();
   getmaxt4calc();
-  const selection = document.getElementById("jddSelection").value;
-    if (selection === "with") {
-        getmaxt4calcWithJDD(); // Use the new function for "with JDD"
-    } else {
-        getmaxt4calc(); // Use the original function for "without JDD"
-    }
-    showchart(1); // Ensure the appropriate chart is shown
+  showchart(1);
 }
-
-
 
 function getmaxt4calc() {
   newctx1.clearRect(0, 0, newcanvas1.width, newcanvas1.height);
@@ -177,115 +164,6 @@ function getmaxt4calc() {
   newctx1.fillStyle = "blue";
   newctx1.font = "18px Arial ";
   newctx1.fillText("ACTUAL T4", qat_maximapval + 5, actualT4Ymapval + 20);
-}
-
-function getmaxt4calcWithJDD() {
-  const newcanvasWithJDD = document.getElementById("newcurveCanvas4");
-  const newctxWithJDD = newcanvasWithJDD.getContext("2d");
-
-  // Clear the new canvas
-  newctxWithJDD.clearRect(0, 0, newcanvasWithJDD.width, newcanvasWithJDD.height);
-
-  const qatElement = document.getElementById("#qat").value;
-  const qat = parseFloat(qatElement);
-
-  const actrualNGElement = document.getElementById("#actualNg").value;
-  const actualng = parseFloat(actrualNGElement);
-
-  if (!(qat >= -45 && qat <= 50 && actualng >= 88 && actualng <= 100)) {
-      document.getElementById("#maxit4").value = "";
-      showToast(
-          message = "I can't count MAX T4. Input data must be correct.",
-          toastType = "danger",
-          duration = 5000,
-          fortop = showerrornum
-      );
-      showerrornum += 1;
-      return false;
-  }
-
-  const actualngindex = parseInt(actualng - 88);
-  const qat_maximapval = 772 - ((772 - 97) * (50 - qat)) / 95;
-
-  const firstval_maxi = getYForX(qat_maximapval, actualngline[actualngindex]);
-  if (firstval_maxi == null) {
-      showToast(
-          message = "I can't interpolate with your input data in this MAXI T4 chart",
-          toastType = "info",
-          duration = 5000,
-          fortop = showerrornum
-      );
-      showerrornum += 1;
-      document.getElementById("#Enginconditionone").value = "";
-      document.getElementById("#maxit4").value = "";
-      return;
-  }
-
-  const secondval_maxi = getYForX(qat_maximapval, actualngline[actualngindex + 1]);
-  if (secondval_maxi == null) {
-      showToast(
-          message = "I can't interpolate with your input data in this MAXI T4 chart",
-          toastType = "info",
-          duration = 5000,
-          fortop = showerrornum
-      );
-      showerrornum += 1;
-      document.getElementById("#Enginconditionone").value = "";
-      document.getElementById("#maxit4").value = "";
-      return;
-  }
-
-  const Y_maximap = firstval_maxi + ((secondval_maxi - firstval_maxi) / 1) * (actualng - actualngpercent[actualngindex]);
-  drawFoundPoint(newctxWithJDD, qat_maximapval, Y_maximap);
-
-  drawline(
-      newctxWithJDD,
-      { x: qat_maximapval, y: 970 },
-      { x: qat_maximapval, y: Y_maximap }
-  );
-
-  const Y_maximapval_changed = Y_maximap + (3.5359) * (qat_maximapval - 207) / 639;
-  drawline(
-      newctxWithJDD,
-      { x: qat_maximapval, y: Y_maximapval_changed },
-      { x: 57, y: Y_maximapval_changed }
-  );
-
-  drawFoundPointTriangle(newctxWithJDD, 55, Y_maximapval_changed, type = 1);
-  const Maxi_t4val = 550 + (825 - Y_maximapval_changed) / (825 - 90) * 300;
-  document.getElementById("#maxit4").value = formatToTwoDecimals(Maxi_t4val);
-
-  const actualt4Element = document.getElementById("#actualt4").value;
-  const actualt4 = parseFloat(actualt4Element);
-  const differencet4 = Maxi_t4val - actualt4;
-  if (differencet4 > 0) {
-      document.getElementById("#Enginconditionone").value = "Engine is satisfactory";
-  } else if (differencet4 < 0) {
-      document.getElementById("#Enginconditionone").value = "Engine may be defective";
-  } else if (grosmargin == 0) {
-      document.getElementById("#Enginconditionone").value = "Same";
-  }
-
-  const actualT4Ymapval = 825 - (825 - 90) * (actualt4 - 550) / 300;
-
-  drawline(
-      newctxWithJDD,
-      { x: qat_maximapval, y: actualT4Ymapval },
-      { x: 57, y: actualT4Ymapval },
-      "blue"
-  );
-
-  drawFoundPointTriangle(newctxWithJDD, 57, actualT4Ymapval, type = 1, colore = "blue");
-
-  drawline(
-      newctxWithJDD,
-      { x: qat_maximapval, y: actualT4Ymapval },
-      { x: qat_maximapval, y: Y_maximapval_changed }
-  );
-
-  newctxWithJDD.fillStyle = "blue";
-  newctxWithJDD.font = "18px Arial ";
-  newctxWithJDD.fillText("ACTUAL T4", qat_maximapval + 5, actualT4Ymapval + 20);
 }
 
 
@@ -849,9 +727,6 @@ function drawline(ctx, point1, pint2, colore = "red") {
 }
 
 function showchart(num) {
-  const jddSelectionContainer = document.getElementById("jddSelectionContainer");
-  const jddOverlay = document.getElementById("jddOverlay");
-
   if (num == 0) {
     
     document.getElementById("#fornew0").style.display = "block";
@@ -860,10 +735,6 @@ function showchart(num) {
     newcanvas.style.display= "block";
     newcanvas1.style.display = "none";
     newcanvas2.style.display = "none";
-    jddSelectionContainer.style.display = "none"; // Hide JDD dropdown
-    jddOverlay.style.display = "none"; // Hide overlay
-
-
   }
   else if (num == 1) {
     
@@ -873,10 +744,6 @@ function showchart(num) {
     newcanvas.style.display= "none";
     newcanvas2.style.display = "none";
     newcanvas1.style.display = "block";
-    jddSelectionContainer.style.display = "block"; // Hide JDD dropdown
-    jddOverlay.style.display = "none"; // Hide overlay
-
-
   }
   else if (num == 2) {
     
@@ -886,10 +753,6 @@ function showchart(num) {
     newcanvas.style.display= "none";
     newcanvas2.style.display = "block";
     newcanvas1.style.display = "none";
-    jddSelectionContainer.style.display = "none"; // Hide JDD dropdown
-    jddOverlay.style.display = "none"; // Hide overlay
-
-
   }
   else if (num==3){
     document.getElementById("#fornew0").style.display = "block";
@@ -898,10 +761,6 @@ function showchart(num) {
     newcanvas.style.display= "none";
     newcanvas2.style.display = "none";
     newcanvas1.style.display = "none";
-    jddSelectionContainer.style.display = "block"; // Hide JDD dropdown
-    jddOverlay.style.display = "block"; // Hide overlay
-
-
   }
 }
 // Define limits for each field
@@ -942,19 +801,3 @@ document.querySelectorAll('input[type="number"]').forEach(input => {
       }
   });
 });
-function toggleJDDOption() {
-  const selection = document.getElementById("jddSelection").value;
-  const canvasWithJDD = document.getElementById("newcurveCanvas1");
-  const canvasWithoutJDD = document.getElementById("newcurveCanvas4");
-
-  if (selection === "with") {
-      canvasWithJDD.style.display = "block";
-      canvasWithoutJDD.style.display = "none";
-  } else {
-      canvasWithJDD.style.display = "none";
-      canvasWithoutJDD.style.display = "block";
-  }
-}
-
-
-
