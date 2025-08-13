@@ -92,7 +92,7 @@ function getmaxt4calc() {
   );
   if (firstval_maxi == null) {
     showToast(
-      message = "I can't interpolate with your input data in this MAXI T4 chart",
+      message = "I can't interpolate with your input data in this MAX T4 chart",
       toastType = "info",
       duration = 5000,
       fortop = showerrornum
@@ -108,7 +108,7 @@ function getmaxt4calc() {
   );
   if (secondval_maxi == null) {
     showToast(
-      message = "I can't interpolate with your input data in this MAXI T4 chart",
+      message = "I can't interpolate with your input data in this MAX T4 chart",
       toastType = "info",
       duration = 5000,
       fortop = showerrornum
@@ -210,7 +210,7 @@ function getmaxt4calcWithJDD() {
   const firstval_maxi = getYForX(qat_maximapval, actualngline[actualngindex]);
   if (firstval_maxi == null) {
       showToast(
-          message = "I can't interpolate with your input data in this MAXI T4 chart",
+          message = "I can't interpolate with your input data in this MAX T4 chart",
           toastType = "info",
           duration = 5000,
           fortop = showerrornum
@@ -224,7 +224,7 @@ function getmaxt4calcWithJDD() {
   const secondval_maxi = getYForX(qat_maximapval, actualngline[actualngindex + 1]);
   if (secondval_maxi == null) {
       showToast(
-          message = "I can't interpolate with your input data in this MAXI T4 chart",
+          message = "I can't interpolate with your input data in this MAX T4 chart",
           toastType = "info",
           duration = 5000,
           fortop = showerrornum
@@ -539,7 +539,13 @@ function getgraduationusingcomplexchart(){
       { x: hpXmapval, y: 812.5 }
     );
     drawFoundPoint(newctx2,hpXmapval, 812.5);
-    const hpYmapval = 812.5-(812.5-516)*(hp/15000.0);
+    // Map HP to exact 1000 ft intervals with 1200 ft offset
+const maxHPPixel = 812.5;    // Y coordinate for 0 ft (bottom of chart)
+const minHPPixel = 516;      // Y coordinate for max altitude (top of chart)
+const chartHeight = maxHPPixel - minHPPixel;
+// Each line represents 1000 ft (15 lines) with 1200 ft offset to match chart
+const pixelsPerLine = chartHeight / 15;    // Pixels between each 1000 ft line
+const hpYmapval = maxHPPixel - ((hp - 1200) * pixelsPerLine / 1000);  // Offset by 1200 ft
     let hpline_forgradientindex =-1;
     for(let i=0;i< hpline_forgradient.length-1;i++)
       {
