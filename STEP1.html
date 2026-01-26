@@ -523,23 +523,23 @@ button {
                     <td><input type="text" id="searchLightMMNT" value="" readonly></td>
                 </tr>
                 <tr>
-                    <td>MG58 RH empty 72lb / loaded 103</td>
-                    <td>103</td>
-                    <td><input type="text" id="mg58RHNumber" value="" oninput="updateWeight('mg58RHNumber', 103, 'mg58RHWeight', 'mg58RHMMNT', 108.94)" style="background-color: #FFFFED;"></td>
+                    <td>MG58 RH empty 72lb</td>
+                    <td>72</td>
+                    <td><input type="text" id="mg58RHNumber" value="" oninput="updateWeight('mg58RHNumber', 72, 'mg58RHWeight', 'mg58RHMMNT', 108.94)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="mg58RHWeight" value="" readonly></td>
                     <td>108.94</td>
                     <td><input type="text" id="mg58RHMMNT" value="" readonly></td>
                 </tr>
                 <tr>
-                    <td>MG58 LH empty 72lb / loaded 103</td>
-                    <td>103</td>
-                    <td><input type="text" id="mg58LHNumber" value="" oninput="updateWeight('mg58LHNumber', 103, 'mg58LHWeight', 'mg58LHMMNT', 116.42)" style="background-color: #FFFFED;"></td>
+                    <td>MG58 LH empty 72lb</td>
+                    <td>72</td>
+                    <td><input type="text" id="mg58LHNumber" value="" oninput="updateWeight('mg58LHNumber', 72, 'mg58LHWeight', 'mg58LHMMNT', 116.42)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="mg58LHWeight" value="" readonly></td>
                     <td>116.42</td>
                     <td><input type="text" id="mg58LHMMNT" value="" readonly></td>
                 </tr>
                 <tr>
-                    <td>EXTRA AMMUNITION BOX</td>
+                    <td>MG58 Number of ammunition boxes</td>
                     <td>31</td>
                     <td><input type="text" id="extraAmmoBoxNumber" value="" oninput="updateWeight('extraAmmoBoxNumber', 31, 'extraAmmoBoxWeight', 'extraAmmoBoxMMNT', 95)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="extraAmmoBoxWeight" value="" readonly></td>
@@ -587,9 +587,9 @@ button {
                     <td><input type="text" id="refuelingProbeMMNT" value="" readonly></td>
                 </tr>
                 <tr>
-                    <td>JDD full installation</td>
-                    <td>160</td>
-                    <td><input type="text" id="jddNumber" value="" oninput="updateWeight('jddNumber', 160, 'jddWeight', 'jddMMNT', 194.5)" style="background-color: #FFFFED;"></td>
+                    <td>JDD Both sides</td>
+                    <td>320</td>
+                    <td><input type="text" id="jddNumber" value="" oninput="updateWeight('jddNumber', 320, 'jddWeight', 'jddMMNT', 194.5)" style="background-color: #FFFFED;"></td>
                     <td><input type="text" id="jddWeight" value="" readonly></td>
                     <td>194.5</td>
                     <td><input type="text" id="jddMMNT" value="" readonly></td>
@@ -870,40 +870,40 @@ button {
                     </tr>
                     <tr>
                         <td>section A</td>
-                        <td><input type="text" id="sectionAWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionANumber" value="" oninput="updateWeight('sectionANumber', parseFloat(document.getElementById('sectionAWeightSingle').value) || 0, 'sectionAWeight', 'sectionAMMNT', 120)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionAWeightSingle" value="" oninput="updateOtherLoadWeight('sectionA', 120)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionANumber" value="" oninput="updateOtherLoadWeight('sectionA', 120)" style="background-color: #FFFFED;"></td>
                         <td><input type="text" id="sectionAWeight" value="" readonly></td>
                         <td>120</td>
                         <td><input type="text" id="sectionAMMNT" value="" readonly></td>
                     </tr>
                     <tr>
                         <td>section B</td>
-                        <td><input type="text" id="sectionBWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionBNumber" value="" oninput="updateWeight('sectionBNumber', parseFloat(document.getElementById('sectionBWeightSingle').value) || 0, 'sectionBWeight', 'sectionBMMNT', 140)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionBWeightSingle" value="" oninput="updateOtherLoadWeight('sectionB', 140)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionBNumber" value="" oninput="updateOtherLoadWeight('sectionB', 140)" style="background-color: #FFFFED;"></td>
                         <td><input type="text" id="sectionBWeight" value="" readonly></td>
                         <td>140</td>
                         <td><input type="text" id="sectionBMMNT" value="" readonly></td>
                     </tr>
                     <tr>
                         <td>section C</td>
-                        <td><input type="text" id="sectionCWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionCNumber" value="" oninput="updateWeight('sectionCNumber', parseFloat(document.getElementById('sectionCWeightSingle').value) || 0, 'sectionCWeight', 'sectionCMMNT', 180)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionCWeightSingle" value="" oninput="updateOtherLoadWeight('sectionC', 180)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionCNumber" value="" oninput="updateOtherLoadWeight('sectionC', 180)" style="background-color: #FFFFED;"></td>
                         <td><input type="text" id="sectionCWeight" value="" readonly></td>
                         <td>180</td>
                         <td><input type="text" id="sectionCMMNT" value="" readonly></td>
                     </tr>
                     <tr>
                         <td>section D</td>
-                        <td><input type="text" id="sectionDWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionDNumber" value="" oninput="updateWeight('sectionDNumber', parseFloat(document.getElementById('sectionDWeightSingle').value) || 0, 'sectionDWeight', 'sectionDMMNT', 220)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionDWeightSingle" value="" oninput="updateOtherLoadWeight('sectionD', 220)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionDNumber" value="" oninput="updateOtherLoadWeight('sectionD', 220)" style="background-color: #FFFFED;"></td>
                         <td><input type="text" id="sectionDWeight" value="" readonly></td>
                         <td>220</td>
                         <td><input type="text" id="sectionDMMNT" value="" readonly></td>
                     </tr>
                     <tr>
                         <td>section E</td>
-                        <td><input type="text" id="sectionEWeightSingle" value=""></td>
-                        <td><input type="text" id="sectionENumber" value="" oninput="updateWeight('sectionENumber', parseFloat(document.getElementById('sectionEWeightSingle').value) || 0, 'sectionEWeight', 'sectionEMMNT', 260)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionEWeightSingle" value="" oninput="updateOtherLoadWeight('sectionE', 260)" style="background-color: #FFFFED;"></td>
+                        <td><input type="text" id="sectionENumber" value="" oninput="updateOtherLoadWeight('sectionE', 260)" style="background-color: #FFFFED;"></td>
                         <td><input type="text" id="sectionEWeight" value="" readonly></td>
                         <td>260</td>
                         <td><input type="text" id="sectionEMMNT" value="" readonly></td>
@@ -932,6 +932,12 @@ button {
             <div class="form-group">
                 <button id="calculateButton" onclick="calculateZeroFuelWeightMax5ftIGE()" style="width: 102%;">Max Weight 5ft IGE - Zero Fuel Weight = MAX FUEL TO USE</button>
                 <input type="text" id="zeroFuelWeightMax5ftIGE" readonly class="gradient-border" style="background-color: #ffffff;margin-top: 10px; width: 100%;height: auto; min-height: 25px;" name="temperature">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <button id="calculateAbsoluteFuelButton" style="width: 102%; cursor: default;">21495 - Zero Fuel Weight = ABSOLUTE MAX FUEL</button>
+                <input type="text" id="absoluteFuelLimit" readonly class="gradient-border" style="background-color: #ffffff;margin-top: 10px; width: 100%;height: auto; min-height: 25px;">
             </div>
         </div>
         <div class="collapsible-section">

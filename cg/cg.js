@@ -22,12 +22,34 @@ function calculateZeroFuelWeightMax5ftIGE() {
 
     const inputField = document.getElementById('zeroFuelWeightMax5ftIGE');
 
-    if (zeroFuelWeightMax5ftIGE >= 6700.00) {
-        inputField.value = "Maximum Fuel: 6700 lbs (Limit reached)";
-        window.maxAllowedFuel = 6700;
+    // Display the Max Fuel To Use calculation with 6700 lb limit
+    if (zeroFuelWeightMax5ftIGE <= 0) {
+        inputField.value = "0.00 (Aircraft overweight)";
+    } else if (zeroFuelWeightMax5ftIGE >= 6700) {
+        inputField.value = "Maximum Fuel: 6700 lbs (Fuel system limit)";
     } else {
         inputField.value = zeroFuelWeightMax5ftIGE.toFixed(2);
-        window.maxAllowedFuel = zeroFuelWeightMax5ftIGE;
+    }
+    
+    // Use new formula for actual fuel box limitation: 21495 - Zero Fuel Weight, capped at 6700 lbs
+    const maxFuelCapacity = 21495 - zeroFuelWeight;
+    window.maxAllowedFuel = Math.max(0, Math.min(maxFuelCapacity, 6700));
+    
+    // Update the absolute fuel limit display
+    const absoluteFuelField = document.getElementById('absoluteFuelLimit');
+    if (absoluteFuelField) {
+        if (maxFuelCapacity <= 0) {
+            absoluteFuelField.value = "0.00 (Aircraft overweight without fuel)";
+        } else if (maxFuelCapacity >= 6700) {
+            absoluteFuelField.value = "Maximum Fuel: 6700 lbs (Fuel system limit)";
+        } else {
+            absoluteFuelField.value = maxFuelCapacity.toFixed(2);
+        }
+        
+        absoluteFuelField.style.fontFamily = "'Times New Roman', Times, serif";
+        absoluteFuelField.style.fontSize = "16px";
+        absoluteFuelField.style.fontWeight = "normal";
+        absoluteFuelField.style.color = "black";
     }
 
     inputField.style.fontFamily = "'Times New Roman', Times, serif";
@@ -184,15 +206,15 @@ document.addEventListener('DOMContentLoaded', function () {
             { number: 'hoistNumber', weight: 'hoistWeight', cg: 162.2, mmnt: 'hoistMMNT', singleWeight: 97 },
             { number: 'fastRopeNumber', weight: 'fastRopeWeight', cg: 167.98, mmnt: 'fastRopeMMNT', singleWeight: 80 },
             { number: 'searchLightNumber', weight: 'searchLightWeight', cg: 120.56, mmnt: 'searchLightMMNT', singleWeight: 53 },
-            { number: 'mg58RHNumber', weight: 'mg58RHWeight', cg: 108.94, mmnt: 'mg58RHMMNT', singleWeight: 103 },
-            { number: 'mg58LHNumber', weight: 'mg58LHWeight', cg: 116.42, mmnt: 'mg58LHMMNT', singleWeight: 103 },
+            { number: 'mg58RHNumber', weight: 'mg58RHWeight', cg: 108.94, mmnt: 'mg58RHMMNT', singleWeight: 72 },
+            { number: 'mg58LHNumber', weight: 'mg58LHWeight', cg: 116.42, mmnt: 'mg58LHMMNT', singleWeight: 72 },
             { number: 'extraAmmoBoxNumber', weight: 'extraAmmoBoxWeight', cg: 95, mmnt: 'extraAmmoBoxMMNT', singleWeight: 31 },
             { number: 'gunNumber', weight: 'gunWeight', cg: 100.4, mmnt: 'gunMMNT', singleWeight: 269 },
             { number: 'gunLoadedNumber', weight: 'gunLoadedWeight', cg: 100.4, mmnt: 'gunLoadedMMNT', singleWeight: 452 },
             { number: 'rocketLauncherNumber', weight: 'rocketLauncherWeight', cg: 117, mmnt: 'rocketLauncherMMNT', singleWeight: 170 },
             { number: 'rocketLauncherLoadedNumber', weight: 'rocketLauncherLoadedWeight', cg: 117, mmnt: 'rocketLauncherLoadedMMNT', singleWeight: 682 },
             { number: 'refuelingProbeNumber', weight: 'refuelingProbeWeight', cg: 194.5, mmnt: 'refuelingProbeMMNT', singleWeight: 330 },
-            { number: 'jddNumber', weight: 'jddWeight', cg: 194.5, mmnt: 'jddMMNT', singleWeight: 160 },
+            { number: 'jddNumber', weight: 'jddWeight', cg: 194.5, mmnt: 'jddMMNT', singleWeight: 320 },
             { number: 'doorsArmouredNumber', weight: 'doorsArmouredWeight', cg: 56.73, mmnt: 'doorsArmouredMMNT', singleWeight: 40 },
             { number: 'seatsArmouredNumber', weight: 'seatsArmouredWeight', cg: 58.31, mmnt: 'seatsArmouredMMNT', singleWeight: 118 },
             { number: 'floorArmouredNumber', weight: 'floorArmouredWeight', cg: 141.84, mmnt: 'floorArmouredMMNT', singleWeight: 522 },
@@ -233,7 +255,17 @@ document.addEventListener('DOMContentLoaded', function () {
             const weightElement = document.getElementById(section.weight);
             const momentElement = document.getElementById(section.mmnt);
             const number = parseFloat(numberElement.value) || 0;
-            const singleWeight = section.singleWeight;
+            
+            let singleWeight = section.singleWeight;
+            
+            // Handle Other Load sections with variable single weights
+            if (section.number.startsWith('section')) {
+                const singleWeightElement = document.getElementById(section.number.replace('Number', 'WeightSingle'));
+                if (singleWeightElement) {
+                    singleWeight = parseFloat(singleWeightElement.value) || 0;
+                }
+            }
+            
             const cg = section.cg;
             const weight = number * singleWeight;
             const moment = weight * cg;
@@ -467,5 +499,22 @@ document.addEventListener('DOMContentLoaded', function() {
         heightInput.addEventListener('input', calculateWeight);
     }
 });
+
+function updateOtherLoadWeight(sectionId, cg) {
+    const singleWeightElement = document.getElementById(sectionId + 'WeightSingle');
+    const numberElement = document.getElementById(sectionId + 'Number');
+    const weightElement = document.getElementById(sectionId + 'Weight');
+    const mmntElement = document.getElementById(sectionId + 'MMNT');
+    
+    const singleWeight = parseFloat(singleWeightElement.value) || 0;
+    const number = parseFloat(numberElement.value) || 0;
+    const weight = singleWeight * number;
+    const moment = weight * cg;
+    
+    weightElement.value = weight.toFixed(2);
+    mmntElement.value = moment.toFixed(2);
+    
+    calculateCG();
+}
 
 window.addEventListener('beforeunload', saveAllData);
