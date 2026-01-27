@@ -1,4 +1,4 @@
-console.log("Chart drawer script loaded");
+console.log("CG Chart drawer script loaded");
 
 class ChartDrawer {
     constructor(canvasId, chartImageId) {
@@ -9,35 +9,38 @@ class ChartDrawer {
         this.dataLoaded = false;
         this.imageLoaded = false;
 
-        // Chart area properties
-        this.chartLeft = 130;
-        this.chartRight = 630;
-        this.chartTop = 84;
-        this.chartBottom = 490;
+        // CG chart value ranges (from chart image)
+        // X-axis: CG in inches (170 to 195)
+        // Y-axis: Weight in lbs (right scale: 13228 to 26000 lbs)
+        this.cgMin = 170;
+        this.cgMax = 195;
+        this.weightMin = 13228;  // Bottom of chart in lbs
+        this.weightMax = 26000;  // Top of chart in lbs
 
         this.loadChartData().then(() => {
             this.dataLoaded = true;
-            this.tryInitialize();
+            this.initialize();
         });
 
         this.chartImage.onload = () => {
             this.imageLoaded = true;
-            this.tryInitialize();
+            this.initialize();
         };
 
         if (this.chartImage.complete) {
             this.imageLoaded = true;
-            this.tryInitialize();
+            this.initialize();
         }
     }
 
-    tryInitialize() {
-        if (this.dataLoaded && this.imageLoaded) {
-            // Use naturalWidth/Height if available, fallback to width/height
-            this.canvas.width = this.chartImage.naturalWidth || this.chartImage.width;
-            this.canvas.height = this.chartImage.naturalHeight || this.chartImage.height;
-            console.log("Canvas sized to:", this.canvas.width, this.canvas.height);
-            this.canvas.style.display = 'block'; // Ensure canvas is visible
+    initialize() {
+        if (this.imageLoaded) {
+            // Use natural dimensions for canvas internal coordinates
+            // CSS will scale the canvas to match the displayed image
+            this.canvas.width = this.chartImage.naturalWidth || 1043;
+            this.canvas.height = this.chartImage.naturalHeight || 800;
+            console.log("CG Canvas sized to natural:", this.canvas.width, this.canvas.height);
+            this.canvas.style.display = 'block';
         }
     }
 
@@ -46,56 +49,74 @@ class ChartDrawer {
             const response = await fetch('chartData.json');
             const data = await response.json();
             this.chartData = data.chartData;
-
-            this.cgMin = Math.min(...this.chartData.map(point => point[0]));
-            this.cgMax = Math.max(...this.chartData.map(point => point[0]));
-            this.weightMin = Math.min(...this.chartData.map(point => point[1]));
-            this.weightMax = Math.max(...this.chartData.map(point => point[1]));
-
-            console.log("Chart data loaded. CG range:", this.cgMin, "-", this.cgMax, "Weight range:", this.weightMin, "-", this.weightMax);
+            console.log("Chart data loaded");
         } catch (error) {
             console.error("Error loading chart data:", error);
         }
     }
 
-    drawResult(weight, cg) {
-        console.log("drawResult called with:", weight, cg);
+    // Get chart boundaries based on natural image dimensions (percentage-based like IGE chart)
+    getChartBounds() {
+        // Use canvas dimensions (set to natural size) for calculations
+        const imgWidth = this.canvas.width;
+        const imgHeight = this.canvas.height;
         
-        if (!this.dataLoaded || !this.imageLoaded) {
-            console.error("Chart not fully initialized yet");
+        // Chart area as percentage of image (cg.png is 1043x800)
+        // Fine-tuned calibration
+        return {
+            left: imgWidth * 0.12,
+            right: imgWidth * 0.88,
+            top: imgHeight * 0.06,
+            bottom: imgHeight * 0.80
+        };
+    }
+
+    // Convert CG (170-195 in) to X pixel
+    cgToPixelX(cg) {
+        const bounds = this.getChartBounds();
+        const ratio = (cg - this.cgMin) / (this.cgMax - this.cgMin);
+        return bounds.left + ratio * (bounds.right - bounds.left);
+    }
+
+    // Convert Weight to Y pixel
+    weightToPixelY(weight) {
+        const bounds = this.getChartBounds();
+        const ratio = (weight - this.weightMin) / (this.weightMax - this.weightMin);
+        return bounds.bottom - ratio * (bounds.bottom - bounds.top);
+    }
+
+    drawResult(weight, cg) {
+        console.log("CG drawResult called with weight:", weight, "cg:", cg);
+        
+        if (!this.imageLoaded) {
+            console.error("CG Chart not fully initialized yet");
             return;
         }
-    
-        if (isNaN(weight) || isNaN(cg) || 
-            weight < this.weightMin || weight > this.weightMax || 
-            cg < this.cgMin || cg > this.cgMax) {
-            console.error("Invalid weight or CG value, or out of chart range");
+
+        if (isNaN(weight) || isNaN(cg)) {
+            console.error("Invalid weight or CG value");
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             return;
         }
     
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        const bounds = this.getChartBounds();
+
+        // Calculate pixel positions
+        const xPixel = this.cgToPixelX(cg);
+        const yPixel = this.weightToPixelY(weight);
     
-        const xPixel = this.calculateXPixel(cg);
-        const yPixel = this.calculateYPixel(weight);
+        console.log("Calculated pixel positions - X:", xPixel, "Y:", yPixel);
     
-        console.log("Calculated pixel positions:", xPixel, yPixel);
-    
-        // Draw vertical line from bottom to weight
-        this.drawLine(xPixel, this.chartBottom, xPixel, yPixel, 'red');
+        // Draw from CG (bottom) UP to weight position
+        this.drawLine(xPixel, bounds.bottom, xPixel, yPixel, 'red');
         
-        // Draw horizontal line with triangle from CG to right edge
-        this.drawHorizontalLineWithTriangle(xPixel, yPixel, this.chartRight - xPixel, 'red');
+        // Draw from weight position RIGHT to the edge
+        this.drawLineWithArrow(xPixel, yPixel, bounds.right, yPixel, 'red');
         
         // Draw intersection point
         this.drawPoint(xPixel, yPixel, 'red');
-    }
-
-    calculateXPixel(cg) {
-        return this.chartLeft + ((cg - this.cgMin) / (this.cgMax - this.cgMin)) * (this.chartRight - this.chartLeft);
-    }
-
-    calculateYPixel(weight) {
-        return this.chartBottom - ((weight - this.weightMin) / (this.weightMax - this.weightMin)) * (this.chartBottom - this.chartTop);
     }
 
     drawLine(startX, startY, endX, endY, color) {
@@ -107,40 +128,34 @@ class ChartDrawer {
         this.ctx.stroke();
     }
 
+    drawLineWithArrow(startX, startY, endX, endY, color) {
+        this.ctx.beginPath();
+        this.ctx.moveTo(startX, startY);
+        this.ctx.lineTo(endX, endY);
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = 2;
+        this.ctx.stroke();
+
+        // Draw arrow head at end
+        const arrowSize = 8;
+        this.ctx.beginPath();
+        this.ctx.moveTo(endX, endY);
+        this.ctx.lineTo(endX - arrowSize, endY - arrowSize/2);
+        this.ctx.lineTo(endX - arrowSize, endY + arrowSize/2);
+        this.ctx.closePath();
+        this.ctx.fillStyle = color;
+        this.ctx.fill();
+    }
+
     drawPoint(x, y, color) {
         this.ctx.beginPath();
         this.ctx.arc(x, y, 5, 0, 2 * Math.PI);
         this.ctx.fillStyle = color;
         this.ctx.fill();
     }
-
-    addLabel(text, x, y) {
-        this.ctx.font = '20px Arial';
-        this.ctx.fillStyle = 'black';
-        this.ctx.fillText(text, x, y);
-    }
-
-    drawTriangle(x, y, size, color) {
-        this.ctx.beginPath();
-        this.ctx.moveTo(x, y);
-        this.ctx.lineTo(x, y - size / 2);
-        this.ctx.lineTo(x + size, y);
-        this.ctx.lineTo(x, y + size / 2);
-        this.ctx.closePath();
-        this.ctx.fillStyle = color;
-        this.ctx.fill();
-    }
-
-    drawHorizontalLineWithTriangle(startX, startY, length, color) {
-        // Draw the horizontal line
-        this.drawLine(startX, startY, startX + length, startY, color);
-        
-        // Draw the triangle at the end of the line
-        this.drawTriangle(startX + length, startY, 10, color);
-    }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log("Initializing chart drawer");
+    console.log("Initializing CG chart drawer");
     window.chartDrawer = new ChartDrawer('chart-overlay', 'chart-image');
 });
