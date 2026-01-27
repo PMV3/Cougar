@@ -126,6 +126,10 @@ body {
 }
 
 /* Main Layout */
+.w-50 {
+    width: 50%;
+}
+
 .app-container {
     padding: 1.5rem;
 }
