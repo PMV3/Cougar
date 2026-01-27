@@ -559,6 +559,8 @@ input.result-display {
     border-radius: var(--radius-md);
     overflow: hidden;
     background: var(--bg-main);
+    max-width: 800px;
+    margin: 0 auto;
 }
 
 .chart-wrapper img {
