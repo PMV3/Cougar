@@ -557,10 +557,8 @@ input.result-display {
 .chart-wrapper {
     position: relative;
     border-radius: var(--radius-md);
-    overflow: hidden;
     background: var(--bg-main);
-    max-width: 800px;
-    margin: 0 auto;
+    width: 100%;
 }
 
 .chart-wrapper img {
