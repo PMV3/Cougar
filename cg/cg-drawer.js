@@ -33,8 +33,8 @@ class ChartDrawer {
 
     tryInitialize() {
         if (this.dataLoaded && this.imageLoaded) {
-            this.canvas.width = this.chartImage.width;
-            this.canvas.height = this.chartImage.height;
+            this.canvas.width = this.chartImage.naturalWidth;
+            this.canvas.height = this.chartImage.naturalHeight;
             console.log("Canvas sized to:", this.canvas.width, this.canvas.height);
             this.canvas.style.display = 'block'; // Ensure canvas is visible
         }
