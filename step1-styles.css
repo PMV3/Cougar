@@ -559,11 +559,14 @@ input.result-display {
     border-radius: var(--radius-md);
     overflow: hidden;
     background: var(--bg-main);
+    max-height: 500px;
 }
 
 .chart-wrapper img {
     width: 100%;
     height: auto;
+    max-height: 500px;
+    object-fit: contain;
     display: block;
 }
 
