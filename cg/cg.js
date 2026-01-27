@@ -16,13 +16,15 @@ function updateWeight(numberId, singleWeight, weightId, mmntId, cg) {
 }
 
 function calculateZeroFuelWeightMax5ftIGE() {
-    const maxWeight5ftIGE = parseFloat(document.getElementById('5ft_weight').textContent.match(/\d+(\.\d+)?/)[0]) || 0;
+    const igeWeightText = document.getElementById('5ft_weight').textContent;
+    const match = igeWeightText.match(/\d+(\.\d+)?/);
+    const maxWeight5ftIGE = match ? parseFloat(match[0]) : 0;
+    
     const zeroFuelWeight = parseFloat(document.getElementById('zfw').value) || 0;
     zeroFuelWeightMax5ftIGE = maxWeight5ftIGE - zeroFuelWeight;
 
     const inputField = document.getElementById('zeroFuelWeightMax5ftIGE');
 
-    // Display the Max Fuel To Use calculation with 6700 lb limit
     if (zeroFuelWeightMax5ftIGE <= 0) {
         inputField.value = "0.00 (Aircraft overweight)";
     } else if (zeroFuelWeightMax5ftIGE >= 6700) {
@@ -31,11 +33,9 @@ function calculateZeroFuelWeightMax5ftIGE() {
         inputField.value = zeroFuelWeightMax5ftIGE.toFixed(2);
     }
     
-    // Use new formula for actual fuel box limitation: 21495 - Zero Fuel Weight, capped at 6700 lbs
     const maxFuelCapacity = 21495 - zeroFuelWeight;
     window.maxAllowedFuel = Math.max(0, Math.min(maxFuelCapacity, 6700));
     
-    // Update the absolute fuel limit display
     const absoluteFuelField = document.getElementById('absoluteFuelLimit');
     if (absoluteFuelField) {
         if (maxFuelCapacity <= 0) {
@@ -45,17 +45,7 @@ function calculateZeroFuelWeightMax5ftIGE() {
         } else {
             absoluteFuelField.value = maxFuelCapacity.toFixed(2);
         }
-        
-        absoluteFuelField.style.fontFamily = "'Times New Roman', Times, serif";
-        absoluteFuelField.style.fontSize = "16px";
-        absoluteFuelField.style.fontWeight = "normal";
-        absoluteFuelField.style.color = "black";
     }
-
-    inputField.style.fontFamily = "'Times New Roman', Times, serif";
-    inputField.style.fontSize = "16px";
-    inputField.style.fontWeight = "normal";
-    inputField.style.color = "black";
 
     setMaxFuelLimit(window.maxAllowedFuel);
     
@@ -148,7 +138,7 @@ function updateTotalFuel() {
     });
 
     document.getElementById('totalFuelWeight').value = totalFuelWeight.toFixed(2);
-    document.getElementById('totalFuelMoment').value = totalFuelMoment.toFixed(2);
+    document.getElementById('totalFuelMMNT').value = totalFuelMoment.toFixed(2);
 
     calculateCG(); // Ensure CG is recalculated after updating fuel
 }
@@ -345,10 +335,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const cgStatusElement = document.getElementById('cg-status');
         if (isCGOK) {
             cgStatusElement.textContent = "Center of Gravity: OK";
-            cgStatusElement.style.color = "green";
+            cgStatusElement.className = "status-ok";
         } else {
             cgStatusElement.textContent = "Center of Gravity: NOT OK";
-            cgStatusElement.style.color = "red";
+            cgStatusElement.className = "status-error";
         }
 
         if (window.chartDrawer && typeof window.chartDrawer.drawResult === 'function') {
@@ -359,6 +349,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         } else {
             console.error("Chart drawer not available or drawResult is not a function");
+        }
+
+        // Draw on IGE chart (Altitude + Temperature → Max Weight)
+        if (window.igeChartDrawer && typeof window.igeChartDrawer.drawResult === 'function') {
+            const altitude = parseFloat(document.getElementById('height')?.value) || 0;
+            const temperature = parseFloat(document.getElementById('temperature')?.value) || 15;
+            window.igeChartDrawer.drawResult(altitude, temperature);
         }
 
         calculateZeroFuelWeightMax5ftIGE();
@@ -486,9 +483,9 @@ function calculateWeight() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    const calculateButton = document.getElementById('calculateButton');
-    if (calculateButton) {
-        calculateButton.addEventListener('click', calculateWeight);
+    const calculateWeightBtn = document.getElementById('calculateWeightBtn');
+    if (calculateWeightBtn) {
+        calculateWeightBtn.addEventListener('click', calculateWeight);
     }
     
     const temperatureInput = document.getElementById('temperature');
