@@ -127,7 +127,7 @@ body {
 
 /* Main Layout */
 .app-container {
-    min-width: 1600px;
+    min-width: 1887px;
     padding: 1.5rem;
     display: grid;
     grid-template-columns: 1fr 320px;
