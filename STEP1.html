@@ -14,7 +14,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="step1-styles.css">
 </head>
-<body>
+<body style="display: flex; gap: 20px; min-width: 1600px;">
+    <div class="main-wrapper">
     <!-- Header -->
     <header class="app-header">
         <div class="header-content">
@@ -314,9 +315,11 @@
                 </div>
             </div>
         </div>
+    </div>
+    </div>
 
-        <!-- Sidebar -->
-        <aside class="sidebar">
+    <!-- Sidebar - separate flex child -->
+    <aside class="sidebar">
             <!-- Aircraft Reference Table -->
             <div class="sidebar-card" id="sidebar-aircraft-ref">
                 <div class="sidebar-card-header" onclick="toggleSidebarCard('sidebar-aircraft-ref')">
@@ -369,7 +372,6 @@
                 <div class="sidebar-card-body"><img src="5.png" alt="Additional Layout"></div>
             </div>
         </aside>
-    </div>
 
     <!-- Scripts -->
     <script src="dataPersistence.js"></script>
