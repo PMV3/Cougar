@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+﻿document.addEventListener('DOMContentLoaded', function() {
   loadAllData().then(() => {
       performCalculations();
   });
@@ -744,8 +744,8 @@ document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIG
     );
     drawline(
       ctx4,
-      { x: 54, y: hptfmapval_5 },
-      { x: weightmapval_5, y: hptfmapval_5 }
+      { x: weightmapval_5, y: hptfmapval_5 },
+      { x: 54, y: hptfmapval_5 }
     );
   } else {
     document.getElementById("#enginIGE").value = "Unable to calculate";
@@ -884,8 +884,8 @@ function count_7() {
 
   drawline(
       ctx5,
-      { x: rcmapval_7, y: Y_val_dd7 },
-      { x: catmapval_7, y: Y_val_dd7 }
+      { x: catmapval_7, y: Y_val_dd7 },
+      { x: rcmapval_7, y: Y_val_dd7 }
   );
   drawline(
       ctx5,
@@ -1042,3 +1042,6 @@ function saveDataAndGoToStep3() {
   saveAllData();
   window.location.href = 'STEP3.html';
 }
+
+
+

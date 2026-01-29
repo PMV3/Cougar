@@ -194,6 +194,7 @@
                                 <button class="calc-btn" id="btn-serviceceiling" onclick="runCalc('serviceceiling')">Service Ceiling</button>
                                 <button class="calc-btn" id="btn-twinoge" onclick="runCalc('twinoge')">Twin OGE</button>
                                 <button class="calc-btn" id="btn-twinige" onclick="runCalc('twinige')">Twin IGE 10ft</button>
+                                <button class="calc-btn" id="btn-twinige5ft" onclick="runCalc('twinige5ft')">Twin IGE 5ft</button>
                                 <button class="calc-btn" id="btn-oeiclimb" onclick="runCalc('oeiclimb')">OEI Climb</button>
                             </div>
                         </div>
@@ -235,12 +236,20 @@
                                     <input type="text" id="#enginhoge_weight" readonly placeholder="--">
                                 </div>
                                 <div class="result-item">
-                                    <label>Twin IGE (ft)</label>
+                                    <label>Twin IGE 10ft (ft)</label>
                                     <input type="text" id="#enginIGE" readonly placeholder="--">
                                 </div>
                                 <div class="result-item">
-                                    <label>Twin IGE (lb)</label>
+                                    <label>Twin IGE 10ft (lb)</label>
                                     <input type="text" id="#enginIGE_weight" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE 5ft (ft)</label>
+                                    <input type="text" id="#enginIGE5ft" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE 5ft (lb)</label>
+                                    <input type="text" id="#enginIGE5ft_weight" readonly placeholder="--">
                                 </div>
                             </div>
                         </div>
@@ -300,6 +309,7 @@
                             <canvas id="curveCanvas3" width="733" height="817" style="background-image: url('newOGE.jpg'); "></canvas>
                             <canvas id="curveCanvas4" width="733" height="814" style="background-image: url('newIGE.jpg'); "></canvas>
                             <canvas id="curveCanvas5" width="920" height="1280" style="background-image: url('sixth.jpg'); "></canvas>
+                            <canvas id="curveCanvas6" width="595" height="822" style="background-image: url('5ft_ige/5ft_ige.png');"></canvas>
                         </div>
                     </div>
                 </div>
@@ -333,6 +343,8 @@
     <script src="./datafolder/serviceCeiling.js"></script>
     <script src="./datafolder/newhoge.js"></script>
     <script src="./datafolder/newIGE.js"></script>
+    <script src="./5ft_ige/5ft_ige.js"></script>
+    <script src="./5ft_ige/5ft_calculator.js"></script>
     <script src="./datafolder/serviceclimbing.js"></script>
     <script src="./scripts.js"></script>
     <script src="step2DataHandler.js"></script>
@@ -344,6 +356,7 @@
             'serviceceiling': 'Service Ceiling Chart',
             'twinoge': 'Twin Engine OGE Hover',
             'twinige': 'Twin Engine IGE 10ft Hover',
+            'twinige5ft': 'Twin Engine IGE 5ft Hover',
             'oeiclimb': 'OEI Rate of Climb Chart'
         };
         
@@ -356,6 +369,10 @@
             // Hide placeholder
             const placeholder = document.getElementById('chart-placeholder');
             if (placeholder) placeholder.style.display = 'none';
+            
+            // Hide curveCanvas6 (5ft IGE) - it's not managed by the original showchart function
+            const canvas6 = document.getElementById('curveCanvas6');
+            if (canvas6) canvas6.style.display = 'none';
             
             // Update active button state
             document.querySelectorAll('.calc-btn').forEach(btn => btn.classList.remove('active'));
@@ -371,6 +388,7 @@
                 case 'serviceceiling': serviceilingbuttondown(); break;
                 case 'twinoge': enginhogebuttondown(); break;
                 case 'twinige': enginigebuttondown(); break;
+                case 'twinige5ft': enginige5ftbuttondown(); break;
                 case 'oeiclimb': rcbuttondown(); break;
             }
         }
@@ -448,6 +466,241 @@
             }
         };
 
+        // 5ft IGE calculation function
+        function enginige5ftbuttondown() {
+            // Show canvas 6 (5ft IGE)
+            document.querySelectorAll('.chart-scroll-container canvas').forEach(c => {
+                c.style.display = 'none';
+            });
+            document.getElementById('curveCanvas6').style.display = 'block';
+            document.getElementById('chart-placeholder').style.display = 'none';
+            
+            // Get canvas and context
+            const canvas6 = document.getElementById('curveCanvas6');
+            const ctx6 = canvas6.getContext('2d');
+            ctx6.clearRect(0, 0, canvas6.width, canvas6.height);
+            
+            // Get input values
+            const qat = parseFloat(document.getElementById('#qat').value);
+            const hp = parseFloat(document.getElementById('#hp').value);
+            const acweight = parseFloat(document.getElementById('#acweight').value);
+            
+            // Validate inputs
+            if (isNaN(qat) || isNaN(hp) || isNaN(acweight)) {
+                document.getElementById('#enginIGE5ft').value = 'Invalid input';
+                document.getElementById('#enginIGE5ft_weight').value = 'Invalid input';
+                return;
+            }
+            
+            if (qat < -50 || qat > 50) {
+                document.getElementById('#enginIGE5ft').value = 'OAT out of range';
+                document.getElementById('#enginIGE5ft_weight').value = 'OAT out of range';
+                return;
+            }
+            
+            // Calculate max altitude for given weight and temperature
+            const maxAlt = findHeight5ft(qat, acweight);
+            console.log('5ft IGE - Input: OAT=' + qat + ', Alt=' + hp + ', Weight=' + acweight);
+            console.log('5ft IGE - Max Altitude for weight ' + acweight + ': ' + maxAlt);
+            console.log('5ft IGE - chartData available: ' + (typeof chartData !== 'undefined'));
+            if (maxAlt !== null && !isNaN(maxAlt)) {
+                document.getElementById('#enginIGE5ft').value = maxAlt.toFixed(2);
+            } else {
+                document.getElementById('#enginIGE5ft').value = 'Unable to calculate';
+            }
+            
+            // Calculate max weight for given altitude and temperature using findWeight from 5ft_calculator.js
+            if (typeof findWeight === 'function') {
+                const maxWeight = findWeight(qat, hp);
+                console.log('5ft IGE - Max Weight for altitude ' + hp + ': ' + maxWeight);
+                if (maxWeight !== null && !isNaN(maxWeight)) {
+                    document.getElementById('#enginIGE5ft_weight').value = maxWeight.toFixed(2);
+                } else {
+                    document.getElementById('#enginIGE5ft_weight').value = 'Unable to calculate';
+                }
+                
+                // Draw on canvas
+                draw5ftIGEChart(ctx6, canvas6, qat, hp, acweight, maxWeight, maxAlt);
+            } else {
+                document.getElementById('#enginIGE5ft_weight').value = 'Calculator not loaded';
+            }
+        }
+        
+        // Helper function to find altitude for given temperature and weight
+        function findHeight5ft(temperature, weight) {
+            if (typeof chartData === 'undefined') return null;
+            
+            // Find all curves that contain this weight and get their heights
+            let validPoints = [];
+            
+            for (let i = 0; i < chartData.length; i++) {
+                const height = findHeightForWeight(chartData[i], weight);
+                if (height !== null) {
+                    validPoints.push({
+                        temperature: chartData[i].temperature,
+                        height: height
+                    });
+                }
+            }
+            
+            if (validPoints.length === 0) return null;
+            if (validPoints.length === 1) return validPoints[0].height;
+            
+            // Sort by temperature descending (hottest first)
+            validPoints.sort((a, b) => b.temperature - a.temperature);
+            
+            // Find the two temperatures to interpolate between
+            let upperPoint = null;
+            let lowerPoint = null;
+            
+            for (let i = 0; i < validPoints.length - 1; i++) {
+                if (validPoints[i].temperature >= temperature && validPoints[i + 1].temperature <= temperature) {
+                    upperPoint = validPoints[i];
+                    lowerPoint = validPoints[i + 1];
+                    break;
+                }
+            }
+            
+            // If temperature is outside available range, use nearest
+            if (!upperPoint || !lowerPoint) {
+                if (temperature >= validPoints[0].temperature) {
+                    return validPoints[0].height;
+                } else if (temperature <= validPoints[validPoints.length - 1].temperature) {
+                    return validPoints[validPoints.length - 1].height;
+                }
+                // Use the two closest available points
+                upperPoint = validPoints[0];
+                lowerPoint = validPoints[validPoints.length - 1];
+            }
+            
+            // Interpolate between temperatures
+            const tempRange = upperPoint.temperature - lowerPoint.temperature;
+            if (tempRange === 0) return upperPoint.height;
+            
+            const tempRatio = (temperature - lowerPoint.temperature) / tempRange;
+            return lowerPoint.height + tempRatio * (upperPoint.height - lowerPoint.height);
+        }
+        
+        // Find height (altitude) for a given weight on a temperature curve
+        function findHeightForWeight(tempData, weight) {
+            const points = tempData.points;
+            
+            // Check if weight is in range
+            const minWeight = points[0].x;
+            const maxWeight = points[points.length - 1].x;
+            
+            if (weight < minWeight || weight > maxWeight) {
+                return null;
+            }
+            
+            // Find the two points that bracket this weight
+            for (let i = 0; i < points.length - 1; i++) {
+                if (points[i].x <= weight && points[i + 1].x >= weight) {
+                    // Interpolate between these two points
+                    const weightRatio = (weight - points[i].x) / (points[i + 1].x - points[i].x);
+                    return points[i].y + weightRatio * (points[i + 1].y - points[i].y);
+                }
+            }
+            
+            return null;
+        }
+        
+        function draw5ftIGEChart(ctx, canvas, qat, hp, acweight, maxWeight, maxAlt) {
+            // Chart boundaries for 5ft_ige.png (595x822)
+            const chartLeft = 54;
+            const chartRight = 559;
+            const chartTop = 29;
+            const chartBottom = 600;
+            
+            const weightMin = 14000;
+            const weightMax = 22000;
+            const altMin = 0;
+            const altMax = 20000;
+            
+            // Convert weight to X pixel
+            function weightToX(w) {
+                return chartLeft + ((w - weightMin) / (weightMax - weightMin)) * (chartRight - chartLeft);
+            }
+            
+            // Convert altitude to Y pixel
+            function altToY(a) {
+                return chartBottom - ((a - altMin) / (altMax - altMin)) * (chartBottom - chartTop);
+            }
+            
+            // Helper function to draw arrow
+            function drawArrow(fromX, fromY, toX, toY, color) {
+                const headLength = 10;
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = 2;
+                
+                // Draw arrow head
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(toX - headLength * Math.cos(angle - Math.PI / 6), toY - headLength * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(toX - headLength * Math.cos(angle + Math.PI / 6), toY - headLength * Math.sin(angle + Math.PI / 6));
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // Disable image smoothing for crisp lines
+            ctx.imageSmoothingEnabled = false;
+            
+            // Draw weight calculation in BLUE (horizontal from altitude, then down)
+            if (maxWeight && maxWeight > weightMin && maxWeight < weightMax) {
+                ctx.fillStyle = 'blue';
+                
+                const xWeight = Math.floor(weightToX(maxWeight));
+                const yAlt = Math.floor(altToY(hp));
+                const xLeft = Math.floor(chartLeft);
+                
+                // Draw horizontal line
+                ctx.fillRect(xLeft, yAlt, xWeight - xLeft, 2);
+                
+                // Draw vertical line down
+                ctx.fillRect(xWeight - 1, yAlt, 2, chartBottom + 80 - yAlt);
+                
+                // Draw point at intersection
+                ctx.beginPath();
+                ctx.arc(xWeight, yAlt, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw arrow at end of horizontal line (pointing right)
+                drawArrow(xLeft, yAlt + 1, xWeight - 5, yAlt + 1, 'blue');
+                
+                // Draw arrow at end of vertical line (pointing down)
+                drawArrow(xWeight, yAlt, xWeight, chartBottom + 70, 'blue');
+            }
+            
+            // Draw altitude calculation in RED (from weight up, then horizontal left)
+            if (maxAlt && acweight > weightMin && acweight < weightMax) {
+                ctx.fillStyle = 'red';
+                
+                const xAcWeight = Math.floor(weightToX(acweight));
+                const yMaxAlt = Math.floor(altToY(maxAlt));
+                const xLeft = Math.floor(chartLeft);
+                
+                // Draw vertical line from bottom up to intersection point
+                ctx.fillRect(xAcWeight - 1, yMaxAlt, 2, chartBottom + 80 - yMaxAlt);
+                
+                // Draw horizontal line from intersection to left axis
+                ctx.fillRect(xLeft, yMaxAlt, xAcWeight - xLeft, 2);
+                
+                // Draw point at intersection
+                ctx.beginPath();
+                ctx.arc(xAcWeight, yMaxAlt, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw arrow at end of vertical line going up (pointing up)
+                drawArrow(xAcWeight, chartBottom + 70, xAcWeight, yMaxAlt + 5, 'red');
+                
+                // Draw arrow at end of horizontal line (pointing left)
+                drawArrow(xAcWeight, yMaxAlt + 1, xLeft + 5, yMaxAlt + 1, 'red');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             // Remove any existing toasts
             document.querySelectorAll('.toast').forEach(t => t.remove());
@@ -479,6 +732,38 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
