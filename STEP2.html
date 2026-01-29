@@ -1,432 +1,505 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YW913537F4');
-</script>
-    <meta charset="UTF-8" />
-    <title>PMV 3</title>
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YW913537F4');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1600">
+    <title>PMV 3 - Performance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="step1-styles.css">
     <style>
-      canvas {
-        border: 1px solid black;
-      }
-      input {
-        width: calc(100% - 23px);
-        /* max-width: 150px; */
-        padding: 10px;
-        /* margin: 5px 0 22px 0; */
-        display: inline-block;
-        border: 1 px solid linen;
-        background: #f1f1f1;
-        background-color: #fffdfd;
-        outline: none;
-        border-radius: 6px;
-      }
-      
-
-      select {
-        width: 100%;
-        /* max-width: 150px; */
-        padding: 10px;
-        /* margin: 5px 0 22px 0; */
-        display: inline-block;
-        border: 1 px solid linen;
-        background: #f1f1f1;
-        background-color: #fffdfd;
-        outline: none;
-        border-radius: 6px;
-      }
-
-      .row {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-        margin: 20px 10px;
-        /* width: 100%; */
-      }
-
-      /* Add a background color when the inputs get focus *
-
-/* Set a style for all buttons */
-      button {
-        background-color: #04aa6d;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        color: white;
-        padding: 14px 20px;
-        margin: 6px 0;
-        border: none;
-        cursor: pointer;
-        width: 13.8%;
-        opacity: 0.9;
-      }
-
-      button:hover {
-        opacity: 1;
-      }
-      .container {
-        width: calc(100% - 960px);
-        height: auto;
-        float: left;
-        min-width: 865px;
-        /* padding-right: 15px;
-        margin-right: 15%; */
-      }
-
-      .w-50 {
-        width: 50%;
-      }
-      hr {
-  border: none;
-  height: 1px;
-  background-color: #ccc; /* Light gray color */
-  margin: 15px 0; /* Adjust top and bottom margins as needed */
-}
-
-
-
-.steps {
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-}
-.step {
-    background-color: #04aa6d;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: white;
-    padding: 14px 20px;
-    margin: 6px 0;
-    border: none;
-    cursor: pointer;
-    width: 13.8%;
-    opacity: 0.9;
-    transition: all 0.3s ease;
-}
-.step:hover {
-    opacity: 1;
-}
-.step.active {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-.header-container {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 0px;
-      }
-
-      .header-logo {
-          width: 150px;
-          height: auto;
-      }
-
-      .title-container {
-          text-align: center;
-          flex-grow: 1;
-      }
-
-      .main-title {
-          font-size: 36px;
-          font-weight: bold;
-          margin-bottom: 5px;
-      }
-
-      .subtitle {
-          font-size: 24px;
-          font-weight: normal;
-          color: #555;
-      }
+        .calc-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+        .calc-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            box-shadow: var(--shadow-sm);
+        }
+        .calc-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .calc-btn.active { background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4); }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+        .result-item {
+            background: var(--bg-main);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+        }
+        .result-item label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.2rem;
+        }
+        .result-item input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            outline: none;
+        }
+        
+        .chart-scroll-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .chart-scroll-container canvas { display: none; border: none; }
+        .chart-scroll-container canvas.active { display: block; }
+        
+        .chart-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: var(--text-muted);
+            gap: 0.75rem;
+        }
+        .chart-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+        .chart-placeholder p { font-size: 0.875rem; font-weight: 500; }
+        
+        .chart-title-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .performance-top-row {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 1rem;
+        }
+        
+        #card-calculations .card-body,
+        #card-results .card-body {
+            padding: 0.75rem 1rem;
+        }
+        
+        .chart-card-full { grid-column: 1 / -1; }
+        
+        /* Hide the default toast overlay */
+        .toast-overlay, .toast {
+            display: none !important;
+        }
+        
+        .chart-error-message {
+            display: none;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1px solid var(--danger);
+            border-radius: var(--radius-md);
+            color: var(--danger);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+        
+        .chart-error-message.show {
+            display: block;
+        }
+        
+        .chart-error-message svg {
+            width: 18px;
+            height: 18px;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
     </style>
-     <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body style="display: flex; gap: 20px; min-width: 1887px;">
+</head>
+<body>
+    <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785); max-width: 1600px; margin: 0 auto;">
     
-    <div class="container" 
-      style="border: 1px solid black;
-      border-radius: 10px;
-      padding: 10px;
-      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)"
-      >
-      <div class="header-container">
-        <img src="wing.png" alt="Left Logo" class="header-logo">
-        <div class="title-container">
-            <h1 class="main-title">PMV 3</h1>
-            <h2 class="subtitle">COUGAR AS 532 A2</h2>
+    <!-- Header -->
+    <header class="app-header">
+        <div class="header-content">
+            <div class="brand">
+                <img src="SAUDI_CARACAL_TRANSPARENT.png" alt="Cougar Helicopter" class="brand-logo" style="height: 60px; width: auto;">
+                <div class="brand-text">
+                    <h1>PMV 3</h1>
+                    <span>COUGAR<br>AS 532 A2</span>
+                </div>
+            </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP1')">STEP 1: Weight & Balance</button>
+                <span class="nav-arrow"></span>
+                <button class="nav-tab step active" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
+                <span class="nav-arrow"></span>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
+            </nav>
+            <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
         </div>
-        <img src="sqau.png" alt="Right Logo" class="header-logo">
-      </div>
-      
-      <!-- Navigation Bar -->
-      <div style="width: 175%;  padding: 0px 0;">
-        <nav class="steps">
-          <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
-          <button class="step active" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
-          <button class="step" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
-          <button class="step" onclick="setActiveStep(this, 'FCF')">FCF</button>
-        </nav>
-      </div>
-      <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
-        <div class="w-50">
-          <div class="row">
-       
-          </div>
-          
-             
-          
-        
-        
-      
-        </div>
-        <!-- <hr /> -->
-        <div class="w-50" style="display: none;">
-          <input type="hidden" name="acweight" id="#acweight" value="AUW">
-          <input type="hidden" name="qat" id="#qat" value="Enter OAT">
-          <input type="hidden" name="hp" id="#hp" value="Enter Altitude">
-          <input type="hidden" name="wind" id="#wind" value="Enter Wind Speed">
-          
+    </header>
 
+    <!-- Main Container -->
+    <div class="app-container">
+        <div class="main-content">
+            
+            <!-- Cards Grid -->
+            <div class="cards-grid">
+                
+                <!-- Top Row: Calculations + Results side by side -->
+                <div class="performance-top-row" style="grid-column: 1 / -1;">
+                    
+                    <!-- Calculations Card -->
+                    <div class="card" id="card-calculations">
+                        <div class="card-header" onclick="toggleCard('card-calculations')">
+                            <h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/></svg>
+                                Performance Calculations
+                            </h3>
+                            <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="calc-buttons-grid">
+                                <button class="calc-btn" id="btn-heightloss" onclick="runCalc('heightloss')">Height Loss</button>
+                                <button class="calc-btn" id="btn-weightindex" onclick="runCalc('weightindex')">Weight Index</button>
+                                <button class="calc-btn" id="btn-serviceceiling" onclick="runCalc('serviceceiling')">Service Ceiling</button>
+                                <button class="calc-btn" id="btn-twinoge" onclick="runCalc('twinoge')">Twin OGE</button>
+                                <button class="calc-btn" id="btn-twinige" onclick="runCalc('twinige')">Twin IGE 10ft</button>
+                                <button class="calc-btn" id="btn-oeiclimb" onclick="runCalc('oeiclimb')">OEI Climb</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Card -->
+                    <div class="card" id="card-results">
+                        <div class="card-header" onclick="toggleCard('card-results')">
+                            <h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                Calculation Results
+                            </h3>
+                            <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="results-grid">
+                                <div class="result-item">
+                                    <label>Height Loss (ft)</label>
+                                    <input type="text" id="#heightloose" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Weight Index</label>
+                                    <input type="text" id="#Wheight_index_6" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Service Ceiling (ft)</label>
+                                    <input type="text" id="#ceilinghp_3" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>OEI V/S (ft/min)</label>
+                                    <input type="text" id="#rc" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin OGE (ft)</label>
+                                    <input type="text" id="#enginhoge" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin OGE (lb)</label>
+                                    <input type="text" id="#enginhoge_weight" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE (ft)</label>
+                                    <input type="text" id="#enginIGE" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE (lb)</label>
+                                    <input type="text" id="#enginIGE_weight" readonly placeholder="--">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <!-- Quick Info Bar -->
+                <div class="quick-info-bar" style="grid-column: 1 / -1;">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; color: white; font-weight: 600;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+                        Performance Data
+                    </div>
+                    <div class="form-field">
+                        <label for="#acweight">Total Weight (lb)</label>
+                        <input type="text" id="#acweight" name="acweight" placeholder="From STEP1" readonly>
+                    </div>
+                    <div class="form-field">
+                        <label for="#qat">OAT (C)</label>
+                        <input type="number" id="#qat" name="qat" placeholder="15">
+                    </div>
+                    <div class="form-field">
+                        <label for="#hp">Altitude (ft)</label>
+                        <input type="number" id="#hp" name="hp" placeholder="0">
+                    </div>
+                    <div class="form-field">
+                        <label for="#wind">Wind (kt)</label>
+                        <input type="number" id="#wind" name="wind" placeholder="0">
+                    </div>
+                </div>
+
+                <!-- Chart Display Card (Full Width) -->
+                <div class="card chart-card-full" id="card-chart">
+                    <div class="card-header" onclick="toggleCard('card-chart')">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                            Performance Chart
+                        </h3>
+                        <span class="chart-title-badge" id="chart-title">Select a calculation to view chart</span>
+                        <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                    </div>
+                    <div class="card-body" style="padding: 0.75rem;">
+                        <div class="chart-error-message" id="chart-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            <span id="chart-error-text">Error message here</span>
+                        </div>
+                        <div class="chart-scroll-container" id="chart-display">
+                            <div class="chart-placeholder" id="chart-placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                                </svg>
+                                <p>Click a calculation button to display the chart</p>
+                            </div>
+                            <canvas id="curveCanvas" width="950" height="1300" style="background-image: url('first.jpg'); "></canvas>
+                            <canvas id="curveCanvas1" width="960" height="1300" style="background-image: url('WeightIndexForRateofclime.jpg'); "></canvas>
+                            <canvas id="curveCanvas2" width="560" height="820" style="background-image: url('third.jpg'); "></canvas>
+                            <canvas id="curveCanvas3" width="733" height="817" style="background-image: url('newOGE.jpg'); "></canvas>
+                            <canvas id="curveCanvas4" width="733" height="814" style="background-image: url('newIGE.jpg'); "></canvas>
+                            <canvas id="curveCanvas5" width="920" height="1280" style="background-image: url('sixth.jpg'); "></canvas>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Hidden inputs needed by scripts -->
+    <div style="display: none;">
+        <input type="text" id="#weighindex">
+        <input type="text" id="#ceilinghp_2">
+        <input type="text" id="#ceilingweight_3">
+        <input type="hidden" id="zfw">
+        <div id="#for0"></div>
+        <div id="#for1"></div>
+        <div id="#for2"></div>
+        <div id="#for3"></div>
+        <div id="#for4"></div>
+        <div id="#for5"></div>
+    </div>
     
-          
-        </div>
-      </div>
-      <div class="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
-        <button type="button" onclick="totalcount()" class="signupbtn">
-          TOTAL<br/>PERFORMANCE
-        </button>
-        <button type="button" onclick="heightloosebuttondown()" class="signupbtn">
-          HEIGHT <br/>LOSS
-        </button>
-        <button type="button" onclick="weightindexbuttondown()" class="signupbtn">
-          WEIGHT <br/>INDEX
-        </button>
-        <button type="button" onclick="serviceilingbuttondown()" class="signupbtn">
-          SERVICE<br/>CEILING
-        </button>
-        <button type="button" onclick="enginhogebuttondown()" class="signupbtn">
-          TWIN ENG<br/>OGE
-        </button>
-        <button type="button" onclick="enginigebuttondown()" class="signupbtn">
-          TWIN ENG<br/>IGE
-        </button>
-        <button type="button" onclick="rcbuttondown()" class="signupbtn">
-          OEI RATE OF <br/>CLIMB AT Vy
-        </button>
-      </div>
-        </hr>
-        <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px;">
-          <div class="w-50">
-            <div id="#for0">
-              <div class="row" style="display: none;">
-                <label for="WEIGHT INDEX"><b>WEIGHT INDEX</b></label>
-                <input
-                  type="text"
-                  placeholder="The result of WEIGTH INDEX"
-                  name="weigtindex"
-                  id="#weighindex"
-                  required
-                />
-              </div>
-              <div class="row">
-                <label for="HEIGHT LOSS"><b>HEIGHT LOSS</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of HEIGHT LOSS"
-                  name="heightloose"
-                  id="#heightloose"
-                  required
-                />
-              </div>
-            </div>
-            <div id="#for1" style="display: block;">
-              <hr/>
-              <div class="row">
-                <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"><b>WEIGHT INDEX</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of WEIGHT INDEX"
-                  name="Wheight_index_6"
-                  id="#Wheight_index_6"
-                  required
-                />
-              </div>
-            </div>
-            <div id="#for2">
-              <hr />
-              <div class="row">
-                <label for="Ceiling Weight"><b>SERVICE CEILING Weight(lb):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of Ceiling Weight"
-                  name="ceilingweight_3"
-                  id="#ceilingweight_3"
-                  required
-                />
-              </div>
-              <div class="row">
-                <label for="Ceiling HP"><b>SERVICE CEILING Elevation(ft):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of Ceiling Altitude"
-                  name="ceilinghp_3"
-                  id="#ceilinghp_3"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-          
-          <div class="w-50">            
-            <div id="#for3">
-              <div class="row">
-                <label for="ENGINE HOGE"><b>TWIN ENG OGE Elevation(ft):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG OGE."
-                  name="enginhoge"
-                  id="#enginhoge"
-                  required
-                />
-              </div>
-              <div class="row">
-                <label for="ENGINE HOGE WEIGHT"><b>TWIN ENG OGE Weight(lb):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG OGE weight."
-                  name="enginhoge_weight"
-                  id="#enginhoge_weight"
-                  required
-                />
-              </div>
-              <hr> <!-- Line between IGE Weight and OEI V/S AT Vy -->
-
-            </div>
-            <div id="#for4">
-              <div class="row">
-                <label for="ENGINE IGE"><b>TWIN ENG IGE Elevation(ft):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG IGE."
-                  name="enginIGE"
-                  id="#enginIGE"
-                  required
-                />
-              </div>
-              <div class="row">
-                <label for="ENGINE IGE WEIGHT"><b>TWIN ENG IGE Weight(lb):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of twin ENG IGE weight."
-                  name="enginIGE_weight"
-                  id="#enginIGE_weight"
-                  required
-                />
-              </div>
-            </div>
-            <div id="#for5">
-              <hr />
-              <div class="row">
-                <label for="RC"><b>OEI V/S AT Vy(ft/min):</b></label>
-                <input
-                  type="text"
-                  placeholder="THE result of R/C."
-                  name="rc"
-                  id="#rc"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-        </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <canvas
-        id="curveCanvas"
-        width="950"
-        height="1300"
-        style="background-image: url('first.jpg');display: none;"
-      ></canvas>
-      <canvas
-        id="curveCanvas1"
-        width="960"
-        height="1300"
-        style="background-image: url('WeightIndexForRateofclime.jpg');display: none;"
-      ></canvas>
-      <canvas
-        id="curveCanvas2"
-        width="560"
-        height="820"
-        style="background-image: url('third.jpg');display: none;"
-      >
-      </canvas>
-      <canvas
-        id="curveCanvas3"
-        width="733"
-        height="817"
-        style="background-image: url('newOGE.jpg');display: none;"
-      >
-        <!-- <img src="first.jpg"/> -->
-      </canvas>
-      <canvas
-        id="curveCanvas4"
-        width="733"
-        height="814"
-        style="background-image: url('newIGE.jpg');display: none;"
-      >
-      </canvas>
-      <canvas
-        id="curveCanvas5"
-        width="920"
-        height="1280"
-        style="background-image: url('sixth.jpg');display: none;"
-      >
-
-      </canvas>
-    </div>
     <div class="toast-overlay" id="toast-overlay"></div>
-
+    
+    <!-- Scripts -->
     <script src="dataPersistence.js"></script>
     <script src="navigation.js"></script>
     <script src="./datafolder/heightloosemap.js"></script>
     <script src="./datafolder/weightindex.js"></script>
     <script src="./datafolder/serviceCeiling.js"></script>
     <script src="./datafolder/newhoge.js"></script>
-    <!-- <script src="./datafolder/singleEnginHovoge.js"></script> -->
-    <!-- <script src="./datafolder/singleengineIGE.js"></script> -->
     <script src="./datafolder/newIGE.js"></script>
     <script src="./datafolder/serviceclimbing.js"></script>
     <script src="./scripts.js"></script>
     <script src="step2DataHandler.js"></script>
+    
+    <script>
+        const chartTitles = {
+            'heightloss': 'Height Loss Chart',
+            'weightindex': 'Weight Index Chart',
+            'serviceceiling': 'Service Ceiling Chart',
+            'twinoge': 'Twin Engine OGE Hover',
+            'twinige': 'Twin Engine IGE 10ft Hover',
+            'oeiclimb': 'OEI Rate of Climb Chart'
+        };
+        
+        let activeCalc = null;
+        
+        function runCalc(type) {
+            // Update chart title
+            document.getElementById('chart-title').textContent = chartTitles[type] || 'Chart';
+            
+            // Hide placeholder
+            const placeholder = document.getElementById('chart-placeholder');
+            if (placeholder) placeholder.style.display = 'none';
+            
+            // Update active button state
+            document.querySelectorAll('.calc-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + type);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            activeCalc = type;
+            
+            // Call original functions - they handle everything including canvas display
+            switch(type) {
+                case 'heightloss': heightloosebuttondown(); break;
+                case 'weightindex': weightindexbuttondown(); break;
+                case 'serviceceiling': serviceilingbuttondown(); break;
+                case 'twinoge': enginhogebuttondown(); break;
+                case 'twinige': enginigebuttondown(); break;
+                case 'oeiclimb': rcbuttondown(); break;
+            }
+        }
+        
+        function toggleCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) card.classList.toggle('collapsed');
+        }
+        
+        function setActiveStep(element, stepId) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            element.classList.add('active');
+            
+            switch(stepId) {
+                case 'STEP1': saveDataAndGoToStep1(); break;
+                case 'STEP2': saveDataAndGoToStep2(); break;
+                case 'STEP3': saveDataAndGoToStep3(); break;
+                case 'FCF': saveDataAndNavigate('FCF.html'); break;
+            }
+        }
+        
+        // Let original showchart work, just hide placeholder when canvas shows
+        const originalShowchartCheck = setInterval(function() {
+            const visibleCanvas = document.querySelector('.chart-scroll-container canvas[style*="display: block"], .chart-scroll-container canvas[style*="display:block"]');
+            if (visibleCanvas) {
+                const placeholder = document.getElementById('chart-placeholder');
+                if (placeholder) placeholder.style.display = 'none';
+            }
+        }, 100);
+        
+        // Override showToast to display in chart area instead
+        window.showToast = function(message, type) {
+            showChartError(message);
+        };
+        
+        // Function to show error in chart area
+        function showChartError(message) {
+            const errorDiv = document.getElementById('chart-error');
+            const errorText = document.getElementById('chart-error-text');
+            if (errorDiv && errorText) {
+                errorText.textContent = message;
+                errorDiv.classList.add('show');
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    errorDiv.classList.remove('show');
+                }, 5000);
+            }
+        }
+        
+        // Function to hide error
+        function hideChartError() {
+            const errorDiv = document.getElementById('chart-error');
+            if (errorDiv) {
+                errorDiv.classList.remove('show');
+            }
+        }
+        
+        // Override console.log to catch error messages
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            const message = args.join(' ');
+            if (message.includes('Unable to calculate') || message.includes('Error')) {
+                showChartError(message);
+            }
+            originalConsoleLog.apply(console, args);
+        };
+        
+        // Override alert to catch error messages
+        const originalAlert = window.alert;
+        window.alert = function(message) {
+            if (message && (message.includes('Unable to calculate') || message.includes('Error') || message.includes('error'))) {
+                showChartError(message);
+            } else {
+                originalAlert(message);
+            }
+        };
 
-    <script> function setActiveStep(element, stepId) {
-      document.querySelectorAll('.step').forEach(step => {
-          step.classList.remove('active');
-      });
-      element.classList.add('active');
-      
-      switch(stepId) {
-          case 'STEP1':
-              saveDataAndGoToStep1();
-              break;
-          case 'STEP2':
-              saveDataAndGoToStep2();
-              break;
-          case 'STEP3':
-              saveDataAndGoToStep3();
-              break;
-          case 'FCF':
-              saveDataAndNavigate('FCF.html');
-              break;
-      }
-  }</script>
-  </body>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove any existing toasts
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+            
+            // Re-override showToast after all scripts loaded
+            window.showToast = function(message, type) {
+                showChartError(message);
+                // Also remove any toasts that might have been created
+                document.querySelectorAll('.toast').forEach(t => t.remove());
+            };
+            
+            setTimeout(function() {
+                const savedData = JSON.parse(localStorage.getItem('allData') || '{}');
+                
+                if (savedData['ttl-weight']) {
+                    document.getElementById('#acweight').value = savedData['ttl-weight'];
+                }
+                if (savedData['temperature']) {
+                    document.getElementById('#qat').value = savedData['temperature'];
+                }
+                if (savedData['height']) {
+                    document.getElementById('#hp').value = savedData['height'];
+                }
+                if (savedData['wind']) {
+                    document.getElementById('#wind').value = savedData['wind'];
+                }
+            }, 100);
+        });
+    </script>
+</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
