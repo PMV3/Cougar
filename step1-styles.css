@@ -1,4 +1,4 @@
-:root {
+﻿:root {
     --primary: #1e40af;
     --primary-light: #3b82f6;
     --primary-dark: #1e3a8a;
@@ -434,6 +434,7 @@ body {
     padding: 1.5rem;
     color: white;
     box-shadow: var(--shadow-xl);
+    grid-column: 1 / -1;
 }
 
 .summary-title {
@@ -447,7 +448,7 @@ body {
 
 .summary-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
 }
 

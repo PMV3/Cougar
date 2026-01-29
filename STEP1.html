@@ -23,7 +23,7 @@
                 <img src="SAUDI_CARACAL_TRANSPARENT.png" alt="Cougar Helicopter" class="brand-logo" style="height: 60px; width: auto;">
                 <div class="brand-text">
                     <h1>PMV 3</h1>
-                    <span>COUGAR AS 532 A2</span>
+                    <span>COUGAR<br>AS 532 A2</span>
                 </div>
             </div>
             <nav class="nav-tabs">
@@ -282,67 +282,48 @@
                             <input type="hidden" id="rearLongitudinalNumber" value="1"><input type="hidden" id="rearLongitudinalWeight" value="0"><input type="hidden" id="rearLongitudinalMMNT" value="0">
                             <input type="hidden" id="rearTransversalNumber" value="1"><input type="hidden" id="rearTransversalWeight" value="0"><input type="hidden" id="rearTransversalMMNT" value="0">
                             <input type="hidden" id="totalFuelCG"><input type="hidden" id="totalFuelMMNT" value="0">
+                            <div style="margin: 0.75rem 0 0 0;">
+                                <div style="font-size: 0.85rem; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
+                                    A/C Max Weight (21495) − A/C Weight = ABSOLUTE MAX FUEL: <span id="absoluteMaxFuelInCard">0.00</span> lb
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <!-- 5FT IGE Performance (no card header) -->
-                    <div class="performance-panel">
-                        <button id="calculateWeightBtn" class="btn-calculate">Max Weight 5FT IGE</button>
-                        <div id="5ft_weight" class="result-display"></div>
-                        <div class="mt-2">
-                            <button id="calculateMaxFuelBtn" class="btn-calculate" onclick="calculateZeroFuelWeightMax5ftIGE()">Max Weight 5ft IGE - Zero Fuel Weight = MAX FUEL TO USE</button>
-                            <input type="text" id="zeroFuelWeightMax5ftIGE" readonly class="result-display">
+                    <!-- Hidden inputs for calculations -->
+                    <div style="display:none;">
+                        <div id="5ft_weight"></div>
+                        <input type="hidden" id="zeroFuelWeightMax5ftIGE">
+                        <input type="hidden" id="absoluteFuelLimit">
+                    </div>
+
+                    <!-- Weight & Balance Chart -->
+                    <div class="card" id="card-chart">
+                        <div class="card-header" onclick="toggleCard('card-chart')">
+                            <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>Weight & Balance Chart</h3>
+                            <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
                         </div>
-                        <div class="mt-2">
-                            <div class="btn-calculate" style="cursor:default;">21495 - Zero Fuel Weight = ABSOLUTE MAX FUEL</div>
-                            <input type="text" id="absoluteFuelLimit" readonly class="result-display">
+                        <div class="card-body">
+                            <div id="cg-status"></div>
+                            <div class="chart-wrapper" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
+                                <img id="chart-image" src="cg.png" alt="Weight and Balance Chart" style="display: block; width: 100%; height: auto;">
+                                <canvas id="chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
             <!-- Summary Panel -->
             <div class="summary-panel">
                 <div class="summary-title">Flight Summary</div>
+                <input type="hidden" id="zfw">
                 <div class="summary-grid">
-                    <div class="summary-item"><label>Zero Fuel Weight</label><input type="text" id="zfw" readonly></div>
                     <div class="summary-item"><label>Total Weight</label><input type="text" id="ttl-weight" readonly></div>
                     <div class="summary-item"><label>Center of Gravity</label><input type="text" id="cg-summary" readonly></div>
                     <div class="summary-item"><label>Total Moment</label><input type="text" id="ttl-mmnt" readonly></div>
                 </div>
             </div>
-
-            <!-- Charts Section -->
-            <div class="charts-row">
-                <div class="card collapsed" id="card-chart">
-                    <div class="card-header" onclick="toggleCard('card-chart')">
-                        <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>Weight & Balance Chart</h3>
-                        <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-                    </div>
-                    <div class="card-body">
-                        <div id="cg-status"></div>
-                        <div class="chart-wrapper" style="position: relative; width: 100%; max-width: 800px; margin: 0 auto;">
-                            <img id="chart-image" src="cg.png" alt="Weight and Balance Chart" style="display: block; width: 100%; height: auto;">
-                            <canvas id="chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="card collapsed" id="card-ige-chart">
-                    <div class="card-header" onclick="toggleCard('card-ige-chart')">
-                        <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>Max Weight 5ft IGE Chart</h3>
-                        <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
-                    </div>
-                    <div class="card-body">
-                        <div id="ige-status"></div>
-                        <div class="chart-wrapper" style="position: relative; width: 100%;">
-                            <img id="ige-chart-image" src="5ft_ige.png" alt="Max Weight 5ft IGE Chart" style="display: block; width: 100%; height: auto;">
-                            <canvas id="ige-chart-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
     </div>
 
     <!-- Sidebar - separate box on right -->
@@ -425,5 +406,19 @@
             }
         }
     </script>
+<script>
+// Update Absolute Max Fuel display in Fuel card
+function updateAbsoluteMaxFuelInCard() {
+    const zfw = parseFloat(document.getElementById('zfw').value) || 0;
+    const acMaxWeight = 21495;
+    const absoluteMaxFuel = acMaxWeight - zfw;
+    
+    const display = document.getElementById('absoluteMaxFuelInCard');
+    if (display) {
+        display.textContent = absoluteMaxFuel.toFixed(2);
+    }
+}
+setInterval(updateAbsoluteMaxFuelInCard, 500);
+</script>
 </body>
 </html>
