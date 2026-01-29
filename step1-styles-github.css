@@ -1,4 +1,4 @@
-﻿:root {
+:root {
     --primary: #1e40af;
     --primary-light: #3b82f6;
     --primary-dark: #1e3a8a;
@@ -25,14 +25,6 @@
     --radius-xl: 24px;
     --transition: all 0.2s ease;
 }
-
-/* Container max width */
-.container {
-    max-width: 1600px;
-    margin: 0 auto;
-    width: 100%;
-}
-
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -434,7 +426,6 @@ body {
     padding: 1.5rem;
     color: white;
     box-shadow: var(--shadow-xl);
-    grid-column: 1 / -1;
 }
 
 .summary-title {
@@ -448,7 +439,7 @@ body {
 
 .summary-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
 }
 
@@ -673,31 +664,9 @@ canvas { border: 1px solid transparent; display: none; }
 .cards-grid .card:nth-child(6) { animation-delay: 0.3s; }
 .cards-grid .card:nth-child(7) { animation-delay: 0.35s; }
 
-
-/* Fixed total row outside scrollable area - matches inline total exactly */
-.total-fixed {
-    margin: 0 1.25rem;
-    width: calc(100% - 2.5rem);
-}
-
-/* Hide total-fixed and other elements when card is collapsed */
-.card.collapsed .total-fixed,
-.card.collapsed > div:not(.card-header):not(.card-body) {
-    display: none;
-}
-
-/* Adjust scrollable height to account for fixed total */
-.card-body.scrollable {
-    max-height: 350px;
-}
 /* Utility */
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .gradient-border { border: 2px solid var(--border); }
 .input-small { font-size: 0.8125rem; }
 .calculation-display { font-size: 0.9375rem; font-weight: 600; }
-
-.container {
-    max-width: 1600px;
-    margin: 0 auto;
-}
