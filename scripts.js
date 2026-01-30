@@ -62,7 +62,6 @@ function totalcount() {
   count_3();
   count_4();
   count_5();
-  if (typeof calculate5ftIGE === 'function') calculate5ftIGE();
   count_7();
   showchart(0);
   saveAllData();
@@ -131,7 +130,7 @@ function count(num) {
               return val_1_1;
           }
           showToast(
-              "Height Loss: Input out of range. OAT: -50 to 50C, Alt: 0-10,000 ft, Weight: 13,000-21,495 lb",
+              "I can not count Height Loose. Because input data is not correct",
               "danger",
               5000,
               showerrornum
@@ -158,7 +157,7 @@ function count(num) {
               return val_1_1;
           }
           showToast(
-              "Height Loss: Value outside chart limits",
+              "I can't interpolate with your input data in this Height Loose Chart",
               "info",
               5000,
               showerrornum
@@ -176,7 +175,7 @@ function count(num) {
               return val_1_1;
           }
           showToast(
-              "Height Loss: Value outside chart limits",
+              "I can't interpolate with your input data in this Height Loose Chart",
               "info",
               5000,
               showerrornum
@@ -199,7 +198,7 @@ function count(num) {
               return val_1_1;
           }
           showToast(
-              "Height Loss: Value outside chart limits",
+              "I can't interpolate with your input data in this Height Loose Chart",
               "info",
               5000,
               showerrornum
@@ -216,7 +215,7 @@ function count(num) {
               return val_1_1;
           }
           showToast(
-              "Height Loss: Value outside chart limits",
+              "I can't interpolate with your input data in this Height Loose Chart",
               "info",
               5000,
               showerrornum
@@ -252,7 +251,7 @@ function count(num) {
               return val_1_1;
           }
           showToast(
-              "Height Loss: Value outside chart limits",
+              "I can't interpolate with your input data in this Height Loose Chart",
               "info",
               5000,
               showerrornum
@@ -272,7 +271,7 @@ function count(num) {
               return val_1_1;
           }
           showToast(
-              "Height Loss: Value outside chart limits",
+              "I can't interpolate with your input data in this Height Loose Chart",
               "info",
               5000,
               showerrornum
@@ -313,7 +312,7 @@ function count_1_1() {
       document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
       document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
       showToast(
-          "Height Loss: Wind must be 0-50 kt",
+          "I can not count Height Loose. Because wind is not correct",
           "danger",
           5000,
           showerrornum
@@ -331,7 +330,7 @@ function count_1_1() {
   const fifthval = getYForX(wightindexMapval, windspeedline[windpos]);
   if (fifthval == null) {
       showToast(
-          "Height Loss: Weight Index outside chart range (7-11)",
+          "I can't interpolate with this Weight index in this Height Loose Chart",
           "info",
           5000,
           showerrornum
@@ -347,7 +346,7 @@ function count_1_1() {
   );
   if (sixthval == null) {
       showToast(
-          "Height Loss: Weight Index outside chart range (7-11)",
+          "I can't interpolate with this Weight index in this Height Loose Chart",
           "info",
           5000,
           showerrornum
@@ -388,7 +387,7 @@ function count_6() {
   if (!(qat >= -50 && qat <= 50 && hp >= 0 && hp <= 25000 && acweight >= 13000 && acweight <= 24700)) {
       document.getElementById("#Wheight_index_6").value = "";
       showToast(
-          "Weight Index: Input out of range. OAT: -50 to 50C, Alt: 0-10,000 ft, Weight: 13,000-21,495 lb",
+          "I can't count Weight Index. Input data must be correct.",
           "danger",
           5000,
           showerrornum
@@ -406,7 +405,7 @@ function count_6() {
   );
   if (firstval_6 == null) {
       showToast(
-          "Weight Index: Value outside chart limits",
+          "I can't interpolate with your input data in this Weight Index Chart",
           "info",
           5000,
           showerrornum
@@ -421,7 +420,7 @@ function count_6() {
   );
   if (secondval_6 == null) {
       showToast(
-          "Weight Index: Value outside chart limits",
+          "I can't interpolate with your input data in this Weight Index Chart",
           "info",
           5000,
           showerrornum
@@ -453,7 +452,7 @@ function count_6() {
   );
   if (thirdval_6 == null) {
       showToast(
-          "Weight Index: Value outside chart limits",
+          "I can't interpolate with your input data in this Weight Index Chart",
           "info",
           5000,
           showerrornum
@@ -468,7 +467,7 @@ function count_6() {
   );
   if (fourthval_6 == null) {
       showToast(
-          "Weight Index: Value outside chart limits",
+          "I can't interpolate with your input data in this Weight Index Chart",
           "info",
           5000,
           showerrornum
@@ -511,7 +510,7 @@ function count_3() {
       document.getElementById("#ceilingweight_3").value = "";
       document.getElementById("#ceilinghp_3").value = "";
       showToast(
-          "Service Ceiling: Input out of range. OAT: -45 to 50C, Alt: 0-20,000 ft, Weight: 13,200-21,500 lb",
+          "I can't count CEILING correctly. Because input data is not correct for this counting.",
           "danger",
           5000,
           showerrornum
@@ -528,7 +527,7 @@ function count_3() {
   const secondval_3 = getXForY(hptfmapval_3, Qat_3[qatindex_3 + 1]);
   if (firstval_3 == null || secondval_3 == null) {
       showToast(
-          "Service Ceiling: Weight value outside chart limits",
+          "I can't interpolate for Ceiling Weight with your input data in this CEILING Chart",
           "info",
           5000,
           showerrornum
@@ -544,24 +543,24 @@ function count_3() {
               : firstval_3 +
               ((forqatindex_3[qatindex_3] - qat) * (secondval_3 - firstval_3)) /
               (forqatindex_3[qatindex_3] - forqatindex_3[qatindex_3 + 1]);
-      // Blue line removed - drawFoundPoint(
-      //     ctx2,
-      //     ceilingwightmap_3,
-      //     hptfmapval_3,
-      //     "blue"
-      // );
-      // drawline(
-      //     ctx2,
-      //     { x: 35, y: hptfmapval_3 },
-      //     { x: ceilingwightmap_3, y: hptfmapval_3 },
-      //     "blue"
-      // );
-      // drawline(
-      //     ctx2,
-      //     { x: ceilingwightmap_3, y: hptfmapval_3 },
-      //     { x: ceilingwightmap_3, y: 750 },
-      //     "blue"
-      // );
+      drawFoundPoint(
+          ctx2,
+          ceilingwightmap_3,
+          hptfmapval_3,
+          "blue"
+      );
+      drawline(
+          ctx2,
+          { x: 35, y: hptfmapval_3 },
+          { x: ceilingwightmap_3, y: hptfmapval_3 },
+          "blue"
+      );
+      drawline(
+          ctx2,
+          { x: ceilingwightmap_3, y: hptfmapval_3 },
+          { x: ceilingwightmap_3, y: 750 },
+          "blue"
+      );
       const ceilingwight_3 =
           21500 - ((477 - ceilingwightmap_3) / (477 - 35)) * (21500 - 13200);
       document.getElementById("#ceilingweight_3").value = formatToTwoDecimals(ceilingwight_3);
@@ -576,7 +575,7 @@ function count_3() {
   );
   if (thirdval_3 == null || fourthval_3 == null) {
       showToast(
-          "Service Ceiling: Altitude value outside chart limits",
+          "I can't interpolate with your input data in this CEILING Chart",
           "info",
           5000,
           showerrornum
@@ -617,7 +616,7 @@ function count_4() {
       document.getElementById("#enginhoge").value = "";
       document.getElementById("#enginhoge_weight").value = "";
       showToast(
-          "Twin OGE: Input out of range. OAT: -45 to 50C, Alt: 0-20,000 ft, Weight: 13,200-21,500 lb",
+          "Input data is not correct for this calculation.",
           "danger",
           5000,
           showerrornum++
@@ -694,7 +693,7 @@ function count_4() {
   } else {
       document.getElementById("#enginhoge_weight").value = "Unable to calculate";
       showToast(
-          "Twin OGE: Weight value outside chart limits",
+          "Unable to calculate TWIN ENG OGE Weight with the given inputs.",
           "info",
           5000,
           showerrornum++
@@ -713,7 +712,7 @@ function count_5() {
     document.getElementById("#enginIGE").value = formatToTwoDecimals(hpft_5);
 document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIGEweight_5);
     showToast(
-      "Twin IGE 10ft: Input out of range. OAT: -45 to 50C, Alt: 0-20,000 ft, Weight: 13,200-21,500 lb",
+      "Input data is not correct for Engine IGE calculation.",
       "danger",
       5000,
       showerrornum++
@@ -790,7 +789,7 @@ document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIG
   } else {
     document.getElementById("#enginIGE_weight").value = "Unable to calculate";
     showToast(
-      "Twin IGE 10ft: Weight value outside chart limits",
+      "Unable to calculate Engine IGE Weight with the given inputs.",
       "info",
       5000,
       showerrornum++
@@ -810,7 +809,7 @@ function count_7() {
   if (!(qat >= -45 && qat <= 50 && weightindexcomplete_7 >= 7 && weightindexcomplete_7 <= 13 && hp >= 0 && hp <= 25000)) {
       document.getElementById("#rc").value = "";
       showToast(
-          "OEI Climb: Input out of range or Weight Index invalid",
+          "I can't count R/C correctly. Input data or Weight Index must be correct.",
           "danger",
           5000,
           showerrornum
@@ -833,7 +832,7 @@ function count_7() {
   );
   if (firstval_7 == null || secondval_7 == null) {
       showToast(
-          "OEI Climb: Value outside chart limits",
+          "I can't interpolate with your input data in this R/C Chart",
           "info",
           5000,
           showerrornum
@@ -866,7 +865,7 @@ function count_7() {
   );
   if (thirdval_7 == null || fourthval_7 == null) {
       showToast(
-          "OEI Climb: Value outside chart limits",
+          "I can't interpolate with your input data in this R/C Chart",
           "info",
           5000,
           showerrornum
@@ -1043,10 +1042,6 @@ function saveDataAndGoToStep3() {
   saveAllData();
   window.location.href = 'STEP3.html';
 }
-
-
-
-
 
 
 
