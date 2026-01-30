@@ -1,4 +1,4 @@
-const windspeed = [50, 40, 30, 20, 10, 0];
+﻿const windspeed = [50, 40, 30, 20, 10, 0];
 const windspeedline = [
   [
     //wind 50
@@ -1965,6 +1965,18 @@ function getYForX(desiredX, points, tension = 0.5) {
 
 function getXForY(desiredY, points, tension = 0.5) {
   let prevPoint = points[0];
+  
+  // If desiredY is at or beyond the last point, return the last point's x value
+  const lastPoint = points[points.length - 1];
+  if (desiredY >= lastPoint.y) {
+    return lastPoint.x;
+  }
+  
+  // If desiredY is before the first point, return null
+  if (desiredY < points[0].y) {
+    return null;
+  }
+  
   for (let i = 1; i < points.length; i++) {
     const point = points[i];
     if (desiredY >= prevPoint.y && desiredY <= point.y) {
@@ -1976,7 +1988,7 @@ function getXForY(desiredY, points, tension = 0.5) {
     }
     prevPoint = point;
   }
-  return null; // desiredX is out of bounds
+  return null; // desiredY is out of bounds
 }
 function getFirstvalue(hppos) {
   console.log("ddkdkdkdkdkd", hppos);

@@ -11,35 +11,312 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1600">
     <title>PMV 3 - Performance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="step1-styles.css">
     <style>
-        .calc-btn {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: white;
-            padding: 0.75rem 1rem;
-            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
-            border-radius: 8px;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);
+        .calc-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
         }
-        .calc-btn:hover { transform: translateY(-1px); }
-        .btn-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
-        .result-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5rem; margin-bottom: 1rem; }
-        .result-item { background: #f8fafc; border-radius: 6px; padding: 0.5rem; text-align: center; border: 1px solid #e2e8f0; }
-        .result-item label { display: block; font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem; }
-        .result-item input { width: 100%; text-align: center; border: none; background: transparent; font-weight: 600; color: #1e40af; }
-        .chart-display { width: 100%; max-height: 600px; overflow: auto; background: #f8fafc; border-radius: 8px; }
-        .chart-display img { max-width: 100%; height: auto; display: block; margin: 0 auto; }
-        .chart-title { text-align: center; font-weight: 600; color: #1e40af; padding: 0.5rem; }
+        .calc-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem 1.25rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+            box-shadow: var(--shadow-sm);
+        }
+        .calc-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .calc-btn.active { background: linear-gradient(135deg, #2563eb 0%, #60a5fa 100%); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4); }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+        .result-item {
+            background: var(--bg-main);
+            border-radius: var(--radius-sm);
+            padding: 0.5rem 0.75rem;
+            border: 1px solid var(--border);
+        }
+        .result-item label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            margin-bottom: 0.2rem;
+        }
+        .result-item input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--primary);
+            outline: none;
+        }
+        
+        .chart-scroll-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .chart-scroll-container canvas { display: none; border: none; }
+        .chart-scroll-container canvas.active { display: block; }
+        
+        .chart-placeholder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 300px;
+            color: var(--text-muted);
+            gap: 0.75rem;
+        }
+        .chart-placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+        .chart-placeholder p { font-size: 0.875rem; font-weight: 500; }
+        
+        .chart-title-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            background: rgba(255,255,255,0.2);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        
+        .performance-top-row {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 1rem;
+        }
+        
+        #card-calculations .card-body,
+        #card-results .card-body {
+            padding: 0.75rem 1rem;
+        }
+        
+        .chart-card-full { grid-column: 1 / -1; }
+        
+        /* Hide the default toast overlay */
+        .toast-overlay, .toast {
+            display: none !important;
+        }
+        
+        .chart-error-message {
+            display: none;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border: 1px solid var(--danger);
+            border-radius: var(--radius-md);
+            color: var(--danger);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+            text-align: center;
+        }
+        
+        .chart-error-message.show {
+            display: block;
+        }
+        
+        .chart-error-message svg {
+            width: 18px;
+            height: 18px;
+            vertical-align: middle;
+            margin-right: 0.5rem;
+        }
+
+        /* Decision Process Styles - Compact Card Style */
+        .decision-panel {
+            grid-column: 1 / -1;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            overflow: hidden;
+        }
+        .decision-panel-header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0.875rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .decision-panel-header svg {
+            width: 16px;
+            height: 16px;
+        }
+        .decision-panel-body {
+            padding: 1rem;
+            background: white;
+        }
+        .decision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr 1.6fr;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .decision-card {
+            text-align: center;
+            padding: 0.5rem 0.5rem;
+            background: #fafafa;
+            border-radius: 6px;
+            border: 2px solid #e5e7eb;
+            transition: all 0.2s ease;
+        }
+        .decision-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+        .decision-card.green {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+        .decision-card.red {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+        .decision-card.orange {
+            background: #fff7ed;
+            border-color: #fdba74;
+        }
+        .decision-card.blue {
+            background: #eff6ff;
+            border-color: #93c5fd;
+            border-width: 2px;
+        }
+        .decision-card.final-go {
+            background: #f0fdf4;
+            border-color: #86efac;
+            border-width: 2px;
+        }
+        .decision-card.final-nogo {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            border-width: 2px;
+        }
+        .decision-card.final-caution {
+            background: #fff7ed;
+            border-color: #fdba74;
+            border-width: 2px;
+        }
+        .decision-card-number {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #9ca3af;
+            margin-bottom: 0.15rem;
+        }
+        .decision-card.final-go .decision-card-number { color: #22c55e; }
+        .decision-card.final-nogo .decision-card-number { color: #ef4444; }
+        .decision-card.final-caution .decision-card-number { color: #f97316; }
+
+
+        .decision-card-title {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #6b7280;
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+            min-height: 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+        }
+        .decision-card.final-go .decision-card-title { color: #16a34a; }
+        .decision-card.final-nogo .decision-card-title { color: #dc2626; }
+        .decision-card.final-caution .decision-card-title { color: #ea580c; }
+
+
+        .decision-card-status {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin: 0.15rem 0;
+        }
+        .decision-card-status.yes { color: #22c55e; }
+        .decision-card-status.no { color: #ef4444; }
+        .decision-card-status.caution { color: #f97316; }
+        .decision-card-status.info { color: #3b82f6; }
+        .decision-card-status.pending { color: #d1d5db; }
+        .decision-card.final-go .decision-card-status { color: #22c55e; }
+        .decision-card.final-nogo .decision-card-status { color: #ef4444; }
+        .decision-card.final-caution .decision-card-status { color: #f97316; }
+
+
+        .decision-card-detail {
+            font-size: 0.7rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+            font-weight: 600;
+        }
+        .decision-card.final-go .decision-card-detail { color: #16a34a; }
+        .decision-card.final-nogo .decision-card-detail { color: #dc2626; }
+        .decision-card.final-caution .decision-card-detail { color: #ea580c; }
+
+
+        .decision-card-values {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            margin-top: 0.25rem;
+        }
+        .decision-card-values span {
+            display: block;
+            padding: 0.1rem 0;
+        }
+        .decision-legend {
+            display: flex;
+            justify-content: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+            padding-top: 0.5rem;
+            border-top: 1px solid #f3f4f6;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            font-size: 0.7rem;
+            color: #9ca3af;
+        }
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        .legend-dot.green { background: #22c55e; }
+        .legend-dot.red { background: #ef4444; }
+        .legend-dot.orange { background: #f97316; }
+        .legend-dot.blue { background: #3b82f6; }
     </style>
-</head><body style="overflow-x: hidden;">
+</head>
+<body>
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785); max-width: 1600px; margin: 0 auto;">
+    
+    <!-- Header -->
     <header class="app-header">
         <div class="header-content">
             <div class="brand">
-                <img src="SAUDI_CARACAL_TRANSPARENT.png" alt="Logo" class="brand-logo">
+                <img src="SAUDI_CARACAL_TRANSPARENT.png" alt="Cougar Helicopter" class="brand-logo" style="height: 60px; width: auto;">
                 <div class="brand-text">
                     <h1>PMV 3</h1>
                     <span>COUGAR<br>AS 532 A2</span>
@@ -47,65 +324,229 @@
             </div>
             <nav class="nav-tabs">
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP1')">STEP 1: Weight & Balance</button>
-                <span class="nav-arrow">→</span>
+                <span class="nav-arrow">&#8594;</span>
                 <button class="nav-tab step active" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
-                <span class="nav-arrow">→</span>
+                <span class="nav-arrow">&#8594;</span>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
-            <img src="sqn-trans.png" alt="Squadron Logo" class="brand-logo" style="filter: brightness(0) invert(1); height: 80px;">
+            <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
         </div>
     </header>
-    <div class="main-content">
-        <div class="cards-grid" style="grid-template-columns: 1fr;">
-            <div class="card" id="card-performance">
-                <div class="card-header" onclick="toggleCard('card-performance')">
-                    <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>Performance Calculations</h3>
-                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+
+    <!-- Main Container -->
+    <div class="app-container">
+        <div class="main-content">
+            
+            <!-- Cards Grid -->
+            <div class="cards-grid">
+                
+                <!-- Top Row: Calculations + Results side by side -->
+                <div class="performance-top-row" style="grid-column: 1 / -1;">
+                    
+                    <!-- Calculations Card -->
+                    <div class="card" id="card-calculations">
+                        <div class="card-header" onclick="toggleCard('card-calculations')">
+                            <h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/></svg>
+                                Performance Calculations
+                            </h3>
+                            <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="calc-buttons-grid">
+                                <button class="calc-btn" id="btn-heightloss" onclick="runCalc('heightloss')">Height Loss</button>
+                                <button class="calc-btn" id="btn-weightindex" onclick="runCalc('weightindex')">Weight Index</button>
+                                <button class="calc-btn" id="btn-serviceceiling" onclick="runCalc('serviceceiling')">Service Ceiling</button>
+                                <button class="calc-btn" id="btn-twinoge" onclick="runCalc('twinoge')">Twin OGE</button>
+                                <button class="calc-btn" id="btn-twinige" onclick="runCalc('twinige')">Twin IGE 10ft</button>
+                                <button class="calc-btn" id="btn-twinige5ft" onclick="runCalc('twinige5ft')">Twin IGE 5ft</button>
+                                <button class="calc-btn" id="btn-oeiclimb" onclick="runCalc('oeiclimb')">OEI Climb</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results Card -->
+                    <div class="card" id="card-results">
+                        <div class="card-header" onclick="toggleCard('card-results')">
+                            <h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                                Calculation Results
+                            </h3>
+                            <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                        </div>
+                        <div class="card-body">
+                            <div class="results-grid">
+                                <div class="result-item">
+                                    <label>Height Loss (ft)</label>
+                                    <input type="text" id="#heightloose" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Weight Index</label>
+                                    <input type="text" id="#Wheight_index_6" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Service Ceiling (ft)</label>
+                                    <input type="text" id="#ceilinghp_3" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>OEI V/S (ft/min)</label>
+                                    <input type="text" id="#rc" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin OGE (ft)</label>
+                                    <input type="text" id="#enginhoge" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin OGE (lb)</label>
+                                    <input type="text" id="#enginhoge_weight" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE 10ft (ft)</label>
+                                    <input type="text" id="#enginIGE" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE 10ft (lb)</label>
+                                    <input type="text" id="#enginIGE_weight" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE 5ft (ft)</label>
+                                    <input type="text" id="#enginIGE5ft" readonly placeholder="--">
+                                </div>
+                                <div class="result-item">
+                                    <label>Twin IGE 5ft (lb)</label>
+                                    <input type="text" id="#enginIGE5ft_weight" readonly placeholder="--">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
-                <div class="card-body">
-                    <!-- Buttons -->
-                    <div class="btn-grid">
-                        <button class="calc-btn" onclick="runCalc('heightloss')">HEIGHT LOSS</button>
-                        <button class="calc-btn" onclick="runCalc('weightindex')">WEIGHT INDEX</button>
-                        <button class="calc-btn" onclick="runCalc('serviceceiling')">SERVICE CEILING</button>
-                        <button class="calc-btn" onclick="runCalc('twinoge')">TWIN ENG OGE</button>
-                        <button class="calc-btn" onclick="runCalc('twinige')">TWIN ENG IGE</button>
-                        <button class="calc-btn" onclick="runCalc('oeiclimb')">OEI RATE OF CLIMB</button>
+
+
+                <!-- Decision Process Bar -->
+                <!-- Decision Process Panel - Flight Summary Style -->
+                <div class="decision-panel">
+                    <div class="decision-panel-header">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                        COUGAR DECISION MATRIX
                     </div>
-                    <!-- Results -->
-                    <div class="result-grid">
-                        <div class="result-item"><label>Height Loss</label><input type="text" id="#heightloose" readonly></div>
-                        <div class="result-item"><label>Weight Index</label><input type="text" id="#Wheight_index_6" readonly></div>
-                        <div class="result-item"><label>Service Ceiling</label><input type="text" id="#ceilinghp_3" readonly></div>
-                        <div class="result-item"><label>Twin Eng OGE (ft)</label><input type="text" id="#enginhoge" readonly></div>
-                        <div class="result-item"><label>Twin Eng OGE (lb)</label><input type="text" id="#enginhoge_weight" readonly></div>
-                        <div class="result-item"><label>Twin Eng IGE (ft)</label><input type="text" id="#enginIGE" readonly></div>
-                        <div class="result-item"><label>Twin Eng IGE (lb)</label><input type="text" id="#enginIGE_weight" readonly></div>
-                        <div class="result-item"><label>OEI V/S at Vy</label><input type="text" id="#rc" readonly></div>
+                    
+                    <div class="decision-panel-body">
+                    <!-- Hidden inputs for data -->
+                    <div style="display: none;">
+                        <input type="text" id="#acweight" name="acweight">
+                        <input type="number" id="#qat" name="qat">
+                        <input type="number" id="#hp" name="hp">
+                        <input type="number" id="#wind" name="wind">
                     </div>
-                    <!-- Chart Display -->
-                    <div class="chart-title" id="chart-title">Select a calculation to view chart</div>
-                    <div class="chart-display" id="chart-display" style="max-width: 100%; overflow: auto; max-height: 600px;">
-                        <canvas id="curveCanvas" width="950" height="1300" style="background-image: url('first.jpg'); display: none;"></canvas>
-                        <canvas id="curveCanvas1" width="960" height="1300" style="background-image: url('WeightIndexForRateofclime.jpg'); display: none;"></canvas>
-                        <canvas id="curveCanvas2" width="560" height="820" style="background-image: url('third.jpg'); display: none;"></canvas>
-                        <canvas id="curveCanvas3" width="733" height="817" style="background-image: url('newOGE.jpg'); display: none;"></canvas>
-                        <canvas id="curveCanvas4" width="733" height="814" style="background-image: url('newIGE.jpg'); display: none;"></canvas>
-                        <canvas id="curveCanvas5" width="920" height="1280" style="background-image: url('sixth.jpg'); display: none;"></canvas>
+                    
+                    <div class="decision-grid">
+                        <!-- Column I: Take-off -->
+                        <div class="decision-card" id="decision-col-1">
+                            <div class="decision-card-number">I</div>
+                            <div class="decision-card-title">CAN WE TAKE-OFF?</div>
+                            <div class="decision-card-status pending" id="decision-1-status">--</div>
+                            <div class="decision-card-values">
+                                <span id="dec-ige10-wt">IGE 10ft: --</span>
+                                <span id="dec-ige5-wt">IGE 5ft: --</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Column II: Engine Failure -->
+                        <div class="decision-card" id="decision-col-2">
+                            <div class="decision-card-number">II</div>
+                            <div class="decision-card-title">IN CASE OF ENGINE FAILURE</div>
+                            <div class="decision-card-status pending" id="decision-2-status">--</div>
+                            <div class="decision-card-detail" id="dec-step2-action">--</div>
+                        </div>
+                        
+                        <!-- Column III: OGE Hover -->
+                        <div class="decision-card" id="decision-col-3">
+                            <div class="decision-card-number">III</div>
+                            <div class="decision-card-title">CAN WE HOVER OGE IF NEEDED?</div>
+                            <div class="decision-card-status pending" id="decision-3-status">--</div>
+                        </div>
+                        
+                        <!-- Column IV: Height Loss -->
+                        <div class="decision-card" id="decision-col-4">
+                            <div class="decision-card-number">IV</div>
+                            <div class="decision-card-title">WHAT WILL BE THE HEIGHT LOSS?</div>
+                            <div class="decision-card-status info" id="decision-4-status">--</div>
+
+                        </div>
+                        
+                        <!-- Column V: Final Decision -->
+                        <div class="decision-card" id="decision-col-5">
+                            <div class="decision-card-number">V</div>
+                            <div class="decision-card-title">DECISION</div>
+                            <div class="decision-card-status pending" id="decision-5-status">--</div>
+                            <div class="decision-card-detail" id="final-decision-text">AWAITING DATA</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Color Legend -->
+                    <div class="decision-legend">
+                        <div class="legend-item">
+                            <div class="legend-dot green"></div>
+                            <span>GREEN = Safe / Approved</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot red"></div>
+                            <span>RED = Unsafe / Not Approved</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot orange"></div>
+                            <span>ORANGE = Caution / Risk</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-dot blue"></div>
+                            <span>BLUE = Information Only</span>
+                        </div>
+                    </div>
                     </div>
                 </div>
+
+                <!-- Chart Display Card (Full Width) -->
+                <div class="card chart-card-full" id="card-chart">
+                    <div class="card-header" onclick="toggleCard('card-chart')">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+                            Performance Chart
+                        </h3>
+                        <span class="chart-title-badge" id="chart-title">Select a calculation to view chart</span>
+                        <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                    </div>
+                    <div class="card-body" style="padding: 0.75rem;">
+                        <div class="chart-error-message" id="chart-error">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                            <span id="chart-error-text">Error message here</span>
+                        </div>
+                        <div class="chart-scroll-container" id="chart-display">
+                            <div class="chart-placeholder" id="chart-placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/>
+                                </svg>
+                                <p>Click a calculation button to display the chart</p>
+                            </div>
+                            <canvas id="curveCanvas" width="950" height="1300" style="background-image: url('first.jpg'); "></canvas>
+                            <canvas id="curveCanvas1" width="960" height="1300" style="background-image: url('WeightIndexForRateofclime.jpg'); "></canvas>
+                            <canvas id="curveCanvas2" width="560" height="820" style="background-image: url('third.jpg'); "></canvas>
+                            <canvas id="curveCanvas3" width="733" height="817" style="background-image: url('newOGE.jpg'); "></canvas>
+                            <canvas id="curveCanvas4" width="733" height="814" style="background-image: url('newIGE.jpg'); "></canvas>
+                            <canvas id="curveCanvas5" width="920" height="1280" style="background-image: url('sixth.jpg'); "></canvas>
+                            <canvas id="curveCanvas6" width="595" height="822" style="background-image: url('5ft_ige/5ft_ige.png');"></canvas>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
     </div>
-    
+
     <!-- Hidden inputs needed by scripts -->
     <div style="display: none;">
-        <input type="hidden" id="#acweight" value="AUW">
-        <input type="hidden" id="#qat" value="Enter OAT">
-        <input type="hidden" id="#hp" value="Enter Altitude">
-        <input type="hidden" id="#wind" value="Enter Wind Speed">
         <input type="text" id="#weighindex">
         <input type="text" id="#ceilinghp_2">
         <input type="text" id="#ceilingweight_3">
@@ -117,7 +558,10 @@
         <div id="#for4"></div>
         <div id="#for5"></div>
     </div>
+    
     <div class="toast-overlay" id="toast-overlay"></div>
+    
+    <!-- Scripts -->
     <script src="dataPersistence.js"></script>
     <script src="navigation.js"></script>
     <script src="./datafolder/heightloosemap.js"></script>
@@ -125,37 +569,65 @@
     <script src="./datafolder/serviceCeiling.js"></script>
     <script src="./datafolder/newhoge.js"></script>
     <script src="./datafolder/newIGE.js"></script>
+    <script src="./5ft_ige/5ft_ige.js"></script>
+    <script src="./5ft_ige/5ft_calculator.js"></script>
     <script src="./datafolder/serviceclimbing.js"></script>
     <script src="./scripts.js"></script>
     <script src="step2DataHandler.js"></script>
+    
     <script>
+        const chartTitles = {
+            'heightloss': 'Height Loss Chart',
+            'weightindex': 'Weight Index Chart',
+            'serviceceiling': 'Service Ceiling Chart',
+            'twinoge': 'Twin Engine OGE Hover',
+            'twinige': 'Twin Engine IGE 10ft Hover',
+            'twinige5ft': 'Twin Engine IGE 5ft Hover',
+            'oeiclimb': 'OEI Rate of Climb Chart'
+        };
+        
+        let activeCalc = null;
+        
         function runCalc(type) {
-            const titleEl = document.getElementById('chart-title');
-            const titles = {
-                'heightloss': 'Height Loss Chart',
-                'weightindex': 'Weight Index Chart',
-                'serviceceiling': 'Service Ceiling Chart',
-                'twinoge': 'Twin Engine OGE Chart',
-                'twinige': 'Twin Engine IGE Chart',
-                'oeiclimb': 'OEI Rate of Climb Chart'
-            };
+            // Update chart title
+            document.getElementById('chart-title').textContent = chartTitles[type] || 'Chart';
             
-            titleEl.textContent = titles[type] || 'Chart';
+            // Hide placeholder
+            const placeholder = document.getElementById('chart-placeholder');
+            if (placeholder) placeholder.style.display = 'none';
             
-            // Call original functions - they handle canvas display via showchart()
+            // Hide curveCanvas6 (5ft IGE) - it's not managed by the original showchart function
+            const canvas6 = document.getElementById('curveCanvas6');
+            if (canvas6) canvas6.style.display = 'none';
+            
+            // Update active button state
+            document.querySelectorAll('.calc-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById('btn-' + type);
+            if (activeBtn) activeBtn.classList.add('active');
+            
+            activeCalc = type;
+            
+            // Call original functions - they handle everything including canvas display
             switch(type) {
                 case 'heightloss': heightloosebuttondown(); break;
                 case 'weightindex': weightindexbuttondown(); break;
                 case 'serviceceiling': serviceilingbuttondown(); break;
                 case 'twinoge': enginhogebuttondown(); break;
                 case 'twinige': enginigebuttondown(); break;
+                case 'twinige5ft': enginige5ftbuttondown(); break;
                 case 'oeiclimb': rcbuttondown(); break;
             }
+        }
+        
+        function toggleCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) card.classList.toggle('collapsed');
         }
         
         function setActiveStep(element, stepId) {
             document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
             element.classList.add('active');
+            
             switch(stepId) {
                 case 'STEP1': saveDataAndGoToStep1(); break;
                 case 'STEP2': saveDataAndGoToStep2(); break;
@@ -164,9 +636,704 @@
             }
         }
         
-        function toggleCard(cardId) {
-            document.getElementById(cardId).classList.toggle('collapsed');
+        // Let original showchart work, just hide placeholder when canvas shows
+        const originalShowchartCheck = setInterval(function() {
+            const visibleCanvas = document.querySelector('.chart-scroll-container canvas[style*="display: block"], .chart-scroll-container canvas[style*="display:block"]');
+            if (visibleCanvas) {
+                const placeholder = document.getElementById('chart-placeholder');
+                if (placeholder) placeholder.style.display = 'none';
+            }
+        }, 100);
+        
+        // Override showToast to display in chart area instead
+        window.showToast = function(message, type) {
+            showChartError(message);
+        };
+        
+        // Function to show error in chart area
+        function showChartError(message) {
+            const errorDiv = document.getElementById('chart-error');
+            const errorText = document.getElementById('chart-error-text');
+            if (errorDiv && errorText) {
+                errorText.textContent = message;
+                errorDiv.classList.add('show');
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    errorDiv.classList.remove('show');
+                }, 5000);
+            }
         }
+        
+        // Function to hide error
+        function hideChartError() {
+            const errorDiv = document.getElementById('chart-error');
+            if (errorDiv) {
+                errorDiv.classList.remove('show');
+            }
+        }
+        
+        // Override console.log to catch error messages
+        const originalConsoleLog = console.log;
+        console.log = function(...args) {
+            const message = args.join(' ');
+            if (message.includes('Unable to calculate') || message.includes('Error')) {
+                showChartError(message);
+            }
+            originalConsoleLog.apply(console, args);
+        };
+        
+        // Override alert to catch error messages
+        const originalAlert = window.alert;
+        window.alert = function(message) {
+            if (message && (message.includes('Unable to calculate') || message.includes('Error') || message.includes('error'))) {
+                showChartError(message);
+            } else {
+                originalAlert(message);
+            }
+        };
+
+        // 5ft IGE calculation function
+        function enginige5ftbuttondown() {
+            // Show canvas 6 (5ft IGE)
+            document.querySelectorAll('.chart-scroll-container canvas').forEach(c => {
+                c.style.display = 'none';
+            });
+            document.getElementById('curveCanvas6').style.display = 'block';
+            document.getElementById('chart-placeholder').style.display = 'none';
+            
+            // Get canvas and context
+            const canvas6 = document.getElementById('curveCanvas6');
+            const ctx6 = canvas6.getContext('2d');
+            ctx6.clearRect(0, 0, canvas6.width, canvas6.height);
+            
+            // Get input values
+            const qat = parseFloat(document.getElementById('#qat').value);
+            const hp = parseFloat(document.getElementById('#hp').value);
+            const acweight = parseFloat(document.getElementById('#acweight').value);
+            
+            // Validate inputs
+            if (isNaN(qat) || isNaN(hp) || isNaN(acweight)) {
+                document.getElementById('#enginIGE5ft').value = 'Twin IGE 5ft: Invalid input';
+                document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: Invalid input';
+                return;
+            }
+            
+            if (qat < -50 || qat > 50) {
+                document.getElementById('#enginIGE5ft').value = 'Twin IGE 5ft: OAT must be -50 to 50C';
+                document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: OAT must be -50 to 50C';
+                return;
+            }
+            
+            // Calculate max altitude for given weight and temperature
+            const maxAlt = findHeight5ft(qat, acweight);
+            console.log('5ft IGE - Input: OAT=' + qat + ', Alt=' + hp + ', Weight=' + acweight);
+            console.log('5ft IGE - Max Altitude for weight ' + acweight + ': ' + maxAlt);
+            console.log('5ft IGE - chartData available: ' + (typeof chartData !== 'undefined'));
+            if (maxAlt !== null && !isNaN(maxAlt)) {
+                document.getElementById('#enginIGE5ft').value = maxAlt.toFixed(2);
+            } else {
+                document.getElementById('#enginIGE5ft').value = 'Twin IGE 5ft: Value outside chart limits';
+            }
+            
+            // Calculate max weight for given altitude and temperature using findWeight from 5ft_calculator.js
+            if (typeof findWeight === 'function') {
+                const maxWeight = findWeight(qat, hp);
+                console.log('5ft IGE - Max Weight for altitude ' + hp + ': ' + maxWeight);
+                if (maxWeight !== null && !isNaN(maxWeight)) {
+                    document.getElementById('#enginIGE5ft_weight').value = maxWeight.toFixed(2);
+                } else {
+                    document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: Weight outside chart limits';
+                }
+                
+                // Draw on canvas
+                draw5ftIGEChart(ctx6, canvas6, qat, hp, acweight, maxWeight, maxAlt);
+            } else {
+                document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: Calculator not loaded';
+            }
+        }
+
+        // Calculate Twin IGE 5ft values only (no canvas display change)
+        function calculate5ftIGE() {
+            // Get input values
+            const qat = parseFloat(document.getElementById('#qat').value);
+            const hp = parseFloat(document.getElementById('#hp').value);
+            const acweight = parseFloat(document.getElementById('#acweight').value);
+            
+            // Validate inputs
+            if (isNaN(qat) || isNaN(hp) || isNaN(acweight)) {
+                document.getElementById('#enginIGE5ft').value = '';
+                document.getElementById('#enginIGE5ft_weight').value = '';
+                return;
+            }
+            
+            if (qat < -50 || qat > 50) {
+                document.getElementById('#enginIGE5ft').value = 'Twin IGE 5ft: OAT must be -50 to 50C';
+                document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: OAT must be -50 to 50C';
+                return;
+            }
+            
+            // Calculate max altitude for given weight and temperature
+            const maxAlt = findHeight5ft(qat, acweight);
+            if (maxAlt !== null && !isNaN(maxAlt)) {
+                document.getElementById('#enginIGE5ft').value = maxAlt.toFixed(2);
+            } else {
+                document.getElementById('#enginIGE5ft').value = 'Twin IGE 5ft: Value outside chart limits';
+            }
+            
+            // Calculate max weight for given altitude and temperature
+            if (typeof findWeight === 'function') {
+                const maxWeight = findWeight(qat, hp);
+                if (maxWeight !== null && !isNaN(maxWeight)) {
+                    document.getElementById('#enginIGE5ft_weight').value = maxWeight.toFixed(2);
+                } else {
+                    document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: Weight outside chart limits';
+                }
+            }
+        }
+        
+        // Helper function to find altitude for given temperature and weight
+        function findHeight5ft(temperature, weight) {
+            if (typeof chartData === 'undefined') return null;
+            
+            // Find all curves that contain this weight and get their heights
+            let validPoints = [];
+            
+            for (let i = 0; i < chartData.length; i++) {
+                const height = findHeightForWeight(chartData[i], weight);
+                if (height !== null) {
+                    validPoints.push({
+                        temperature: chartData[i].temperature,
+                        height: height
+                    });
+                }
+            }
+            
+            if (validPoints.length === 0) return null;
+            if (validPoints.length === 1) return validPoints[0].height;
+            
+            // Sort by temperature descending (hottest first)
+            validPoints.sort((a, b) => b.temperature - a.temperature);
+            
+            // Find the two temperatures to interpolate between
+            let upperPoint = null;
+            let lowerPoint = null;
+            
+            for (let i = 0; i < validPoints.length - 1; i++) {
+                if (validPoints[i].temperature >= temperature && validPoints[i + 1].temperature <= temperature) {
+                    upperPoint = validPoints[i];
+                    lowerPoint = validPoints[i + 1];
+                    break;
+                }
+            }
+            
+            // If temperature is outside available range, use nearest
+            if (!upperPoint || !lowerPoint) {
+                if (temperature >= validPoints[0].temperature) {
+                    return validPoints[0].height;
+                } else if (temperature <= validPoints[validPoints.length - 1].temperature) {
+                    return validPoints[validPoints.length - 1].height;
+                }
+                // Use the two closest available points
+                upperPoint = validPoints[0];
+                lowerPoint = validPoints[validPoints.length - 1];
+            }
+            
+            // Interpolate between temperatures
+            const tempRange = upperPoint.temperature - lowerPoint.temperature;
+            if (tempRange === 0) return upperPoint.height;
+            
+            const tempRatio = (temperature - lowerPoint.temperature) / tempRange;
+            return lowerPoint.height + tempRatio * (upperPoint.height - lowerPoint.height);
+        }
+        
+        // Find height (altitude) for a given weight on a temperature curve
+        function findHeightForWeight(tempData, weight) {
+            const points = tempData.points;
+            
+            // Check if weight is in range
+            const minWeight = points[0].x;
+            const maxWeight = points[points.length - 1].x;
+            
+            // If weight is below min, return null
+            if (weight < minWeight) {
+                return null;
+            }
+            
+            // If weight is at or above max, return the altitude at max weight
+            if (weight >= maxWeight) {
+                return points[points.length - 1].y;
+            }
+            
+            // Find the two points that bracket this weight
+            for (let i = 0; i < points.length - 1; i++) {
+                if (points[i].x <= weight && points[i + 1].x >= weight) {
+                    // Interpolate between these two points
+                    const weightRatio = (weight - points[i].x) / (points[i + 1].x - points[i].x);
+                    return points[i].y + weightRatio * (points[i + 1].y - points[i].y);
+                }
+            }
+            
+            return null;
+        }
+        
+        function draw5ftIGEChart(ctx, canvas, qat, hp, acweight, maxWeight, maxAlt) {
+            // Chart boundaries for 5ft_ige.png (595x822)
+            const chartLeft = 54;
+            const chartRight = 559;
+            const chartTop = 29;
+            const chartBottom = 600;
+            
+            const weightMin = 14000;
+            const weightMax = 22000;
+            const altMin = 0;
+            const altMax = 20000;
+            
+            // Max weight line position (21495 lb)
+            const weight21495X = 515;
+            
+            // Convert weight to X pixel
+            function weightToX(w) {
+                return chartLeft + ((w - weightMin) / (weightMax - weightMin)) * (chartRight - chartLeft);
+            }
+            
+            // Convert altitude to Y pixel
+            function altToY(a) {
+                return chartBottom - ((a - altMin) / (altMax - altMin)) * (chartBottom - chartTop);
+            }
+            
+            // Helper function to draw arrow
+            function drawArrow(fromX, fromY, toX, toY, color) {
+                const headLength = 10;
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                
+                ctx.strokeStyle = color;
+                ctx.fillStyle = color;
+                ctx.lineWidth = 2;
+                
+                // Draw arrow head
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(toX - headLength * Math.cos(angle - Math.PI / 6), toY - headLength * Math.sin(angle - Math.PI / 6));
+                ctx.lineTo(toX - headLength * Math.cos(angle + Math.PI / 6), toY - headLength * Math.sin(angle + Math.PI / 6));
+                ctx.closePath();
+                ctx.fill();
+            }
+            
+            // Disable image smoothing for crisp lines
+            ctx.imageSmoothingEnabled = false;
+            
+            // Draw weight calculation in BLUE (horizontal from altitude, then down)
+            if (maxWeight && maxWeight > weightMin) {
+                ctx.fillStyle = 'blue';
+                // Cap at 21495 and use exact pixel position
+                const xWeight = (maxWeight >= 21495) ? weight21495X : Math.floor(weightToX(Math.min(maxWeight, 21495)));
+                const yAlt = Math.floor(altToY(hp));
+                const xLeft = Math.floor(chartLeft);
+                
+                // Draw horizontal line
+                ctx.fillRect(xLeft, yAlt, xWeight - xLeft, 2);
+                
+                // Draw vertical line down (stop at weight axis)
+                ctx.fillRect(xWeight - 1, yAlt, 2, chartBottom - yAlt + 80);
+                
+                // Draw point at intersection
+                ctx.beginPath();
+                ctx.arc(xWeight, yAlt, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw arrow at end of horizontal line (pointing right)
+                drawArrow(xLeft, yAlt + 1, xWeight - 5, yAlt + 1, 'blue');
+                
+                // Draw arrow at end of vertical line (pointing down)
+                drawArrow(xWeight, yAlt, xWeight, chartBottom + 70, 'blue');
+            }
+            
+            // Draw altitude calculation in RED (from weight up, then horizontal left)
+            if (maxAlt && acweight > weightMin) {
+                ctx.fillStyle = 'red';
+                // Cap at 21495 and use exact pixel position
+                const xAcWeight = (acweight >= 21495) ? weight21495X : Math.floor(weightToX(Math.min(acweight, 21495)));
+                const yMaxAlt = Math.floor(altToY(maxAlt));
+                const xLeft = Math.floor(chartLeft);
+                
+                // Draw vertical line from bottom up to intersection point
+                ctx.fillRect(xAcWeight - 1, yMaxAlt, 2, chartBottom - yMaxAlt + 80);
+                
+                // Draw horizontal line from intersection to left axis
+                ctx.fillRect(xLeft, yMaxAlt, xAcWeight - xLeft, 2);
+                
+                // Draw point at intersection
+                ctx.beginPath();
+                ctx.arc(xAcWeight, yMaxAlt, 5, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Draw arrow at end of vertical line going up (pointing up)
+                drawArrow(xAcWeight, chartBottom + 70, xAcWeight, yMaxAlt + 5, 'red');
+                
+                // Draw arrow at end of horizontal line (pointing left)
+                drawArrow(xAcWeight, yMaxAlt + 1, xLeft + 5, yMaxAlt + 1, 'red');
+            }
+        }
+
+        // Decision Process Logic
+        // Decision Process Logic
+        // Decision Process Logic
+        function updateDecisionProcess() {
+            try {
+                // Get input values safely
+                const getVal = (id) => {
+                    const el = document.getElementById(id);
+                    return el ? parseFloat(el.value) || 0 : 0;
+                };
+                
+                // Check if value is "Unable to calculate" - use 21495 as chart max
+                const getWeightVal = (id) => {
+                    const el = document.getElementById(id);
+                    if (!el) return 0;
+                    const val = parseFloat(el.value);
+                    // If Unable to calculate (NaN or 0), use chart max weight 21495
+                    if (isNaN(val) || val === 0) {
+                        // Check if the field contains "Unable" text
+                        if (el.value && el.value.toString().toLowerCase().includes('unable')) {
+                            return 21495;
+                        }
+                        return 0;
+                    }
+                    return val;
+                };
+                
+                const acweight = getVal('#acweight');
+                const hp = getVal('#hp');
+                const ige10wt = getWeightVal('#enginIGE_weight');
+                const ige5wt = getWeightVal('#enginIGE5ft_weight');
+                const ogeWt = getWeightVal('#enginhoge_weight');
+                const serviceCeiling = getVal('#ceilinghp_3');
+                const oeiVS = getVal('#rc');
+                const ogeAlt = getVal('#enginhoge');
+                const heightLoss = getVal('#heightloose');
+                
+                // Get display elements safely
+                const setDisplay = (id, text) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = text;
+                };
+                
+                // Track step results
+                let step1Pass = null;
+                let step2Pass = null;
+                let step3Pass = null;
+                
+                // Update Column II display
+                // Step II display handled in Step II logic below
+
+
+                
+                // Update Column III display
+                // Step III display - just YES/NO
+
+                
+                // Update Column IV display
+
+                
+                // Step I: Hover IGE with Both Engines
+                const col1 = document.getElementById('decision-col-1');
+                const status1 = document.getElementById('decision-1-status');
+                const ige10El = document.getElementById('dec-ige10-wt');
+                const ige5El = document.getElementById('dec-ige5-wt');
+                
+                if (acweight > 0) {
+                    const ige10ok = ige10wt > 0 && ige10wt >= acweight;
+                    const ige5ok = ige5wt > 0 && ige5wt >= acweight;
+                    step1Pass = ige10ok || ige5ok;
+                    
+                    if (ige10El) {
+                        if (ige10wt > 0) {
+                            ige10El.textContent = 'IGE 10ft: ' + (ige10ok ? 'YES' : 'NO');
+                            ige10El.className = 'value-data ' + (ige10ok ? 'safe' : 'unsafe');
+                        } else {
+                            ige10El.textContent = 'IGE 10ft: --';
+                            ige10El.className = 'value-data';
+                        }
+                    }
+                    
+                    if (ige5El) {
+                        if (ige5wt > 0) {
+                            ige5El.textContent = 'IGE 5ft: ' + (ige5ok ? 'YES' : 'NO');
+                            ige5El.className = 'value-data ' + (ige5ok ? 'safe' : 'unsafe');
+                        } else {
+                            ige5El.textContent = 'IGE 5ft: --';
+                            ige5El.className = 'value-data';
+                        }
+                    }
+                    
+                    if (col1 && status1) {
+                        if (step1Pass) {
+                            col1.className = 'decision-card green';
+                            status1.textContent = 'YES';
+                            status1.className = 'decision-card-status yes';
+                        } else {
+                            col1.className = 'decision-card red';
+                            status1.textContent = 'NO';
+                            status1.className = 'decision-card-status no';
+                        }
+                    }
+                } else {
+                    if (col1) col1.className = 'decision-card';
+                    if (status1) { status1.textContent = '--'; status1.className = 'decision-card-status pending'; }
+                    if (ige10El) { ige10El.textContent = 'IGE 10ft: --'; ige10El.className = 'value-data'; }
+                    if (ige5El) { ige5El.textContent = 'IGE 5ft: --'; ige5El.className = 'value-data'; }
+                }
+                
+                // Step II: OEI - Positive ROC & Below Ceiling
+                const col2 = document.getElementById('decision-col-2');
+                const status2 = document.getElementById('decision-2-status');
+                const step2Action = document.getElementById('dec-step2-action');
+                
+                if (serviceCeiling > 0 || oeiVS !== 0) {
+                    const ceilingOk = serviceCeiling >= hp;
+                    const oeiOk = oeiVS >= 0;
+                    step2Pass = ceilingOk && oeiOk;
+                    
+                    if (col2 && status2 && step2Action) {
+                        if (step2Pass) {
+                            col2.className = 'decision-card green';
+                            status2.textContent = 'YES';
+                            status2.className = 'decision-card-status yes';
+                            step2Action.textContent = 'CONTINUE WITH OEI';
+                            step2Action.className = 'value-data safe';
+                        } else {
+                            col2.className = 'decision-card red';
+                            status2.textContent = 'NO';
+                            status2.className = 'decision-card-status no';
+                            step2Action.textContent = 'LAND';
+                            step2Action.className = 'value-data unsafe';
+                        }
+                    }
+                } else {
+                    if (col2) col2.className = 'decision-card';
+                    if (status2) { status2.textContent = '--'; status2.className = 'decision-card-status pending'; }
+                    if (step2Action) { step2Action.textContent = '--'; step2Action.className = 'value-data'; }
+                }
+                
+                // Step III: Hover OGE with Both Engines (weight comparison)
+                const col3 = document.getElementById('decision-col-3');
+                const status3 = document.getElementById('decision-3-status');
+                
+                if (acweight > 0 && ogeWt > 0) {
+                    step3Pass = ogeWt >= acweight;
+                    
+                    if (col3 && status3) {
+                        if (step3Pass) {
+                            col3.className = 'decision-card green';
+                            status3.textContent = 'YES';
+                            status3.className = 'decision-card-status yes';
+                        } else {
+                            col3.className = 'decision-card red';
+                            status3.textContent = 'NO';
+                            status3.className = 'decision-card-status no';
+                        }
+                    }
+                } else {
+                    if (col3) col3.className = 'decision-card';
+                    if (status3) { status3.textContent = '--'; status3.className = 'decision-card-status pending'; }
+                }
+                // Step IV: Height Loss (informational)
+                const col4 = document.getElementById('decision-col-4');
+                const status4 = document.getElementById('decision-4-status');
+                
+                if (heightLoss > 0) {
+                    if (col4) col4.className = 'decision-card blue';
+                    if (status4) {
+                        status4.textContent = heightLoss.toFixed(0) + ' ft';
+                        status4.className = 'decision-card-status info';
+                    }
+                } else {
+                    if (col4) col4.className = 'decision-card';
+                    if (status4) { status4.textContent = '--'; status4.className = 'decision-card-status pending'; }
+                }
+                
+                // Step V: Final Decision - based on which step failed
+                const col5 = document.getElementById('decision-col-5');
+                const status5 = document.getElementById('decision-5-status');
+                const finalText = document.getElementById('final-decision-text');
+                
+                const hasData = step1Pass !== null || step2Pass !== null || step3Pass !== null;
+                
+                if (hasData) {
+                    if (step1Pass === false) {
+                        // Step I failed - DO NOT TAKE OFF
+                        if (col5) col5.className = 'decision-card final-nogo';
+                        if (status5) { status5.textContent = 'NO-GO'; status5.className = 'decision-card-status no'; }
+                        if (finalText) { finalText.textContent = 'DO NOT TAKE OFF'; finalText.style.color = '#ef4444'; }
+                    } else if (step2Pass === false) {
+                        // Step II failed - ENGINE FAILURE RISK
+                        if (col5) col5.className = 'decision-card final-nogo';
+                        if (status5) { status5.textContent = 'CAUTION'; status5.className = 'decision-card-status no'; }
+                        if (finalText) { finalText.textContent = 'OEI RISK - FORCED LANDING'; finalText.style.color = '#f97316'; }
+                    } else if (step3Pass === false) {
+                        // Step III failed - ADJUST MISSION
+                        if (col5) col5.className = 'decision-card final-nogo';
+                        if (status5) { status5.textContent = 'ADJUST'; status5.className = 'decision-card-status no'; }
+                        if (finalText) { finalText.textContent = 'REDUCE WEIGHT/ALT'; finalText.style.color = '#f97316'; }
+                    } else if (step1Pass && step2Pass && step3Pass) {
+                        // All passed - GO
+                        if (col5) col5.className = 'decision-card final-go';
+                        if (status5) { status5.textContent = 'GO'; status5.className = 'decision-card-status yes'; }
+                        if (finalText) { finalText.textContent = 'MISSION APPROVED'; finalText.style.color = '#22c55e'; }
+                    } else {
+                        // Some data missing
+                        if (col5) col5.className = 'decision-card';
+                        if (status5) { status5.textContent = '--'; status5.className = 'decision-card-status pending'; }
+                        if (finalText) { finalText.textContent = 'INCOMPLETE DATA'; finalText.style.color = 'white'; }
+                    }
+                } else {
+                    if (col5) col5.className = 'decision-card';
+                    if (status5) { status5.textContent = '--'; status5.className = 'decision-card-status pending'; }
+                    if (finalText) { finalText.textContent = 'AWAITING DATA'; finalText.style.color = 'white'; }
+                }
+            } catch (e) {
+                console.error('Decision update error:', e);
+            }
+        }
+        
+        // Add input listeners for decision updates
+        function setupDecisionListeners() {
+            const inputs = ['#qat', '#hp', '#acweight', '#wind'];
+            inputs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', function() {
+                        // Run all calculations when inputs change
+                        if (typeof totalcount === 'function') {
+                            totalcount();
+                        }
+                        setTimeout(updateDecisionProcess, 300);
+                    });
+                    el.addEventListener('change', function() {
+                        if (typeof totalcount === 'function') {
+                            totalcount();
+                        }
+                        setTimeout(updateDecisionProcess, 300);
+                    });
+                }
+            });
+            
+            // Periodic check for value updates
+            setInterval(updateDecisionProcess, 1000);
+            
+            // Run initial calculations
+            setTimeout(function() {
+                if (typeof totalcount === 'function') {
+                    totalcount();
+                }
+                updateDecisionProcess();
+            }, 500);
+        }
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Remove any existing toasts
+            document.querySelectorAll('.toast').forEach(t => t.remove());
+            
+            // Re-override showToast after all scripts loaded
+            window.showToast = function(message, type) {
+                showChartError(message);
+                // Also remove any toasts that might have been created
+                document.querySelectorAll('.toast').forEach(t => t.remove());
+            };
+            
+            setTimeout(function() {
+                const savedData = JSON.parse(localStorage.getItem('allData') || '{}');
+                
+                if (savedData['ttl-weight']) {
+                    document.getElementById('#acweight').value = savedData['ttl-weight'];
+                }
+                if (savedData['temperature']) {
+                    document.getElementById('#qat').value = savedData['temperature'];
+                }
+                if (savedData['height']) {
+                    document.getElementById('#hp').value = savedData['height'];
+                }
+                if (savedData['wind']) {
+                    document.getElementById('#wind').value = savedData['wind'];
+                }
+            }, 100);
+            
+            // Setup decision process listeners
+            setupDecisionListeners();
+            
+            // Initial update after data loads
+            setTimeout(updateDecisionProcess, 500);
+        });
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
