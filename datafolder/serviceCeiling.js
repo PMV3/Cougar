@@ -1,4 +1,4 @@
-const forqatindex_3 = [50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -45];
+﻿const forqatindex_3 = [50, 40, 30, 20, 10, 0, -10, -20, -30, -40, -45];
 const Qat_3 = [
   [
     //50
@@ -734,7 +734,18 @@ const Qat_3 = [
 ];
 function getYForXanother(desiredX, points, tension = 0.5) {
   let prevPoint = points[0];
-  // console.log("dkdkdkdkk");
+  
+  // If desiredX is at or beyond the last point, return the last point's y value
+  const lastPoint = points[points.length - 1];
+  if (desiredX >= lastPoint.x) {
+    return lastPoint.y;
+  }
+  
+  // If desiredX is before the first point, return null
+  if (desiredX < points[0].x) {
+    return null;
+  }
+  
   for (let i = 1; i < points.length; i++) {
     const point = points[i];
     if (desiredX >= prevPoint.x && desiredX <= point.x) {

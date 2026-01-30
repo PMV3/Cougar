@@ -28,9 +28,9 @@
             </div>
             <nav class="nav-tabs">
                 <button class="nav-tab step active" onclick="setActiveStep(this, 'STEP1')">STEP 1: Weight & Balance</button>
-                <span class="nav-arrow">→</span>
+                <span class="nav-arrow">&#8594;</span>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
-                <span class="nav-arrow">→</span>
+                <span class="nav-arrow">&#8594;</span>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
@@ -66,7 +66,7 @@
                     <input type="number" id="wind" name="wind" placeholder="0">
                 </div>
                 <div class="form-field">
-                    <label for="temperature">OAT (°C)</label>
+                    <label for="temperature">OAT (&deg;C)</label>
                     <input type="number" id="temperature" name="temperature" placeholder="15">
                 </div>
                 <div class="form-field">
@@ -192,8 +192,8 @@
                         <tbody><tr class="total-row"><td class="row-label">Total</td><td></td><td></td><td><input type="text" id="totalPassengersWeight" readonly></td></tr></tbody>
                     </table>
                     <div style="margin: 0.75rem 1.25rem 1rem 1.25rem;">
-                        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('span').textContent = this.nextElementSibling.style.display === 'none' ? '▶' : '▼'" style="font-size: 0.8rem; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
-                            <span>▶</span> Passenger Seating Layout
+                        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('span').textContent = this.nextElementSibling.style.display === 'none' ? 'â–¶' : 'â–¼'" style="font-size: 0.8rem; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
+                            <span>â–¶</span> Passenger Seating Layout
                         </div>
                         <img src="3.png" alt="Passenger Seating Layout" style="width: 100%; border-radius: 6px; margin-top: 0.75rem; display: none;">
                     </div>
@@ -219,8 +219,8 @@
                         <input type="hidden" id="totalStretchersCG">
                     </div>
                     <div style="margin: 0.75rem 1.25rem 1rem 1.25rem;">
-                        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('span').textContent = this.nextElementSibling.style.display === 'none' ? '▶' : '▼'" style="font-size: 0.8rem; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
-                            <span>▶</span> Stretcher Positions
+                        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('span').textContent = this.nextElementSibling.style.display === 'none' ? 'â–¶' : 'â–¼'" style="font-size: 0.8rem; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
+                            <span>â–¶</span> Stretcher Positions
                         </div>
                         <img src="4.png" alt="Stretcher Positions" style="width: 100%; border-radius: 6px; margin-top: 0.75rem; display: none;">
                     </div>
@@ -247,8 +247,8 @@
                         <input type="hidden" id="totalOtherLoadCG">
                     </div>
                     <div style="margin: 0.75rem 1.25rem 1rem 1.25rem;">
-                        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('span').textContent = this.nextElementSibling.style.display === 'none' ? '▶' : '▼'" style="font-size: 0.8rem; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
-                            <span>▶</span> Additional Layout
+                        <div onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'none' ? 'block' : 'none'; this.querySelector('span').textContent = this.nextElementSibling.style.display === 'none' ? 'â–¶' : 'â–¼'" style="font-size: 0.8rem; font-weight: 600; color: white; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; transition: all 0.2s; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
+                            <span>â–¶</span> Additional Layout
                         </div>
                         <img src="5.png" alt="Additional Layout" style="width: 100%; border-radius: 6px; margin-top: 0.75rem; display: none;">
                     </div>
@@ -284,7 +284,7 @@
                             <input type="hidden" id="totalFuelCG"><input type="hidden" id="totalFuelMMNT" value="0">
                             <div style="margin: 0.75rem 0 0 0;">
                                 <div style="font-size: 0.85rem; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
-                                    A/C Max Weight (21495) − A/C Weight = ABSOLUTE MAX FUEL: <span id="absoluteMaxFuelInCard">0.00</span> lb
+                                    A/C Max Weight (21495) &#8722; A/C Weight = ABSOLUTE MAX FUEL: <span id="absoluteMaxFuelInCard">0.00</span> lb
                                 </div>
                             </div>
                         </div>
@@ -385,10 +385,10 @@
             var header = content.previousElementSibling;
             if (content.style.display === "none" || content.style.display === "") {
                 content.style.display = "block";
-                header.textContent = header.textContent.replace("â–¼", "â–²");
+                header.textContent = header.textContent.replace("Ã¢â€“Â¼", "Ã¢â€“Â²");
             } else {
                 content.style.display = "none";
-                header.textContent = header.textContent.replace("â–²", "â–¼");
+                header.textContent = header.textContent.replace("Ã¢â€“Â²", "Ã¢â€“Â¼");
             }
         }
 
@@ -422,3 +422,4 @@ setInterval(updateAbsoluteMaxFuelInCard, 500);
 </script>
 </body>
 </html>
+
