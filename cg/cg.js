@@ -1,4 +1,4 @@
-let zeroFuelWeightMax5ftIGE = 0;
+﻿let zeroFuelWeightMax5ftIGE = 0;
 
 function updateWeight(numberId, singleWeight, weightId, mmntId, cg) {
     const numberElement = document.getElementById(numberId);
@@ -214,22 +214,22 @@ document.addEventListener('DOMContentLoaded', function () {
             { number: 'transacoStretcherNumber', weight: 'transacoStretcherWeight', cg: 257, mmnt: 'transacoStretcherMMNT', singleWeight: 91 },
             { number: 'sarKitNetNumber', weight: 'sarKitNetWeight', cg: 257, mmnt: 'sarKitNetMMNT', singleWeight: 13 },
             { number: 'medicalKitNumber', weight: 'medicalKitWeight', cg: 257, mmnt: 'medicalKitMMNT', singleWeight: 70 },
-            { number: 'passengerANumber', weight: 'passengerAWeight', cg: 96.69, mmnt: 'passengerAMMNT', singleWeight: 250 },
-            { number: 'passengerBNumber', weight: 'passengerBWeight', cg: 113.71, mmnt: 'passengerBMMNT', singleWeight: 250 },
-            { number: 'passengerCNumber', weight: 'passengerCWeight', cg: 131.59, mmnt: 'passengerCMMNT', singleWeight: 250 },
-            { number: 'passengerDNumber', weight: 'passengerDWeight', cg: 149.72, mmnt: 'passengerDMMNT', singleWeight: 250 },
-            { number: 'passengerENumber', weight: 'passengerEWeight', cg: 166.27, mmnt: 'passengerEMMNT', singleWeight: 250 },
-            { number: 'passengerFNumber', weight: 'passengerFWeight', cg: 185.18, mmnt: 'passengerFMMNT', singleWeight: 250 },
-            { number: 'passengerGNumber', weight: 'passengerGWeight', cg: 201.73, mmnt: 'passengerGMMNT', singleWeight: 250 },
-            { number: 'passengerHNumber', weight: 'passengerHWeight', cg: 220.64, mmnt: 'passengerHMMNT', singleWeight: 250 },
-            { number: 'passengerINumber', weight: 'passengerIWeight', cg: 237.19, mmnt: 'passengerIMMNT', singleWeight: 250 },
-            { number: 'passengerJNumber', weight: 'passengerJWeight', cg: 257.28, mmnt: 'passengerJMMNT', singleWeight: 250 },
-            { number: 'passengerKNumber', weight: 'passengerKWeight', cg: 273.83, mmnt: 'passengerKMMNT', singleWeight: 250 },
-            { number: 'passengerLNumber', weight: 'passengerLWeight', cg: 293.53, mmnt: 'passengerLMMNT', singleWeight: 250 },
-            { number: 'stretcherANumber', weight: 'stretcherAWeight', cg: 126.87, mmnt: 'stretcherAMMNT', singleWeight: 220 },
-            { number: 'stretcherBNumber', weight: 'stretcherBWeight', cg: 135.14, mmnt: 'stretcherBMMNT', singleWeight: 220 },
-            { number: 'stretcherCNumber', weight: 'stretcherCWeight', cg: 225.76, mmnt: 'stretcherCMMNT', singleWeight: 220 },
-            { number: 'stretcherDNumber', weight: 'stretcherDWeight', cg: 259.84, mmnt: 'stretcherDMMNT', singleWeight: 220 },
+            { number: 'passengerANumber', weight: 'passengerAWeight', cg: 96.69, mmnt: 'passengerAMMNT', singleWeight: 200 },
+            { number: 'passengerBNumber', weight: 'passengerBWeight', cg: 113.71, mmnt: 'passengerBMMNT', singleWeight: 200 },
+            { number: 'passengerCNumber', weight: 'passengerCWeight', cg: 131.59, mmnt: 'passengerCMMNT', singleWeight: 200 },
+            { number: 'passengerDNumber', weight: 'passengerDWeight', cg: 149.72, mmnt: 'passengerDMMNT', singleWeight: 200 },
+            { number: 'passengerENumber', weight: 'passengerEWeight', cg: 166.27, mmnt: 'passengerEMMNT', singleWeight: 200 },
+            { number: 'passengerFNumber', weight: 'passengerFWeight', cg: 185.18, mmnt: 'passengerFMMNT', singleWeight: 200 },
+            { number: 'passengerGNumber', weight: 'passengerGWeight', cg: 201.73, mmnt: 'passengerGMMNT', singleWeight: 200 },
+            { number: 'passengerHNumber', weight: 'passengerHWeight', cg: 220.64, mmnt: 'passengerHMMNT', singleWeight: 200 },
+            { number: 'passengerINumber', weight: 'passengerIWeight', cg: 237.19, mmnt: 'passengerIMMNT', singleWeight: 200 },
+            { number: 'passengerJNumber', weight: 'passengerJWeight', cg: 257.28, mmnt: 'passengerJMMNT', singleWeight: 200 },
+            { number: 'passengerKNumber', weight: 'passengerKWeight', cg: 273.83, mmnt: 'passengerKMMNT', singleWeight: 200 },
+            { number: 'passengerLNumber', weight: 'passengerLWeight', cg: 293.53, mmnt: 'passengerLMMNT', singleWeight: 200 },
+            { number: 'stretcherANumber', weight: 'stretcherAWeight', cg: 126.87, mmnt: 'stretcherAMMNT', singleWeight: 20 },
+            { number: 'stretcherBNumber', weight: 'stretcherBWeight', cg: 135.14, mmnt: 'stretcherBMMNT', singleWeight: 20 },
+            { number: 'stretcherCNumber', weight: 'stretcherCWeight', cg: 225.76, mmnt: 'stretcherCMMNT', singleWeight: 20 },
+            { number: 'stretcherDNumber', weight: 'stretcherDWeight', cg: 259.84, mmnt: 'stretcherDMMNT', singleWeight: 20 },
             { number: 'sectionANumber', weight: 'sectionAWeight', cg: 120, mmnt: 'sectionAMMNT', singleWeight: 0 },
             { number: 'sectionBNumber', weight: 'sectionBWeight', cg: 140, mmnt: 'sectionBMMNT', singleWeight: 0 },
             { number: 'sectionCNumber', weight: 'sectionCWeight', cg: 180, mmnt: 'sectionCMMNT', singleWeight: 0 },
@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
             console.error("Chart drawer not available or drawResult is not a function");
         }
 
-        // Draw on IGE chart (Altitude + Temperature → Max Weight)
+        // Draw on IGE chart (Altitude + Temperature â†’ Max Weight)
         if (window.igeChartDrawer && typeof window.igeChartDrawer.drawResult === 'function') {
             const altitude = parseFloat(document.getElementById('height')?.value) || 0;
             const temperature = parseFloat(document.getElementById('temperature')?.value) || 15;
@@ -460,7 +460,7 @@ function calculateWeight() {
     }
 
     if (temperature < -50 || temperature > 50) {
-        resultDiv.textContent = "Temperature must be between -50°C and 50°C.";
+        resultDiv.textContent = "Temperature must be between -50Â°C and 50Â°C.";
         return;
     }
 

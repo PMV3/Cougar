@@ -235,6 +235,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
     gap: 1rem;
+    align-items: start;
 }
 
 /* Card Component */
@@ -304,6 +305,7 @@ body {
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
     grid-column: 1 / -1;
+    align-items: start;
 }
 
 .charts-row {
