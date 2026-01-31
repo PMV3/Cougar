@@ -104,6 +104,7 @@
             display: grid;
             grid-template-columns: 1fr 1.5fr;
             gap: 1rem;
+            align-items: start;
         }
         
         #card-calculations .card-body,
@@ -165,6 +166,12 @@
         .decision-panel-header svg {
             width: 16px;
             height: 16px;
+        }
+        .decision-panel.collapsed .decision-panel-body {
+            display: none;
+        }
+        .decision-panel.collapsed .card-toggle svg {
+            transform: rotate(-90deg);
         }
         .decision-panel-body {
             padding: 1rem;
@@ -426,10 +433,11 @@
 
                 <!-- Decision Process Bar -->
                 <!-- Decision Process Panel - Flight Summary Style -->
-                <div class="decision-panel">
-                    <div class="decision-panel-header">
+                <div class="decision-panel" id="decision-panel">
+                    <div class="decision-panel-header" onclick="toggleDecisionPanel()" style="cursor: pointer;">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
                         COUGAR DECISION MATRIX
+                        <span class="card-toggle" style="margin-left: auto;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><path d="m6 9 6 6 6-6"/></svg></span>
                     </div>
                     
                     <div class="decision-panel-body">
@@ -622,6 +630,11 @@
         function toggleCard(cardId) {
             const card = document.getElementById(cardId);
             if (card) card.classList.toggle('collapsed');
+        }
+
+        function toggleDecisionPanel() {
+            const panel = document.getElementById('decision-panel');
+            if (panel) panel.classList.toggle('collapsed');
         }
         
         function setActiveStep(element, stepId) {
@@ -1268,6 +1281,20 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
