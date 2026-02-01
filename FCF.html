@@ -1,481 +1,674 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YW913537F4');
-</script>
-    <meta charset="UTF-8" />
-    <title>PMV 3</title>
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YW913537F4');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1600">
+    <title>PMV 3 - FCF</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="step1-styles.css">
     <style>
-      canvas {
-        border: 1px solid black;
-      }
-      input {
-        width: calc(100% - 23px);
-        /* max-width: 150px; */
-        padding: 10px;
-        /* margin: 5px 0 22px 0; */
-        display: inline-block;
-        border: 1 px solid linen;
-        background: #f1f1f1;
-        background-color: #fffdfd;
-        outline: none;
-        border-radius: 6px;
-      }
-      
-
-      select {
-        width: 100%;
-        /* max-width: 150px; */
-        padding: 10px;
-        /* margin: 5px 0 22px 0; */
-        display: inline-block;
-        border: 1 px solid linen;
-        background: #f1f1f1;
-        background-color: #fffdfd;
-        outline: none;
-        border-radius: 6px;
-      }
-
-      .row {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 5px;
-        margin: 20px 10px;
-        /* width: 100%; */
-      }
-
-      /* Add a background color when the inputs get focus *
-
-/* Set a style for all buttons */
-      button {
-        background-color: #04aa6d;
-        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-        color: white;
-        padding: 14px 20px;
-        margin: 6px 0;
-        border: none;
-        cursor: pointer;
-        width: 13.8%;
-        opacity: 0.9;
-      }
-
-      button:hover {
-        opacity: 1;
-      }
-      .container {
-        width: calc(100% - 960px);
-        height: auto;
-        float: left;
-        min-width: 865px;
-        /* padding-right: 15px;
-        margin-right: 15%; */
-      }
-
-      .w-50 {
-        width: 50%;
-      }
-            /* Remove arrows from number inputs */
-            input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            appearance: none;
-            margin: 0;
+        /* Compact 4x2 Input Grid */
+        .inputs-grid-4x2 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
         }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-        }
-
-
-        .steps {
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-    width: 1600px;
-    margin-top: -5px; /* Adjust as needed to bring steps closer */
-
-}
-.step {
-    background-color: #04aa6d;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: white;
-    padding: 14px 20px;
-    margin: 6px 0;
-    border: none;
-    cursor: pointer;
-    width: 13.8%;
-    opacity: 0.9;
-    transition: all 0.3s ease;
-}
-.step:hover {
-    opacity: 1;
-}
-.step.active {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-.header-container {
+        .input-item {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0px;
+            flex-direction: column;
+            gap: 0.25rem;
         }
-
-        .header-logo {
-            width: 150px;
+        .input-item label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .input-item input, .input-item select {
+            padding: 0.5rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            background: var(--bg-card);
+        }
+        .input-item input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        
+        /* Smaller Action Buttons */
+        .fcf-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.5rem;
+        }
+        .fcf-btn {
+            padding: 0.85rem 0.75rem;
+            border: none;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: var(--radius-md);
+            text-transform: uppercase;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+        .fcf-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        .fcf-btn.active {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-dark) 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        /* Results Grid - Always Show All */
+        .results-grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+        }
+        .results-grid-2col .full-width {
+            grid-column: 1 / -1;
+        }
+        .result-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .result-item label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .result-item input, .result-item select {
+            padding: 0.5rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            background: var(--bg-main);
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .result-item.highlight input {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-color: var(--primary);
+        }
+        
+        /* Single Chart Section */
+        .chart-section {
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem 0;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+        .chart-section canvas {
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            max-width: 100%;
             height: auto;
         }
-
-        .title-container {
-            text-align: center;
-            flex-grow: 1;
-        }
-
-        .main-title {
-            font-size: 36px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        .subtitle {
-            font-size: 24px;
-            font-weight: normal;
-            color: #555;
-        }
-        #jddOverlay {
-          cursor: not-allowed; /* Change cursor to indicate non-interactive */
-      }
-      
-
-    </style>
-     <link rel="stylesheet" href="./styles.css" />
-  </head>
-  <body style="display: flex; gap: 20px; min-width: 1887px;">
-    
-    <div class="container" 
-  style="border: 1px solid black;
-  border-radius: 10px;
-  padding: 10px;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)"
-  >
-  <div class="header-container">
-    <img src="wing.png" alt="Left Logo" class="header-logo">
-    <div class="title-container">
-        <h1 class="main-title">PMV 3</h1>
-        <h2 class="subtitle">COUGAR AS 532 A2</h2>
-    </div>
-    <img src="sqau.png" alt="Right Logo" class="header-logo">
-  </div>
-  
-  <!-- Rest of your existing code -->
-      
-      <nav class="steps" style="width: 175%;  padding: 0px 0;">
-        <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
-        <button class="step" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
-        <button class="step" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
-        <button class="step active" onclick="setActiveStep(this, 'FCF')">FCF</button>
-    </nav>
-      <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
-        <div class="w-50">
-     
-          <div class="row">
-            <label for="torque"><b>TORQUE (%):</b></label>
-            <input type="number" id="#torque" name="torque" value="43.2">
-          </div>
-          <div class="row">
-            <label for="nr_rpm"><b>NR (rpm):</b></label>
-            <input type="number" id="#nr_rpm" name="nr_rpm" value="259">
-          </div>
-          <div class="row">
-            <label for="actualNg"><b>ACTUAL NG(%):</b></label>
-            <input type="number" id="#actualNg" name="actualNg" value="98.3">
-          </div>
-          <div class="row">
-            <label for="actualt4"><b>T4 (°C):</b></label>
-            <input type="number" id="#actualt4" name="actualt4" value="650">
-          </div>
-          
-        </div>
-        <!-- <hr /> -->
-        <div class="w-50">
-          <div class="row">
-            <label for="nr_100"><b>NR 100% (265 rpm)</b></label>
-            <input
-              type="text"
-              name="nr_100"
-              id="#nr_100"
-              value="265"
-              required
-            />
-          </div>
-          <div class="row">
-            <label for="qat"><b>QAT (°C):</b></label>
-            <input
-              id="#qat"
-              name="qat"
-              type="text"
-              placeholder="Enter OAT"
-              value="-22"
-              required
-            />
-          </div>
-
-          <div class="row">
-            <label for="hp"><b>HP (ft):</b></label>
-            <input
-              type="text"
-              value="6100"
-              placeholder="Enter Altitude"
-              name="hp"
-              id="#hp"
-              required
-            />
-          </div>
-
-          <div class="row">
-            <label for="speed"><b>SPEED (kt):</b></label>
-            <input
-              type="text"
-              value="130"
-              placeholder="Enter SPEED"
-              name="speed"
-              id="#speed"
-              required
-            />
-          </div>
-          <!-- <div class="row">
-            <label for="WIND"><b>Wind (kt):</b></label>
-            <input
-              type="text"
-              placeholder="Enter Wind Speed"
-              name="wind"
-              id="#wind"
-              value=""
-              required
-            />
-          </div> -->
-          
-        </div>
-      </div>
-      <div class="display: flex; justify-content: center; align-items: flex-start; gap: 15px">
-        <button type="button" onclick="getall()" class="signupbtn">
-          TOTAL<br/>RESULT
-        </button>
-        <button type="button" onclick="getcorrectNG()" class="signupbtn">
-          CORRECT <br/>NG
-        </button>
-        <button type="button" onclick="getgraduation()" class="signupbtn">
-          ENGINE POWER <br/>CHECK
-        </button>
-        <button type="button" onclick="getmaxt4()" class="signupbtn">
-          ENGINE <br/>CONDITION
-        </button>
         
-      </div>
-        </hr>
-        <div style="display: flex; justify-content: center; align-items: flex-start; gap: 15px;">
-          <div class="w-50">
-            
-              <div id = "#fornew0">
-                <div class="row" >
-                  <label for="CORRECTED NG"><b>CORRECTED NG (%)</b></label>
-                  <input
-                    type="text"
-                    placeholder="The result of CORRECTED NG"
-                    name="corrected_ng"
-                    id="#corrected_ng"
-                    required
-                  />
+        /* Hide number spinners */
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        input[type="number"] { -moz-appearance: textfield; }
+        
+        /* Compact card body */
+        #card-inputs .card-body,
+        #card-results .card-body {
+            padding: 1rem;
+        }
+        /* New FCF Button */
+        .new-flight-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.1rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            margin-right: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .new-flight-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            background: #f8fafc;
+        }
+        .new-flight-btn:active {
+            transform: translateY(0);
+        }
+        .new-flight-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785); max-width: 1600px; margin: 0 auto;">
+    
+    <header class="app-header">
+        <div class="header-content">
+            <div class="brand">
+                <img src="SAUDI_CARACAL_TRANSPARENT.png" alt="Cougar Helicopter" class="brand-logo" style="height: 60px; width: auto;">
+                <div class="brand-text">
+                    <h1>PMV 3</h1>
+                    <span>COUGAR<br>AS 532 A2</span>
                 </div>
-                
-              </div>
-              <div id="#fornew1">
-                <hr/>
-                <div class="row">
-                  
-                  <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
-                    ><b>POINT A</b></label
-                  >
-                  <input
-                    type="text"
-                    placeholder="The result of A point"
-                    name="point_A"
-                    id="#point_A"
-                    required
-                  />
-                </div>
-                <div class="row">
-                  
-                  <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
-                    ><b>POINT B</b></label
-                  >
-                  <input
-                    type="text"
-                    placeholder="The result of B point"
-                    name="point_B"
-                    id="#point_B"
-                    required
-                  />
-                </div>
-                <div class="row">
-                  
-                  <label for="Net Margin For chart 6 Wheight_index.jpg"
-                    ><b>Net Margin(%):</b></label
-                  >
-                  <input
-                    type="text"
-                    placeholder="The result of Net Margin"
-                    name="net_margin"
-                    id="#net_margin"
-                    required
-                  />
-                </div>
-
-
-                <div class="row">
-                  
-                  <label for="Gross Margin For chart 6 Wheight_index.jpg"
-                    ><b>Gross Margin(%):</b></label
-                  >
-                  <input
-                    type="text"
-                    placeholder="The result of Gross Margin"
-                    name="gross_margin"
-                    id="#gross_margin"
-                    required
-                  />
-                </div>
-                <div class="row">
-                  
-                    <label for="WEIGHT INDEX For chart 6 Wheight_index.jpg"
-                      ><b>ENGIN CONDITION</b></label
-                    >
-                    <input
-                      type="text"
-                      placeholder="The result of ENGIN CONDITION"
-                      name="engin_condition"
-                      id="#engin_condition"
-                      required
-                    />
-                  </div>
-              </div>
-              
             </div>
-          
-            <div class="w-50">            
-                <div id="#fornew3">
-                  <div class="row">
-                    <label for="MAXI t4"><b>MAX T4(°C):</b></label>
-                    <input
-                      type="text"
-                      placeholder="THE result of MAX T4."
-                      name="maxit4"
-                      id="#maxit4"
-                      required
-                    />
-                    <div class="w-50" id="jddSelectionContainer" style="position: relative; display: none;">
-                      <!-- Overlay element to prevent interaction -->
-                      <div id="jddOverlay" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; background: rgba(0, 0, 0, 0); z-index: 10; display: none;"></div>
-                      
-                      <div class="row"></div>
-                      <label for="jddSelection"><b>Select JDD Option:</b></label>
-                      <select id="jddSelection" onchange="toggleJDDOption()">
-                          <option value="with">Without JDD</option>
-                          <option value="without">With JDD</option>
-                      </select>
-                  </div>
-                  
-                  
-                  </div>
-                  <div class="row">
-                    <label for="Enginconditionone"><b>Engin Condition For T4(°C):</b></label>
-                    <input
-                      type="text"
-                      placeholder="THE result of MAX T4."
-                      name="Enginconditionone"
-                      id="#Enginconditionone"
-                      required
-                    />
-                  </div>
-                </div>
-                
-              </div>
-            </div>
-          </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP1')">STEP 1: Weight &amp; Balance</button>
+                <span class="nav-arrow">&rarr;</span>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
+                <span class="nav-arrow">&rarr;</span>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step active" onclick="setActiveStep(this, 'FCF')">FCF</button>
+            </nav>
+            <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
         </div>
-      </div>
+    </header>
+
+    <div class="app-container">
+        <div class="main-content">
+
+            <!-- FCF Input Parameters (4x2 Grid) -->
+            <div class="card" id="card-inputs">
+                <div class="card-header">
+                    <h3 onclick="toggleCard('card-inputs')" style="cursor: pointer; flex: 1;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                        FCF Input Parameters
+                    </h3>
+                    <button class="new-flight-btn" onclick="event.stopPropagation(); resetFCF();">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+                            <path d="M3 3v5h5"/>
+                        </svg>
+                        New FCF
+                    </button>
+                    <span class="card-toggle" onclick="toggleCard('card-inputs')" style="cursor: pointer;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body">
+                    <div class="inputs-grid-4x2">
+                        <!-- Row 1 -->
+                        <div class="input-item">
+                            <label>Torque (%)</label>
+                            <input type="number" id="#torque" name="torque" placeholder="e.g. 43.2">
+                        </div>
+                        <div class="input-item">
+                            <label>NR (rpm)</label>
+                            <input type="number" id="#nr_rpm" name="nr_rpm" placeholder="e.g. 259">
+                        </div>
+                        <div class="input-item">
+                            <label>Actual NG (%)</label>
+                            <input type="number" id="#actualNg" name="actualNg" placeholder="e.g. 98.3">
+                        </div>
+                        <div class="input-item">
+                            <label>T4 (&deg;C)</label>
+                            <input type="number" id="#actualt4" name="actualt4" placeholder="e.g. 650">
+                        </div>
+                        <!-- Row 2 -->
+                        <div class="input-item">
+                            <label>QAT (&deg;C)</label>
+                            <input type="text" id="#qat" name="qat" placeholder="e.g. -22">
+                        </div>
+                        <div class="input-item">
+                            <label>HP (ft)</label>
+                            <input type="text" id="#hp" name="hp" placeholder="e.g. 6100">
+                        </div>
+                        <div class="input-item">
+                            <label>Speed (kt)</label>
+                            <input type="text" id="#speed" name="speed" placeholder="e.g. 130">
+                        </div>
+                        <div class="input-item">
+                            <label>NR 100% (rpm)</label>
+                            <input type="text" id="#nr_100" name="nr_100" value="265">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Smaller Action Buttons -->
+            <div class="fcf-buttons">
+                <button class="fcf-btn" id="btn-total" onclick="calculateTotal(this)">Total Result</button>
+                <button class="fcf-btn" id="btn-ng" onclick="calculateNG(this)">Correct NG</button>
+                <button class="fcf-btn" id="btn-power" onclick="calculatePower(this)">Engine Power Check</button>
+                <button class="fcf-btn" id="btn-condition" onclick="calculateCondition(this)">Engine Condition</button>
+            </div>
+
+            <!-- FCF Results (Always Show All) -->
+            <div class="card" id="card-results">
+                <div class="card-header" onclick="toggleCard('card-results')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                        FCF Results
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body">
+                    <!-- Hidden divs for mainscript.js compatibility -->
+                    <div id="#fornew0" style="display:none;"></div>
+                    <div id="#fornew1" style="display:none;"></div>
+                    <div id="#fornew3" style="display:none;"></div>
+                    
+                    <!-- Unified Results Grid -->
+                    <div class="results-grid-2col">
+                        <div class="result-item" data-section="ng">
+                            <label>Corrected NG (%)</label>
+                            <input type="text" id="#corrected_ng" name="corrected_ng" placeholder="--" readonly>
+                        </div>
+                        <div class="result-item" data-section="t4">
+                            <label>MAX T4 (&deg;C)</label>
+                            <input type="text" id="#maxit4" name="maxit4" placeholder="--" readonly>
+                        </div>
+                        <div class="result-item" data-section="power">
+                            <label>Point A</label>
+                            <input type="text" id="#point_A" name="point_A" placeholder="--" readonly>
+                        </div>
+                        <div class="result-item" data-section="power">
+                            <label>Point B</label>
+                            <input type="text" id="#point_B" name="point_B" placeholder="--" readonly>
+                        </div>
+                        <div class="result-item" data-section="power">
+                            <label>Net Margin (%)</label>
+                            <input type="text" id="#net_margin" name="net_margin" placeholder="--" readonly>
+                        </div>
+                        <div class="result-item" data-section="power">
+                            <label>Gross Margin (%)</label>
+                            <input type="text" id="#gross_margin" name="gross_margin" placeholder="--" readonly>
+                        </div>
+                        <div class="result-item" data-section="power">
+                            <label>Engine Condition</label>
+                            <input type="text" id="#engin_condition" name="engin_condition" placeholder="--" readonly>
+                        </div>
+                        <div class="result-item" data-section="t4" id="jddSelectionContainer" style="position: relative;">
+                            <div id="jddOverlay" style="display: none;"></div>
+                            <label>JDD Option</label>
+                            <select id="jddSelection" onchange="toggleJDDOption()">
+                                <option value="with">Without JDD</option>
+                                <option value="without">With JDD</option>
+                            </select>
+                        </div>
+                        <div class="result-item full-width" data-section="t4">
+                            <label>Engine Condition For T4 (&deg;C)</label>
+                            <input type="text" id="#Enginconditionone" name="Enginconditionone" placeholder="--" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FCF Chart (Single Chart) -->
+            <div class="card" id="card-chart">
+                <div class="card-header" onclick="toggleCard('card-chart')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                        FCF Chart
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body">
+                    <div class="chart-section">
+                        <canvas id="newcurveCanvas" width="821" height="1018" style="background-image: url('changedCorrectedNG.jpg'); display: none;"></canvas>
+                        <canvas id="newcurveCanvas1" width="831" height="998" style="background-image: url('MaxIt4.jpg'); display: none;"></canvas>
+                        <canvas id="newcurveCanvas4" width="831" height="998" style="background-image: url('jdd.png'); display: none;"></canvas>
+                        <canvas id="newcurveCanvas2" width="841" height="1020" style="background-image: url('correctedgraduation.jpg'); display: none;"></canvas>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
-    <div>
-      <canvas
-        id="newcurveCanvas"
-        width="821"
-        height="1018"
-        style="background-image: url('changedCorrectedNG.jpg');display: none;"
-      ></canvas>
-      <canvas
-        id="newcurveCanvas1"
-        width="831"
-        height="998"
-        style="background-image: url('MaxIt4.jpg');display: none;"
-      ></canvas>
-      <canvas
-      id="newcurveCanvas4"
-      width="831"
-      height="998"
-      style="background-image: url('jdd.png');display: none;"
-    ></canvas>
-      <canvas
-        id="newcurveCanvas2"
-        width="841"
-        height="1020"
-        style="background-image: url('correctedgraduation.jpg');"
-      >
-      </canvas>
-      
     </div>
+
     <div class="toast-overlay" id="toast-overlay"></div>
 
-    
-    
-    <!-- <script src="./datafolder/singleEnginHovoge.js"></script> -->
-    <!-- <script src="./datafolder/singleengineIGE.js"></script> -->
     <script src="./newdatas/maxit4map.js"></script>
-    <script src="./newdatas//correctedNGdata.js"></script>
+    <script src="./newdatas/correctedNGdata.js"></script>
     <script src="./newdatas/toquedatamap.js"></script>
     <script src="./mainscript.js"></script>
-
-
+    
     <script>
-    function setActiveStep(element, stepId) {
-      document.querySelectorAll('.step').forEach(step => {
-          step.classList.remove('active');
-      });
-      element.classList.add('active');
-      
-      switch(stepId) {
-          case 'STEP1':
-              window.location.href = 'STEP1.html';
-              break;
-          case 'STEP2':
-              window.location.href = 'STEP2.html';
-              break;
-          case 'STEP3':
-              window.location.href = 'STEP3.html';
-              break;
-          case 'FCF':
-              window.location.href = 'FCF.html';
-              break;
-      }
-  }
-</script>
-  </body>
+        function toggleCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) card.classList.toggle('collapsed');
+        }
+        
+        function setActiveStep(element, stepId) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            element.classList.add('active');
+            switch(stepId) {
+                case 'STEP1': window.location.href = 'STEP1.html'; break;
+                case 'STEP2': window.location.href = 'STEP2.html'; break;
+                case 'STEP3': window.location.href = 'STEP3.html'; break;
+                case 'FCF': window.location.href = 'FCF.html'; break;
+            }
+        }
+        
+        // Button active state
+        function setActiveButton(btn) {
+            document.querySelectorAll('.fcf-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-total').classList.add('active');
+            btn.classList.add('active');
+        }
+        
+        // Show/hide result sections
+        function showSections(sections) {
+            // Hide all first
+            document.querySelectorAll('.result-item[data-section]').forEach(item => {
+                item.style.display = 'none';
+            });
+            // Show selected sections
+            sections.forEach(section => {
+                document.querySelectorAll('.result-item[data-section="' + section + '"]').forEach(item => {
+                    item.style.display = 'flex';
+                });
+            });
+        }
+        
+        // Hide all charts
+        function hideAllCharts() {
+            document.getElementById('newcurveCanvas').style.display = 'none';
+            document.getElementById('newcurveCanvas1').style.display = 'none';
+            document.getElementById('newcurveCanvas2').style.display = 'none';
+            document.getElementById('newcurveCanvas4').style.display = 'none';
+        }
+        
+        // Check if required inputs are filled
+        function hasRequiredInputs() {
+            const torque = document.getElementById('#torque').value;
+            const nr = document.getElementById('#nr_rpm').value;
+            const ng = document.getElementById('#actualNg').value;
+            const t4 = document.getElementById('#actualt4').value;
+            const qat = document.getElementById('#qat').value;
+            const hp = document.getElementById('#hp').value;
+            const speed = document.getElementById('#speed').value;
+            
+            return torque && nr && ng && t4 && qat && hp && speed;
+        }
+        
+        // Show warning if inputs are missing
+        function showInputWarning() {
+            // Clear any existing errors
+            if (typeof errorpanclear === 'function') errorpanclear();
+            
+            // Create a simple warning
+            const toast = document.createElement('div');
+            toast.className = 'toast toast-warning';
+            toast.innerHTML = '<div style="padding: 12px 20px; background: #f59e0b; color: white; border-radius: 8px; font-weight: 500;">Please fill all input fields first</div>';
+            toast.style.cssText = 'position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 9999;';
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+        
+        // Wrapper functions that call original functions and set button state
+        function calculateTotal(btn) {
+            if (!hasRequiredInputs()) {
+                showInputWarning();
+                return;
+            }
+            setActiveButton(btn);
+            showSections(['ng', 'power', 't4']);
+            hideAllCharts();
+            if (typeof errorpanclear === 'function') errorpanclear();
+            if (typeof getall === 'function') getall();
+        }
+        
+        function calculateNG(btn) {
+            if (!hasRequiredInputs()) {
+                showInputWarning();
+                return;
+            }
+            setActiveButton(btn);
+            showSections(['ng']);
+            hideAllCharts();
+            if (typeof errorpanclear === 'function') errorpanclear();
+            if (typeof getcorrectNG === 'function') getcorrectNG();
+        }
+        
+        function calculatePower(btn) {
+            if (!hasRequiredInputs()) {
+                showInputWarning();
+                return;
+            }
+            setActiveButton(btn);
+            showSections(['ng', 'power']);
+            hideAllCharts();
+            if (typeof errorpanclear === 'function') errorpanclear();
+            if (typeof getgraduation === 'function') getgraduation();
+        }
+        
+        function calculateCondition(btn) {
+            if (!hasRequiredInputs()) {
+                showInputWarning();
+                return;
+            }
+            setActiveButton(btn);
+            showSections(['t4']);
+            hideAllCharts();
+            if (typeof errorpanclear === 'function') errorpanclear();
+            if (typeof getmaxt4 === 'function') getmaxt4();
+        }
+        
+        
+        // Save inputs to localStorage
+        function saveInputs() {
+            const inputs = {
+                torque: document.getElementById('#torque').value,
+                nr_rpm: document.getElementById('#nr_rpm').value,
+                actualNg: document.getElementById('#actualNg').value,
+                actualt4: document.getElementById('#actualt4').value,
+                nr_100: document.getElementById('#nr_100').value,
+                qat: document.getElementById('#qat').value,
+                hp: document.getElementById('#hp').value,
+                speed: document.getElementById('#speed').value
+            };
+            localStorage.setItem('fcf_inputs', JSON.stringify(inputs));
+        }
+        
+        // Restore inputs from localStorage
+        function restoreInputs() {
+            const saved = localStorage.getItem('fcf_inputs');
+            if (saved) {
+                const inputs = JSON.parse(saved);
+                if (inputs.torque) document.getElementById('#torque').value = inputs.torque;
+                if (inputs.nr_rpm) document.getElementById('#nr_rpm').value = inputs.nr_rpm;
+                if (inputs.actualNg) document.getElementById('#actualNg').value = inputs.actualNg;
+                if (inputs.actualt4) document.getElementById('#actualt4').value = inputs.actualt4;
+                if (inputs.nr_100) document.getElementById('#nr_100').value = inputs.nr_100;
+                if (inputs.qat) document.getElementById('#qat').value = inputs.qat;
+                if (inputs.hp) document.getElementById('#hp').value = inputs.hp;
+                if (inputs.speed) document.getElementById('#speed').value = inputs.speed;
+            }
+        }
+        
+        // Setup input listeners to auto-save
+        // Setup input listeners to auto-save and auto-calculate
+        function setupInputListeners() {
+            const ids = ['#torque', '#nr_rpm', '#actualNg', '#actualt4', '#nr_100', '#qat', '#hp', '#speed'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.addEventListener('input', function() {
+                        saveInputs();
+                        checkAndAutoCalculate();
+                    });
+                }
+            });
+        }
+        
+        // Auto-calculate when all fields are filled
+        function checkAndAutoCalculate() {
+            if (hasRequiredInputs()) {
+                // Small delay to let user finish typing
+                clearTimeout(window.autoCalcTimer);
+                window.autoCalcTimer = setTimeout(function() {
+                    const activeBtn = document.querySelector('.fcf-btn.active') || document.getElementById('btn-total');
+                    const btnId = activeBtn.id;
+                    
+                    if (typeof errorpanclear === 'function') errorpanclear();
+                    hideAllCharts();
+                    
+                    if (btnId === 'btn-total' && typeof getall === 'function') {
+                        showSections(['ng', 'power', 't4']);
+                        getall();
+                    } else if (btnId === 'btn-ng' && typeof getcorrectNG === 'function') {
+                        showSections(['ng']);
+                        getcorrectNG();
+                    } else if (btnId === 'btn-power' && typeof getgraduation === 'function') {
+                        showSections(['ng', 'power']);
+                        getgraduation();
+                    } else if (btnId === 'btn-condition' && typeof getmaxt4 === 'function') {
+                        showSections(['t4']);
+                        getmaxt4();
+                    } else {
+                        document.getElementById('btn-total').classList.add('active');
+                        showSections(['ng', 'power', 't4']);
+                        if (typeof getall === 'function') getall();
+                    }
+                }, 500);
+            }
+        }
+
+
+        // Show all sections by default on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restore saved inputs
+            restoreInputs();
+            
+            // Setup input listeners to save on change
+            setupInputListeners();
+            
+            // Set Total Result as active tab
+            document.getElementById('btn-total').classList.add('active');
+            
+            // Show all result sections
+            showSections(['ng', 'power', 't4']);
+            
+            // Hide ALL charts on page load
+            hideAllCharts();
+            
+            // Clear any error toasts on page load
+            setTimeout(function() {
+                if (typeof errorpanclear === 'function') errorpanclear();
+            }, 100);
+        });
+        
+        // Reset FCF - clear all inputs and results
+        function resetFCF() {
+            // Clear any error toasts first
+            if (typeof errorpanclear === 'function') errorpanclear();
+            
+            // Clear saved inputs from localStorage
+            localStorage.removeItem('fcf_inputs');
+            
+            // Reset input fields to defaults
+            document.getElementById('#torque').value = '';
+            document.getElementById('#nr_rpm').value = '';
+            document.getElementById('#actualNg').value = '';
+            document.getElementById('#actualt4').value = '';
+            document.getElementById('#nr_100').value = '265';
+            document.getElementById('#qat').value = '';
+            document.getElementById('#hp').value = '';
+            document.getElementById('#speed').value = '';
+            
+            // Reset result fields
+            document.getElementById('#corrected_ng').value = '';
+            document.getElementById('#maxit4').value = '';
+            document.getElementById('#point_A').value = '';
+            document.getElementById('#point_B').value = '';
+            document.getElementById('#net_margin').value = '';
+            document.getElementById('#gross_margin').value = '';
+            document.getElementById('#engin_condition').value = '';
+            document.getElementById('#Enginconditionone').value = '';
+            
+            // Reset JDD selection
+            document.getElementById('jddSelection').selectedIndex = 0;
+            
+            // Hide all charts and show default
+            hideAllCharts();
+            // Charts hidden after reset
+            
+            // Clear canvas drawings
+            const canvases = ['newcurveCanvas', 'newcurveCanvas1', 'newcurveCanvas2', 'newcurveCanvas4'];
+            canvases.forEach(id => {
+                const canvas = document.getElementById(id);
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            
+            // Reset button states
+            document.querySelectorAll('.fcf-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-total').classList.add('active');
+            
+            // Show all result sections
+            showSections(['ng', 'power', 't4']);
+        }
+    </script>
+</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
