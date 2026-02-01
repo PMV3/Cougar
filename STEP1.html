@@ -9,6 +9,7 @@
         gtag('config', 'G-YW913537F4');
     </script>
     <meta charset="UTF-8" />
+    <link rel="icon" href="data:," />
     <meta name="viewport" content="width=1600">
     <title>PMV 3 - Weight & Balance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -120,37 +121,97 @@
                 <!-- Optional Equipment -->
                 <div class="card" id="card-equipment">
                     <div class="card-header" onclick="toggleCard('card-equipment')">
-                        <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Optional Equipment</h3>
+                        <h3><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Mission Equipment</h3>
                         <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
                     </div>
                     <div class="card-body scrollable">
-                        <table class="data-table">
-                            <thead><tr><th>Equipment</th><th>Single Wgt</th><th>Number</th><th>Weight</th></tr></thead>
-                            <tbody>
-                                <tr><td class="row-label">FLIR (remove)</td><td class="ref-weight">-88</td><td><input type="text" id="flirNumber" value="" oninput="updateWeight('flirNumber', -88, 'flirWeight', 'flirMMNT', -18.9)"></td><td><input type="text" id="flirWeight" value="" readonly></td></tr><input type="hidden" id="flirMMNT" value="">
-                                <tr><td class="row-label">Hoist</td><td class="ref-weight">97</td><td><input type="text" id="hoistNumber" value="" oninput="updateWeight('hoistNumber', 97, 'hoistWeight', 'hoistMMNT', 162.2)"></td><td><input type="text" id="hoistWeight" value="" readonly></td></tr><input type="hidden" id="hoistMMNT" value="">
-                                <tr><td class="row-label">Fast Rope</td><td class="ref-weight">80</td><td><input type="text" id="fastRopeNumber" value="" oninput="updateWeight('fastRopeNumber', 80, 'fastRopeWeight', 'fastRopeMMNT', 167.98)"></td><td><input type="text" id="fastRopeWeight" value="" readonly></td></tr><input type="hidden" id="fastRopeMMNT" value="">
-                                <tr><td class="row-label">Search Light</td><td class="ref-weight">53</td><td><input type="text" id="searchLightNumber" value="" oninput="updateWeight('searchLightNumber', 53, 'searchLightWeight', 'searchLightMMNT', 120.56)"></td><td><input type="text" id="searchLightWeight" value="" readonly></td></tr><input type="hidden" id="searchLightMMNT" value="">
-                                <tr><td class="row-label">MG58 RH (empty)</td><td class="ref-weight">72</td><td><input type="text" id="mg58RHNumber" value="" oninput="updateWeight('mg58RHNumber', 72, 'mg58RHWeight', 'mg58RHMMNT', 108.94)"></td><td><input type="text" id="mg58RHWeight" value="" readonly></td></tr><input type="hidden" id="mg58RHMMNT" value="">
-                                <tr><td class="row-label">MG58 LH (empty)</td><td class="ref-weight">72</td><td><input type="text" id="mg58LHNumber" value="" oninput="updateWeight('mg58LHNumber', 72, 'mg58LHWeight', 'mg58LHMMNT', 116.42)"></td><td><input type="text" id="mg58LHWeight" value="" readonly></td></tr><input type="hidden" id="mg58LHMMNT" value="">
-                                <tr><td class="row-label">MG58 Ammo Boxes</td><td class="ref-weight">31</td><td><input type="text" id="extraAmmoBoxNumber" value="" oninput="updateWeight('extraAmmoBoxNumber', 31, 'extraAmmoBoxWeight', 'extraAmmoBoxMMNT', 95)"></td><td><input type="text" id="extraAmmoBoxWeight" value="" readonly></td></tr><input type="hidden" id="extraAmmoBoxMMNT" value="">
-                                <tr><td class="row-label">JDD Both Sides</td><td class="ref-weight">320</td><td><input type="text" id="jddNumber" value="" oninput="updateWeight('jddNumber', 320, 'jddWeight', 'jddMMNT', 194.5)"></td><td><input type="text" id="jddWeight" value="" readonly></td></tr><input type="hidden" id="jddMMNT" value="">
-                                <tr><td class="row-label">20MM Gun (empty)</td><td class="ref-weight">269</td><td><input type="text" id="gunNumber" value="" oninput="updateWeight('gunNumber', 269, 'gunWeight', 'gunMMNT', 100.4)"></td><td><input type="text" id="gunWeight" value="" readonly></td></tr><input type="hidden" id="gunMMNT" value="">
-                                <tr><td class="row-label">20MM Gun (loaded)</td><td class="ref-weight">452</td><td><input type="text" id="gunLoadedNumber" value="" oninput="updateWeight('gunLoadedNumber', 452, 'gunLoadedWeight', 'gunLoadedMMNT', 100.4)"></td><td><input type="text" id="gunLoadedWeight" value="" readonly></td></tr><input type="hidden" id="gunLoadedMMNT" value="">
-                                <tr><td class="row-label">Rocket Launcher (empty)</td><td class="ref-weight">170</td><td><input type="text" id="rocketLauncherNumber" value="" oninput="updateWeight('rocketLauncherNumber', 170, 'rocketLauncherWeight', 'rocketLauncherMMNT', 117)"></td><td><input type="text" id="rocketLauncherWeight" value="" readonly></td></tr><input type="hidden" id="rocketLauncherMMNT" value="">
-                                <tr><td class="row-label">Rocket Launcher (loaded)</td><td class="ref-weight">682</td><td><input type="text" id="rocketLauncherLoadedNumber" value="" oninput="updateWeight('rocketLauncherLoadedNumber', 682, 'rocketLauncherLoadedWeight', 'rocketLauncherLoadedMMNT', 117)"></td><td><input type="text" id="rocketLauncherLoadedWeight" value="" readonly></td></tr><input type="hidden" id="rocketLauncherLoadedMMNT" value="">
-                                <tr><td class="row-label">Refuelling Probe</td><td class="ref-weight">330</td><td><input type="text" id="refuelingProbeNumber" value="" oninput="updateWeight('refuelingProbeNumber', 330, 'refuelingProbeWeight', 'refuelingProbeMMNT', 1)"></td><td><input type="text" id="refuelingProbeWeight" value="" readonly></td></tr><input type="hidden" id="refuelingProbeMMNT" value="">
-                                <tr><td class="row-label">Armoured Doors</td><td class="ref-weight">40</td><td><input type="text" id="doorsArmouredNumber" value="" oninput="updateWeight('doorsArmouredNumber', 40, 'doorsArmouredWeight', 'doorsArmouredMMNT', 56.73)"></td><td><input type="text" id="doorsArmouredWeight" value="" readonly></td></tr><input type="hidden" id="doorsArmouredMMNT" value="">
-                                <tr><td class="row-label">Armoured Seats</td><td class="ref-weight">118</td><td><input type="text" id="seatsArmouredNumber" value="" oninput="updateWeight('seatsArmouredNumber', 118, 'seatsArmouredWeight', 'seatsArmouredMMNT', 58.31)"></td><td><input type="text" id="seatsArmouredWeight" value="" readonly></td></tr><input type="hidden" id="seatsArmouredMMNT" value="">
-                                <tr><td class="row-label">Armoured Floor</td><td class="ref-weight">522</td><td><input type="text" id="floorArmouredNumber" value="" oninput="updateWeight('floorArmouredNumber', 522, 'floorArmouredWeight', 'floorArmouredMMNT', 141.84)"></td><td><input type="text" id="floorArmouredWeight" value="" readonly></td></tr><input type="hidden" id="floorArmouredMMNT" value="">
-                                <tr><td class="row-label">Common SAR Kit</td><td class="ref-weight">90</td><td><input type="text" id="commonSARKitNumber" value="" oninput="updateWeight('commonSARKitNumber', 90, 'commonSARKitWeight', 'commonSARKitMMNT', 257)"></td><td><input type="text" id="commonSARKitWeight" value="" readonly></td></tr><input type="hidden" id="commonSARKitMMNT" value="">
-                                <tr><td class="row-label">Land SAR Kit</td><td class="ref-weight">135</td><td><input type="text" id="landSARKitNumber" value="" oninput="updateWeight('landSARKitNumber', 135, 'landSARKitWeight', 'landSARKitMMNT', 257)"></td><td><input type="text" id="landSARKitWeight" value="" readonly></td></tr><input type="hidden" id="landSARKitMMNT" value="">
-                                <tr><td class="row-label">Sea SAR Kit</td><td class="ref-weight">149</td><td><input type="text" id="seaSARKitNumber" value="" oninput="updateWeight('seaSARKitNumber', 149, 'seaSARKitWeight', 'seaSARKitMMNT', 257)"></td><td><input type="text" id="seaSARKitWeight" value="" readonly></td></tr><input type="hidden" id="seaSARKitMMNT" value="">
-                                <tr><td class="row-label">Transaco Stretcher</td><td class="ref-weight">91</td><td><input type="text" id="transacoStretcherNumber" value="" oninput="updateWeight('transacoStretcherNumber', 91, 'transacoStretcherWeight', 'transacoStretcherMMNT', 257)"></td><td><input type="text" id="transacoStretcherWeight" value="" readonly></td></tr><input type="hidden" id="transacoStretcherMMNT" value="">
-                                <tr><td class="row-label">SAR Kit Net</td><td class="ref-weight">13</td><td><input type="text" id="sarKitNetNumber" value="" oninput="updateWeight('sarKitNetNumber', 13, 'sarKitNetWeight', 'sarKitNetMMNT', 257)"></td><td><input type="text" id="sarKitNetWeight" value="" readonly></td></tr><input type="hidden" id="sarKitNetMMNT" value="">
-                                <tr><td class="row-label">Medical Kit Assembly</td><td class="ref-weight">70</td><td><input type="text" id="medicalKitNumber" value="" oninput="updateWeight('medicalKitNumber', 70, 'medicalKitWeight', 'medicalKitMMNT', 257)"></td><td><input type="text" id="medicalKitWeight" value="" readonly></td></tr><input type="hidden" id="medicalKitMMNT" value="">
+                        <!-- Mission Type Selector -->
+                        <div style="display: flex; gap: 0.75rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                            <label id="lsarBtn" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border: 2px solid #d1d5db; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: #374151; background: #f9fafb; transition: all 0.2s;">
+                                <input type="checkbox" id="missionLSAR" onchange="toggleMissionSection('lsar'); updateMissionBtnStyle('lsar', '#3b82f6')" style="width: 18px; height: 18px; cursor: pointer; accent-color: #3b82f6;">
+                                SAR
+                            </label>
+                            <label id="wsarBtn" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border: 2px solid #d1d5db; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: #374151; background: #f9fafb; transition: all 0.2s;">
+                                <input type="checkbox" id="missionWSAR" onchange="toggleMissionSection('wsar'); updateMissionBtnStyle('wsar', '#3b82f6')" style="width: 18px; height: 18px; cursor: pointer; accent-color: #3b82f6;">
+                                WSAR
+                            </label>
+                            <label id="csarBtn" style="display: flex; align-items: center; gap: 0.5rem; padding: 0.6rem 1.2rem; border: 2px solid #d1d5db; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: #374151; background: #f9fafb; transition: all 0.2s;">
+                                <input type="checkbox" id="missionCSAR" onchange="toggleMissionSection('csar'); updateMissionBtnStyle('csar', '#3b82f6')" style="width: 18px; height: 18px; cursor: pointer; accent-color: #3b82f6;">
+                                CSAR
+                            </label>
+                        </div>
+
+                        <!-- LSAR Section -->
+                        <div id="section-lsar" style="display: none; margin-bottom: 1rem;">
+                            <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-weight: 600; font-size: 0.9rem;">
+                                SAR - Search & Rescue
+                            </div>
+                            <table class="data-table" style="border-radius: 0 0 6px 6px;">
+                                <thead><tr><th>Equipment</th><th>Single Wgt</th><th>Number</th><th>Weight</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="row-label">Hoist</td><td class="ref-weight">97</td><td><input type="text" id="hoistNumber" value="" oninput="updateWeight('hoistNumber', 97, 'hoistWeight', 'hoistMMNT', 162.2)"></td><td><input type="text" id="hoistWeight" value="" readonly></td></tr><input type="hidden" id="hoistMMNT" value="">
+                                    <tr><td class="row-label">Search Light</td><td class="ref-weight">53</td><td><input type="text" id="searchLightNumber" value="" oninput="updateWeight('searchLightNumber', 53, 'searchLightWeight', 'searchLightMMNT', 120.56)"></td><td><input type="text" id="searchLightWeight" value="" readonly></td></tr><input type="hidden" id="searchLightMMNT" value="">
+                                    <tr><td class="row-label">Fast Rope</td><td class="ref-weight">80</td><td><input type="text" id="fastRopeNumber" value="" oninput="updateWeight('fastRopeNumber', 80, 'fastRopeWeight', 'fastRopeMMNT', 167.98)"></td><td><input type="text" id="fastRopeWeight" value="" readonly></td></tr><input type="hidden" id="fastRopeMMNT" value="">
+                                    <tr><td class="row-label">Land SAR Kit</td><td class="ref-weight">135</td><td><input type="text" id="landSARKitNumber" value="" oninput="updateWeight('landSARKitNumber', 135, 'landSARKitWeight', 'landSARKitMMNT', 257)"></td><td><input type="text" id="landSARKitWeight" value="" readonly></td></tr><input type="hidden" id="landSARKitMMNT" value="">
+                                    <tr><td class="row-label">FLIR (remove)</td><td class="ref-weight">-88</td><td><input type="text" id="flirNumber" value="" oninput="updateWeight('flirNumber', -88, 'flirWeight', 'flirMMNT', 0)"></td><td><input type="text" id="flirWeight" value="" readonly></td></tr><input type="hidden" id="flirMMNT" value="">
                                 </tbody>
-                        </table>
+                            </table>
+                        </div>
+
+                        <!-- WSAR Section -->
+                        <div id="section-wsar" style="display: none; margin-bottom: 1rem;">
+                            <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-weight: 600; font-size: 0.9rem;">
+                                WSAR - Water Search & Rescue
+                            </div>
+                            <table class="data-table" style="border-radius: 0 0 6px 6px;">
+                                <thead><tr><th>Equipment</th><th>Single Wgt</th><th>Number</th><th>Weight</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="row-label">Hoist</td><td class="ref-weight">97</td><td><input type="text" id="hoistNumberWSAR" value="" oninput="updateWeight('hoistNumberWSAR', 97, 'hoistWeightWSAR', 'hoistMMNTWSAR', 162.2)"></td><td><input type="text" id="hoistWeightWSAR" value="" readonly></td></tr><input type="hidden" id="hoistMMNTWSAR" value="">
+                                    <tr><td class="row-label">Search Light</td><td class="ref-weight">53</td><td><input type="text" id="searchLightNumberWSAR" value="" oninput="updateWeight('searchLightNumberWSAR', 53, 'searchLightWeightWSAR', 'searchLightMMNTWSAR', 120.56)"></td><td><input type="text" id="searchLightWeightWSAR" value="" readonly></td></tr><input type="hidden" id="searchLightMMNTWSAR" value="">
+                                    <tr><td class="row-label">Fast Rope</td><td class="ref-weight">80</td><td><input type="text" id="fastRopeNumberWSAR" value="" oninput="updateWeight('fastRopeNumberWSAR', 80, 'fastRopeWeightWSAR', 'fastRopeMMNTWSAR', 167.98)"></td><td><input type="text" id="fastRopeWeightWSAR" value="" readonly></td></tr><input type="hidden" id="fastRopeMMNTWSAR" value="">
+                                    <tr><td class="row-label">Sea SAR Kit</td><td class="ref-weight">149</td><td><input type="text" id="seaSARKitNumber" value="" oninput="updateWeight('seaSARKitNumber', 149, 'seaSARKitWeight', 'seaSARKitMMNT', 257)"></td><td><input type="text" id="seaSARKitWeight" value="" readonly></td></tr><input type="hidden" id="seaSARKitMMNT" value="">
+                                    <tr><td class="row-label">FLIR (remove)</td><td class="ref-weight">-88</td><td><input type="text" id="flirNumberWSAR" value="" oninput="updateWeight('flirNumberWSAR', -88, 'flirWeightWSAR', 'flirMMNTWSAR', 0)"></td><td><input type="text" id="flirWeightWSAR" value="" readonly></td></tr><input type="hidden" id="flirMMNTWSAR" value="">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- CSAR Section -->
+                        <div id="section-csar" style="display: none; margin-bottom: 1rem;">
+                            <div style="background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); color: white; padding: 0.5rem 1rem; border-radius: 6px 6px 0 0; font-weight: 600; font-size: 0.9rem;">
+                                CSAR - Combat Search & Rescue
+                            </div>
+                            <table class="data-table" style="border-radius: 0 0 6px 6px;">
+                                <thead><tr><th>Equipment</th><th>Single Wgt</th><th>Number</th><th>Weight</th></tr></thead>
+                                <tbody>
+                                    <tr><td class="row-label">Hoist</td><td class="ref-weight">97</td><td><input type="text" id="hoistNumberCSAR" value="" oninput="updateWeight('hoistNumberCSAR', 97, 'hoistWeightCSAR', 'hoistMMNTCSAR', 162.2)"></td><td><input type="text" id="hoistWeightCSAR" value="" readonly></td></tr><input type="hidden" id="hoistMMNTCSAR" value="">
+                                    <tr><td class="row-label">Fast Rope</td><td class="ref-weight">80</td><td><input type="text" id="fastRopeNumberCSAR" value="" oninput="updateWeight('fastRopeNumberCSAR', 80, 'fastRopeWeightCSAR', 'fastRopeMMNTCSAR', 167.98)"></td><td><input type="text" id="fastRopeWeightCSAR" value="" readonly></td></tr><input type="hidden" id="fastRopeMMNTCSAR" value="">
+                                    <tr><td class="row-label">MG58 RH (empty)</td><td class="ref-weight">72</td><td><input type="text" id="mg58RHNumber" value="" oninput="updateWeight('mg58RHNumber', 72, 'mg58RHWeight', 'mg58RHMMNT', 108.94)"></td><td><input type="text" id="mg58RHWeight" value="" readonly></td></tr><input type="hidden" id="mg58RHMMNT" value="">
+                                    <tr><td class="row-label">MG58 LH (empty)</td><td class="ref-weight">72</td><td><input type="text" id="mg58LHNumber" value="" oninput="updateWeight('mg58LHNumber', 72, 'mg58LHWeight', 'mg58LHMMNT', 116.42)"></td><td><input type="text" id="mg58LHWeight" value="" readonly></td></tr><input type="hidden" id="mg58LHMMNT" value="">
+                                    <tr><td class="row-label">MG58 Ammo Boxes</td><td class="ref-weight">31</td><td><input type="text" id="extraAmmoBoxNumber" value="" oninput="updateWeight('extraAmmoBoxNumber', 31, 'extraAmmoBoxWeight', 'extraAmmoBoxMMNT', 95)"></td><td><input type="text" id="extraAmmoBoxWeight" value="" readonly></td></tr><input type="hidden" id="extraAmmoBoxMMNT" value="">
+                                    <tr><td class="row-label">JDD Both Sides</td><td class="ref-weight">320</td><td><input type="text" id="jddNumber" value="" oninput="updateWeight('jddNumber', 320, 'jddWeight', 'jddMMNT', 194.5)"></td><td><input type="text" id="jddWeight" value="" readonly></td></tr><input type="hidden" id="jddMMNT" value="">
+                                    <tr><td class="row-label">20MM Gun (empty)</td><td class="ref-weight">269</td><td><input type="text" id="gunNumber" value="" oninput="updateWeight('gunNumber', 269, 'gunWeight', 'gunMMNT', 100.4)"></td><td><input type="text" id="gunWeight" value="" readonly></td></tr><input type="hidden" id="gunMMNT" value="">
+                                    <tr><td class="row-label">20MM Gun (loaded)</td><td class="ref-weight">452</td><td><input type="text" id="gunLoadedNumber" value="" oninput="updateWeight('gunLoadedNumber', 452, 'gunLoadedWeight', 'gunLoadedMMNT', 100.4)"></td><td><input type="text" id="gunLoadedWeight" value="" readonly></td></tr><input type="hidden" id="gunLoadedMMNT" value="">
+                                    <tr><td class="row-label">Rocket Launcher (empty)</td><td class="ref-weight">170</td><td><input type="text" id="rocketLauncherNumber" value="" oninput="updateWeight('rocketLauncherNumber', 170, 'rocketLauncherWeight', 'rocketLauncherMMNT', 117)"></td><td><input type="text" id="rocketLauncherWeight" value="" readonly></td></tr><input type="hidden" id="rocketLauncherMMNT" value="">
+                                    <tr><td class="row-label">Rocket Launcher (loaded)</td><td class="ref-weight">682</td><td><input type="text" id="rocketLauncherLoadedNumber" value="" oninput="updateWeight('rocketLauncherLoadedNumber', 682, 'rocketLauncherLoadedWeight', 'rocketLauncherLoadedMMNT', 117)"></td><td><input type="text" id="rocketLauncherLoadedWeight" value="" readonly></td></tr><input type="hidden" id="rocketLauncherLoadedMMNT" value="">
+                                    <tr><td class="row-label">Armoured Floor</td><td class="ref-weight">522</td><td><input type="text" id="floorArmouredNumber" value="" oninput="updateWeight('floorArmouredNumber', 522, 'floorArmouredWeight', 'floorArmouredMMNT', 141.84)"></td><td><input type="text" id="floorArmouredWeight" value="" readonly></td></tr><input type="hidden" id="floorArmouredMMNT" value="">
+                                    <tr><td class="row-label">Armoured Seats</td><td class="ref-weight">118</td><td><input type="text" id="seatsArmouredNumber" value="" oninput="updateWeight('seatsArmouredNumber', 118, 'seatsArmouredWeight', 'seatsArmouredMMNT', 58.31)"></td><td><input type="text" id="seatsArmouredWeight" value="" readonly></td></tr><input type="hidden" id="seatsArmouredMMNT" value="">
+                                    <tr><td class="row-label">Armoured Doors</td><td class="ref-weight">40</td><td><input type="text" id="doorsArmouredNumber" value="" oninput="updateWeight('doorsArmouredNumber', 40, 'doorsArmouredWeight', 'doorsArmouredMMNT', 56.73)"></td><td><input type="text" id="doorsArmouredWeight" value="" readonly></td></tr><input type="hidden" id="doorsArmouredMMNT" value="">
+                                    <tr><td class="row-label">FLIR (remove)</td><td class="ref-weight">-88</td><td><input type="text" id="flirNumberCSAR" value="" oninput="updateWeight('flirNumberCSAR', -88, 'flirWeightCSAR', 'flirMMNTCSAR', 0)"></td><td><input type="text" id="flirWeightCSAR" value="" readonly></td></tr><input type="hidden" id="flirMMNTCSAR" value="">
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- No mission selected message -->
+                        <div id="no-mission-msg" style="text-align: center; padding: 2rem; color: #94a3b8; font-style: italic;">
+                            Select a mission type above to see equipment options
+                        </div>
+
+                        <!-- Hidden inputs for removed equipment (needed for calculations) -->
+                        <input type="hidden" id="commonSARKitNumber" value=""><input type="hidden" id="commonSARKitWeight" value=""><input type="hidden" id="commonSARKitMMNT" value="">
+                        <input type="hidden" id="transacoStretcherNumber" value=""><input type="hidden" id="transacoStretcherWeight" value=""><input type="hidden" id="transacoStretcherMMNT" value="">
+                        <input type="hidden" id="sarKitNetNumber" value=""><input type="hidden" id="sarKitNetWeight" value=""><input type="hidden" id="sarKitNetMMNT" value="">
+                        <input type="hidden" id="medicalKitNumber" value=""><input type="hidden" id="medicalKitWeight" value=""><input type="hidden" id="medicalKitMMNT" value="">
+                        <input type="hidden" id="refuelingProbeNumber" value=""><input type="hidden" id="refuelingProbeWeight" value=""><input type="hidden" id="refuelingProbeMMNT" value="">
                         <input type="hidden" id="totalOptionalEquipmentMMNT">
                         <input type="hidden" id="totalOptionalEquipmentCG">
                     </div>
@@ -159,6 +220,7 @@
                         <tbody><tr class="total-row"><td class="row-label">Total</td><td></td><td></td><td><input type="text" id="totalOptionalEquipmentWeight" readonly></td></tr></tbody>
                     </table>
                 </div>
+
 
                 <!-- Passengers -->
                 <div class="card collapsed" id="card-passengers">
@@ -266,21 +328,19 @@
                             <table class="data-table">
                                 <thead><tr><th>Tank</th><th>Fuel Quantity (lb)</th></tr></thead>
                                 <tbody>
-                                    <tr><td class="row-label">Internal (3969 lb max)</td><td><input type="text" id="internalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'internalFuelWeight', 'internalFuelMMNT', 173.46)"></td></tr>
-                                    <tr><td class="row-label">LH & RH Sponson (1044 lb)</td><td><input type="text" id="sponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'sponsonWeight', 'sponsonMMNT', 269.92)"></td></tr>
-                                    <tr><td class="row-label">Cabin Tank (1723 lb)</td><td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"></td></tr>
-                                    <tr><td class="row-label">Fwd Longitudinal (2*827 lb)</td><td><input type="text" id="forwardLongitudinalSingleWeight" value="0" oninput="updateFuelQuantity(this, 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)"></td></tr>
-                                    <tr><td class="row-label">Rear Longitudinal (2*827 lb)</td><td><input type="text" id="rearLongitudinalSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)"></td></tr>
-                                    <tr><td class="row-label">Rear Transversal (827 lb)</td><td><input type="text" id="rearTransversalSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)"></td></tr>
+                                    <tr><td class="row-label">LH Internal (1533 lb)</td><td><input type="text" id="lhInternalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'lhInternalFuelWeight', 'lhInternalFuelMMNT', 173.46, 1533)"></td></tr>
+                                    <tr><td class="row-label">RH Internal (1897 lb)</td><td><input type="text" id="rhInternalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rhInternalFuelWeight', 'rhInternalFuelMMNT', 173.46, 1897)"></td></tr>
+                                    <tr><td class="row-label">LH Sponson (522 lb)</td><td><input type="text" id="lhSponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'lhSponsonWeight', 'lhSponsonMMNT', 269.92, 522)"></td></tr>
+                                    <tr><td class="row-label">RH Sponson (522 lb)</td><td><input type="text" id="rhSponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rhSponsonWeight', 'rhSponsonMMNT', 269.92, 522)"></td></tr>
+                                    <tr><td class="row-label">Cabin Tank (1723 lb)</td><td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'cabinFuelWeight', 'cabinFuelMMNT', 335.51, 1723)"></td></tr>
                                     <tr class="total-row"><td class="row-label">Total Fuel</td><td><input type="text" id="totalFuelWeight" readonly></td></tr>
                                 </tbody>
                             </table>
-                            <input type="hidden" id="internalFuelNumber" value="1"><input type="hidden" id="internalFuelWeight" value="0"><input type="hidden" id="internalFuelMMNT" value="0">
-                            <input type="hidden" id="sponsonNumber" value="1"><input type="hidden" id="sponsonWeight" value="0"><input type="hidden" id="sponsonMMNT" value="0">
+                            <input type="hidden" id="lhInternalFuelNumber" value="1"><input type="hidden" id="lhInternalFuelWeight" value="0"><input type="hidden" id="lhInternalFuelMMNT" value="0">
+                            <input type="hidden" id="rhInternalFuelNumber" value="1"><input type="hidden" id="rhInternalFuelWeight" value="0"><input type="hidden" id="rhInternalFuelMMNT" value="0">
+                            <input type="hidden" id="lhSponsonNumber" value="1"><input type="hidden" id="lhSponsonWeight" value="0"><input type="hidden" id="lhSponsonMMNT" value="0">
+                            <input type="hidden" id="rhSponsonNumber" value="1"><input type="hidden" id="rhSponsonWeight" value="0"><input type="hidden" id="rhSponsonMMNT" value="0">
                             <input type="hidden" id="cabinFuelNumber" value="1"><input type="hidden" id="cabinFuelWeight" value="0"><input type="hidden" id="cabinFuelMMNT" value="0">
-                            <input type="hidden" id="forwardLongitudinalNumber" value="1"><input type="hidden" id="forwardLongitudinalWeight" value="0"><input type="hidden" id="forwardLongitudinalMMNT" value="0">
-                            <input type="hidden" id="rearLongitudinalNumber" value="1"><input type="hidden" id="rearLongitudinalWeight" value="0"><input type="hidden" id="rearLongitudinalMMNT" value="0">
-                            <input type="hidden" id="rearTransversalNumber" value="1"><input type="hidden" id="rearTransversalWeight" value="0"><input type="hidden" id="rearTransversalMMNT" value="0">
                             <input type="hidden" id="totalFuelCG"><input type="hidden" id="totalFuelMMNT" value="0">
                             <div style="margin: 0.75rem 0 0 0;">
                                 <div style="font-size: 0.85rem; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
@@ -345,13 +405,64 @@
             card.classList.toggle('collapsed');
         }
 
+        // Mission button style update function
+        function updateMissionBtnStyle(mission, color) {
+            const checkbox = document.getElementById('mission' + mission.toUpperCase());
+            const btn = document.getElementById(mission + 'Btn');
+            
+            if (checkbox.checked) {
+                btn.style.borderColor = color;
+                btn.style.backgroundColor = color + '15';
+                btn.style.color = color;
+            } else {
+                btn.style.borderColor = '#d1d5db';
+                btn.style.backgroundColor = '#f9fafb';
+                btn.style.color = '#374151';
+            }
+        }
+
+        // Mission section toggle function
+        function toggleMissionSection(mission) {
+            const section = document.getElementById('section-' + mission);
+            const checkbox = document.getElementById('mission' + mission.toUpperCase());
+            const noMissionMsg = document.getElementById('no-mission-msg');
+            
+            if (checkbox.checked) {
+                section.style.display = 'block';
+            } else {
+                section.style.display = 'none';
+                // Clear all inputs in this section
+                const inputs = section.querySelectorAll('input[type="text"]:not([readonly])');
+                inputs.forEach(input => {
+                    input.value = '';
+                    input.dispatchEvent(new Event('input'));
+                });
+            }
+            
+            // Check if any mission is selected
+            const anySelected = document.getElementById('missionLSAR').checked || 
+                               document.getElementById('missionWSAR').checked || 
+                               document.getElementById('missionCSAR').checked;
+            noMissionMsg.style.display = anySelected ? 'none' : 'block';
+            
+            // Recalculate totals
+            if (typeof calculateAllTotals === 'function') {
+                calculateAllTotals();
+            }
+        }
+
+
         function toggleSidebarCard(cardId) {
             const card = document.getElementById(cardId);
             card.classList.toggle('collapsed');
         }
 
-        function updateFuelQuantity(input, weightId, momentId, cgLocation) {
-            const quantity = parseFloat(input.value) || 0;
+        function updateFuelQuantity(input, weightId, momentId, cgLocation, maxValue) {
+            let quantity = parseFloat(input.value) || 0;
+            if (maxValue && quantity > maxValue) {
+                quantity = maxValue;
+                input.value = maxValue;
+            }
             const moment = quantity * cgLocation;
             
             document.getElementById(weightId).value = quantity.toFixed(2);
@@ -361,8 +472,8 @@
         }
 
         function calculateTotalFuel() {
-            const weights = ['internalFuelWeight', 'sponsonWeight', 'cabinFuelWeight', 'forwardLongitudinalWeight', 'rearLongitudinalWeight', 'rearTransversalWeight'];
-            const moments = ['internalFuelMMNT', 'sponsonMMNT', 'cabinFuelMMNT', 'forwardLongitudinalMMNT', 'rearLongitudinalMMNT', 'rearTransversalMMNT'];
+            const weights = ['lhInternalFuelWeight', 'rhInternalFuelWeight', 'lhSponsonWeight', 'rhSponsonWeight', 'cabinFuelWeight'];
+            const moments = ['lhInternalFuelMMNT', 'rhInternalFuelMMNT', 'lhSponsonMMNT', 'rhSponsonMMNT', 'cabinFuelMMNT'];
             
             let totalWeight = 0;
             let totalMoment = 0;
