@@ -57,12 +57,11 @@ function calculateZeroFuelWeightMax5ftIGE() {
 
 function setMaxFuelLimit(maxFuel) {
     const fuelInputs = [
-        'internalFuelSingleWeight', 
-        'sponsonSingleWeight', 
-        'cabinFuelSingleWeight', 
-        'forwardLongitudinalSingleWeight', 
-        'rearLongitudinalSingleWeight', 
-        'rearTransversalSingleWeight'
+        'lhInternalFuelSingleWeight',
+        'rhInternalFuelSingleWeight', 
+        'lhSponsonSingleWeight',
+        'rhSponsonSingleWeight', 
+        'cabinFuelSingleWeight'
     ];
 
     let totalFuel = 0;
@@ -95,21 +94,19 @@ function setMaxFuelLimit(maxFuel) {
 
 function updateTotalFuel() {
     const fuelInputs = [
-        'internalFuelSingleWeight', 
-        'sponsonSingleWeight', 
-        'cabinFuelSingleWeight', 
-        'forwardLongitudinalSingleWeight', 
-        'rearLongitudinalSingleWeight', 
-        'rearTransversalSingleWeight'
+        'lhInternalFuelSingleWeight',
+        'rhInternalFuelSingleWeight', 
+        'lhSponsonSingleWeight',
+        'rhSponsonSingleWeight', 
+        'cabinFuelSingleWeight'
     ];
 
     const cgLocations = [
-        173.46, // Internal Fuel CG
-        269.92, // Sponson CG
-        335.51, // Cabin Fuel CG
-        149.2,  // Forward Longitudinal CG
-        226.7,  // Rear Longitudinal CG
-        268.5   // Rear Transversal CG
+        173.46, // LH Internal Fuel CG
+        173.46, // RH Internal Fuel CG
+        269.92, // LH Sponson CG
+        269.92, // RH Sponson CG
+        335.51  // Cabin Fuel CG
     ];
 
     let totalFuelWeight = 0;
@@ -293,8 +290,8 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById(`total${sectionName}CG`).value = sectionCG.toFixed(2);
         }
 
-        const fuelWeights = ['internalFuelWeight', 'sponsonWeight', 'cabinFuelWeight', 'forwardLongitudinalWeight', 'rearLongitudinalWeight', 'rearTransversalWeight'];
-        const fuelMoments = ['internalFuelMMNT', 'sponsonMMNT', 'cabinFuelMMNT', 'forwardLongitudinalMMNT', 'rearLongitudinalMMNT', 'rearTransversalMMNT'];
+        const fuelWeights = ['lhInternalFuelWeight', 'rhInternalFuelWeight', 'lhSponsonWeight', 'rhSponsonWeight', 'cabinFuelWeight'];
+        const fuelMoments = ['lhInternalFuelMMNT', 'rhInternalFuelMMNT', 'lhSponsonMMNT', 'rhSponsonMMNT', 'cabinFuelMMNT'];
 
         let totalFuelWeight = 0;
         let totalFuelMoment = 0;
@@ -382,12 +379,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     const fuelInputs = [
-        'internalFuelNumber', 'sponsonNumber', 'cabinFuelNumber',
-        'forwardLongitudinalNumber', 'rearLongitudinalNumber', 'rearTransversalNumber'
+        'lhInternalFuelNumber', 'rhInternalFuelNumber', 'lhSponsonNumber', 'rhSponsonNumber', 'cabinFuelNumber'
+        
     ];
     const singleWeightInputs = [
-        'internalFuelSingleWeight', 'sponsonSingleWeight', 'cabinFuelSingleWeight',
-        'forwardLongitudinalSingleWeight', 'rearLongitudinalSingleWeight', 'rearTransversalSingleWeight'
+        'lhInternalFuelSingleWeight', 'rhInternalFuelSingleWeight', 'lhSponsonSingleWeight', 'rhSponsonSingleWeight', 'cabinFuelSingleWeight'
     ];
 
     fuelInputs.forEach((inputId, index) => {

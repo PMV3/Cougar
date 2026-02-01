@@ -1,424 +1,443 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
-     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-YW913537F4');
-</script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YW913537F4');
+    </script>
     <meta charset="UTF-8" />
-    <title>PMV 3</title>
+    <meta name="viewport" content="width=1600">
+    <title>PMV 3 - Endurance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="step1-styles.css">
     <style>
+        .calc-btn {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 0.75rem;
+        }
+        .calc-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary) 100%);
+        }
+        .vfr-ifr-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            grid-column: 1 / -1;
+            align-items: start;
+        }
+        .full-width-card {
+            grid-column: 1 / -1;
+        }
+        .time-split {
+            display: flex;
+            gap: 4px;
+        }
+        .time-split input {
+            width: 48% !important;
+            min-width: 40px;
+        }
+        .data-table td input[type="number"],
+        .data-table td input[type="text"] {
+            text-align: center;
+        }
+        .data-table td select {
+            padding: 0.5rem 0.625rem;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-size: 0.8125rem;
+            font-weight: 500;
+            text-align: center;
+            background: var(--bg-card);
+            cursor: pointer;
+        }
+        .quick-info-bar-step3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-dark) 100%);
+            padding: 1rem 1.25rem;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            align-items: end;
+            color: white;
+            max-width: 600px;
+        }
+        /* Canvas styling */
+        .chart-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+        #fuelChart {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+        }
         canvas {
             border: 1px solid black;
-            display: none; /* Initially hidden */
-        }
-        input, select {
-            width: calc(100% - 23px);
-            padding: 10px;
-            display: inline-block;
-            border: 1px solid rgb(255, 255, 255);
-            background: #ffffff;
-            background-color: #fffdfd;
-            outline: none;
-            border-radius: 6px;
-        }
-        /* Remove arrows from number inputs */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            appearance: none;
-            margin: 0;
-        }
-        input[type="number"] {
-            -moz-appearance: textfield;
-            appearance: textfield;
-        }
-        .row {
-            display: flex;
-            gap: 5px;
-            margin: 20px 10px;
-        }
-        .column {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        button {
-            background-color: #04aa6d;
-            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-            color: rgb(255, 255, 255);
-            padding: 14px 20px;
-            margin: 6px 0;
-            border: none;
-            cursor: pointer;
-            width: 13.8%;
-            opacity: 0.9;
-        }
-        button:hover {
-            opacity: 1;
-        }
-        .container {
-            width: calc(100% - 960px);
-            height: auto;
-            float: left;
-            min-width: 865px;
-        }
-        .w-50 {
-            width: 20%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 12px;
-        }
-        th, td {
-            border: 1px solid black;
-            padding: 4px;
-            text-align: center;
-            height: 40px; /* Increased height */
-            vertical-align: middle;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .highlight {
-            background-color: #ffffff;
-        }
-        .highlight-value {
-            background-color: #000;
-            color: #fff;
-        }
-        .gradient-border {
-            border: 2px solid;
-            border-image: linear-gradient(to bottom, black, gray) 1;
-            padding: 5px;
-            outline: none;
-            width: 420px;
-            height: 25px;
-        }
-        .time-inputs {
-            display: flex;
-            gap: 10px;
-        }
-        .hidden {
             display: none;
         }
-        /* New styles for improved table layout */
-        table input, table select {
-            width: 100%;
-            height: 30px; /* Increased height */
-            padding: 5px;
-            font-size: 14px;
-            box-sizing: border-box;
+        /* Toast notification styles */
+        .toast {
+            position: fixed;
+            right: 20px;
+            padding: 15px 20px;
+            background: #333;
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            z-index: 9999;
+            animation: slideIn 0.3s ease;
         }
-        table input[placeholder] {
-            background-color: #FFFFED; /* Light gray for readonly fields */
-        }       
-        .col-small { width: 8%; }
-        .col-medium { width: 10%; }
-        .col-large { width: 12%; }
-        .col-xlarge { width: 15%; }
-        .wrap-text {
-            white-space: normal;
-            word-wrap: break-word;
+        .toast-danger { background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%); }
+        .toast-info { background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); }
+        .toast-success { background: linear-gradient(135deg, #059669 0%, #10b981 100%); }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
         }
-        /* New styles for the added tables */
-        .namespace2 table {
-            margin-bottom: 20px;
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 0 0 8px 8px;
+            animation: progress linear forwards;
         }
-        .namespace2 th.header {
-            background-color: #f2f2f2;
-            font-weight: bold;
+        @keyframes progress {
+            from { width: 100%; }
+            to { width: 0%; }
         }
-        .namespace2 .input-cell input {
-            background-color: #FFFFED;
-        }
-        .namespace2 .readonly input {
-            background-color: #f2f2f2;
-        }
-    
-        .namespace2 .highlight-yellow {
-            background-color: #FFFFE0;
-        }
-        #speed {
-    background-color: #FFFFED; /* Light yellow color */
-}
-
-.steps {
-    display: flex;
-    justify-content: left;
-    gap: 10px;
-}
-.step {
-    background-color: #04aa6d;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    color: white;
-    padding: 14px 20px;
-    margin: 6px 0;
-    border: none;
-    cursor: pointer;
-    width: 13.8%;
-    opacity: 0.9;
-    transition: all 0.3s ease;
-}
-.step:hover {
-    opacity: 1;
-}
-.step.active {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-}
-
-.header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0px;
-}
-
-.header-logo {
-    width: 150px;
-    height: auto;
-}
-
-.title-container {
-    text-align: center;
-    flex-grow: 1;
-}
-
-.main-title {
-    font-size: 36px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.subtitle {
-    font-size: 24px;
-    font-weight: normal;
-    color: #555;
-}
     </style>
 </head>
-<body style="display: flex; gap: 20px; min-width: 1887px;">
-    <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785)">
-        <div class="header-container">
-            <img src="wing.png" alt="Left Logo" class="header-logo">
-            <div class="title-container">
-                <h1 class="main-title">PMV 3</h1>
-                <h2 class="subtitle">COUGAR AS 532 A2</h2>
+<body>
+    <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785); max-width: 1600px; margin: 0 auto;">
+    <header class="app-header">
+        <div class="header-content">
+            <div class="brand">
+                <img src="SAUDI_CARACAL_TRANSPARENT.png" alt="Cougar Helicopter" class="brand-logo" style="height: 60px; width: auto;">
+                <div class="brand-text">
+                    <h1>PMV 3</h1>
+                    <span>COUGAR<br>AS 532 A2</span>
+                </div>
             </div>
-            <img src="sqau.png" alt="Right Logo" class="header-logo">
-        </div>
-        
-        <div style="width: 175%;  padding: 0px 0;">
-            <nav class="steps">
-                <button class="step" onclick="setActiveStep(this, 'STEP1')">STEP1 (W&B)</button>
-                <button class="step" onclick="setActiveStep(this, 'STEP2')">STEP2 (PERFORMANCE)</button>
-                <button class="step active" onclick="setActiveStep(this, 'STEP3')">STEP3 (ENDURANCE)</button>
-                <button class="step" onclick="setActiveStep(this, 'FCF')">FCF</button>
+            <nav class="nav-tabs">
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP1')">STEP 1: Weight & Balance</button>
+                <span class="nav-arrow">&#8594;</span>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
+                <span class="nav-arrow">&#8594;</span>
+                <button class="nav-tab step active" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
+            <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
         </div>
-        <div class="row">
-            <div class="column hidden">
-                <label for="total-weight"><b>Total Weight (lbs):</b></label>
-                <input type="number" id="totalweight" class="gradient-border" placeholder="Enter Total Weight">
-                <label for="height"><b>Height (ft):</b></label>
-                <input type="number" id="height" class="gradient-border" placeholder="Enter Height">
+    </header>
+    <div class="app-container">
+        <div class="main-content">
+            <div class="hidden">
+                <input type="number" id="totalweight" placeholder="Enter Total Weight">
+                <input type="number" id="height" placeholder="Enter Height">
+                <input type="number" id="temperature" placeholder="Enter Temperature">
             </div>
-            <div class="column">
-                <label for="speed"><b>Speed (TAS):</b></label>
-                <input type="number" id="speed" class="gradient-border" placeholder="Enter Speed">
+            <div class="quick-info-bar-step3">
+                <div class="form-field">
+                    <label for="speed">Speed (TAS)</label>
+                    <input type="number" id="speed" name="speed" placeholder="Enter Speed">
+                </div>
+                <div class="form-field">
+                    <label for="fuelconsumption">AEO Fuel Consumption (lbs)</label>
+                    <input type="text" id="fuelconsumption" name="fuelconsumption" placeholder="Auto-calculated" readonly>
+                </div>
             </div>
-            <div class="column hidden">
-                <label for="temperature"><b>Temperature (°C):</b></label>
-                <input type="number" id="temperature" class="gradient-border" placeholder="Enter Temperature">
+            <div class="vfr-ifr-row">
+                <div class="card" id="card-vfr">
+                    <div class="card-header" onclick="toggleCard('card-vfr')">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M2 12h20"/></svg>
+                            Minimum Fuel Quantity - <span style="color: #fbbf24;">VFR</span>
+                        </h3>
+                        <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                    </div>
+                    <div class="card-body">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Distance (Nm)</th>
+                                    <th>Wind (Kts)</th>
+                                    <th>Speed (Kts)</th>
+                                    <th>Consumption/Min</th>
+                                    <th>Total Fuel</th>
+                                    <th>Day/Night</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="number" id="distance" placeholder="Enter"></td>
+                                    <td><input type="number" id="windSpeed" placeholder="Enter"></td>
+                                    <td><input type="number" id="speedFuel" placeholder="Enter"></td>
+                                    <td><input type="number" id="fuelConsumption" placeholder="Enter"></td>
+                                    <td><input type="number" id="fuelEntered" placeholder="Enter"></td>
+                                    <td><select id="dayNight"><option value="day">Day</option><option value="night">Night</option></select></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <table class="data-table mt-2">
+                            <thead>
+                                <tr>
+                                    <th>BF</th>
+                                    <th>Time</th>
+                                    <th>Flight Fuel</th>
+                                    <th>Bingo</th>
+                                    <th>Endurance</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="text" id="bf" readonly></td>
+                                    <td><input type="text" id="time" readonly></td>
+                                    <td><input type="text" id="flightFuel" readonly></td>
+                                    <td><input type="text" id="bingo" readonly></td>
+                                    <td><input type="text" id="endurance" readonly></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="calc-btn" onclick="calculateMinimumFuel()">Calculate VFR</button>
+                    </div>
+                </div>
+                <div class="card" id="card-ifr">
+                    <div class="card-header" onclick="toggleCard('card-ifr')">
+                        <h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                            Minimum Fuel Quantity - <span style="color: #fbbf24;">IFR</span>
+                        </h3>
+                        <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                    </div>
+                    <div class="card-body">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Distance A to B (Nm)</th>
+                                    <th>Distance B to C (Nm)</th>
+                                    <th>Speed (Kts)</th>
+                                    <th>Consumption/Min</th>
+                                    <th>Reserve (min)</th>
+                                    <th>MFQ</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="number" id="distanceAB" placeholder="Enter"></td>
+                                    <td><input type="number" id="distanceBC" placeholder="Enter"></td>
+                                    <td><input type="number" id="speedIFR" placeholder="Enter"></td>
+                                    <td><input type="number" id="fuelConsumptionIFR" placeholder="Enter"></td>
+                                    <td><input type="number" id="reserveIFR" placeholder="Enter"></td>
+                                    <td><input type="number" id="mfqIFR" readonly></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <button class="calc-btn" onclick="calculateMFQIFR()">Calculate IFR</button>
+                    </div>
+                </div>
             </div>
+            <div class="card full-width-card" id="card-fuel-calc">
+                <div class="card-header" onclick="toggleCard('card-fuel-calc')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 22h12M6 18V2l-3 3M3 5l6-3 6 3v13a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4V5Z"/></svg>
+                        <span style="color: #fbbf24;">FUEL</span> Needed for Distance to Recovery Point
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Range (NM)</th>
+                                <th rowspan="2">Trip (NM)</th>
+                                <th rowspan="2">Speed (IAS)</th>
+                                <th colspan="3" style="text-align: center;">Time</th>
+                                <th rowspan="2">Consumption/Hr</th>
+                                <th colspan="2" style="text-align: center;">Fuel</th>
+                                <th rowspan="2">Q in Tanks</th>
+                            </tr>
+                            <tr>
+                                <th>Legs</th>
+                                <th>On Site</th>
+                                <th>Flight</th>
+                                <th>Needed</th>
+                                <th>Reserve</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="number" id="range2" placeholder="Enter"></td>
+                                <td><input type="number" id="trip2" readonly></td>
+                                <td><input type="number" id="speed2" placeholder="Enter"></td>
+                                <td><input type="text" id="legs2" readonly></td>
+                                <td class="time-split">
+                                    <input type="number" id="onSiteHours2" placeholder="H">
+                                    <input type="number" id="onSiteMinutes2" placeholder="M">
+                                </td>
+                                <td><input type="text" id="flight2" readonly></td>
+                                <td><input type="number" id="consumption2" placeholder="Enter"></td>
+                                <td><input type="number" id="needed2" readonly></td>
+                                <td><input type="number" id="reserve2" placeholder="Enter"></td>
+                                <td><input type="number" id="qInTanks2" readonly></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="calc-btn" onclick="calculateSecondTable()">Calculate FUEL</button>
+                </div>
             </div>
-            <div class="column">
-                <label for="fuelconsumption"><b>AEO Fuel Consumption (lbs):</b></label>
-                <input type="text" class="gradient-border" placeholder="The result of AEO Fuel Consumption." name="fuelconsumption" id="fuelconsumption" readonly>
-        </div>
-        <!-- VFR Calculation -->
-        <div class="column">
-            <p style="text-align: left; font-size: 20px;">
-             Minimum Fuel Quantity on <span style="color: red;">VFR</span> 
-            </p>
-            <table>
-                <tr>
-                    <th class="col-medium">Distance (Nm)</th>
-                    <th class="col-small">Wind (Kts)</th>
-                    <th class="col-small">Speed (Kts)</th>
-                    <th class="col-medium">Fuel C per Minute</th>
-                    <th class="col-medium">Total Fuel</th>
-                    <th class="col-small">Day/Night</th>
-                    <th class="col-small">BF</th>
-                    <th class="col-medium wrap-text">Time</th>
-                    <th class="col-medium">Flight Fuel</th>
-                    <th class="col-medium">Bingo</th>
-                    <th class="col-large wrap-text">Endurance</th>
-                </tr>
-                <tr>
-                    <td><input type="number" id="distance" placeholder="Enter"></td>
-                    <td><input type="number" id="windSpeed" placeholder="Enter"></td>
-                    <td><input type="number" id="speedFuel" placeholder="Enter"></td>
-                    <td><input type="number" id="fuelConsumption" placeholder="Enter"></td>
-                    <td><input type="number" id="fuelEntered" placeholder="Enter"></td>
-                    <td><select id="dayNight"><option value="day">Day</option><option value="night">Night</option></select></td>
-                    <td><input type="text" id="bf" readonly></td>
-                    <td><input type="text" id="time" readonly></td>
-                    <td><input type="text" id="flightFuel" readonly></td>
-                    <td><input type="text" id="bingo" readonly></td>
-                    <td><input type="text" id="endurance" readonly></td>
-                </tr>
-            </table>
-            <button onclick="calculateMinimumFuel()">Calculate</button>
-        </div>
-        <!-- IFR Calculation -->
-        <div class="column">
-            <p style="text-align: left; font-size: 20px;">
-                Minimum Fuel Quantity on <span style="color: red;">IFR</span> 
-            </p>
-            <table>
-                <tr>
-                    <th class="col-large">Distance A to B (Nm)</th>
-                    <th class="col-large">Distance B to C (Nm)</th>
-                    <th class="col-medium">Speed (Kts)</th>
-                    <th class="col-xlarge">Fuel Consumption per Minute</th>
-                    <th class="col-medium">Reserve (min)</th>
-                    <th class="col-medium">MFQ</th>
-                </tr>
-                <tr>
-                    <td><input type="number" id="distanceAB" placeholder="Enter"></td>
-                    <td><input type="number" id="distanceBC" placeholder="Enter"></td>
-                    <td><input type="number" id="speedIFR" placeholder="Enter"></td>
-                    <td><input type="number" id="fuelConsumptionIFR" placeholder="Enter"></td>
-                    <td><input type="number" id="reserveIFR" placeholder="Enter"></td>
-                    <td><input type="number" id="mfqIFR" readonly></td>
-                </tr>
-            </table>
-            <button onclick="calculateMFQIFR()">Calculate</button>
-        </div>
-        <!-- FUEL Calculation -->
-        <div class="column">
-            <p style="text-align: left; font-size: 20px;">
-                 <span style="color: red;">FUEL</span> needed for the distance to reach the recovery point
-            </p>
-            <table>
-                <tr>
-                    <th class="col-small" rowspan="2">Range (NM)</th>
-                    <th class="col-small" rowspan="2">Trip (NM)</th>
-                    <th class="col-small" rowspan="2">Speed (IAS)</th>
-                    <th class="col-medium" colspan="3">Time</th>
-                    <th class="col-medium" rowspan="2">Consumption/Hour</th>
-                    <th class="col-medium" colspan="2">Fuel</th>
-                    <th class="col-medium" rowspan="2">Q in the Tanks</th>
-                </tr>
-                <tr>
-                    <th class="col-small">Legs</th>
-                    <th class="col-small">On site</th>
-                    <th class="col-small">Flight</th>
-                    <th class="col-small">Needed</th>
-                    <th class="col-small">Reserve</th>
-                </tr>
-                <tr>
-                    <td><input type="number" id="range2" placeholder="Enter"></td>
-                    <td><input type="number" id="trip2" readonly></td>
-                    <td><input type="number" id="speed2" placeholder="Enter"></td>
-                    <td><input type="text" id="legs2" readonly></td>
-                    <td>
-                        <input type="number" id="onSiteHours2" placeholder="H" class="highlight" style="width: 45%;">
-                        <input type="number" id="onSiteMinutes2" placeholder="M" class="highlight" style="width: 45%;">
-                    </td>
-                    <td><input type="text" id="flight2" readonly></td>
-                    <td><input type="number" id="consumption2" placeholder="Enter"></td>
-                    <td><input type="number" id="needed2" readonly></td>
-                    <td><input type="number" id="reserve2" placeholder="Enter"></td>
-                    <td><input type="number" id="qInTanks2" readonly></td>
-                </tr>
-            </table>
-            <button onclick="calculateSecondTable()">Calculate</button>
-        </div>
-        <!-- RANGE Calculation -->
-        <div class="column">
-            <p style="text-align: left; font-size: 20px;">
-                 <span style="color: red;">RANGE</span> from the fuel quantity available in the aircraft
-            </p>
-            <table>
-                <tr>
-                    <th class="col-medium" rowspan="2">Q in the Tanks</th>
-                    <th class="col-medium" colspan="3">Fuel</th>
-                    <th class="col-medium" colspan="3">Time</th>
-                    <th class="col-small" rowspan="2">Speed (IAS)</th>
-                    <th class="col-small" rowspan="2">Range (NM)</th>
-                    <th class="col-small" rowspan="2">Trip (NM)</th>
+            <div class="card full-width-card" id="card-range-calc">
+                <div class="card-header" onclick="toggleCard('card-range-calc')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v10l4.5 4.5"/></svg>
+                        <span style="color: #fbbf24;">RANGE</span> from Fuel Quantity Available
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">Q in Tanks</th>
+                                <th colspan="3" style="text-align: center;">Fuel</th>
+                                <th colspan="3" style="text-align: center;">Time</th>
+                                <th rowspan="2">Speed (IAS)</th>
+                                <th rowspan="2">Range (NM)</th>
+                                <th rowspan="2">Trip (NM)</th>
+                            </tr>
+                            <tr>
+                                <th>Reserve</th>
+                                <th>Needed</th>
+                                <th>Consumption/Hr</th>
+                                <th>Legs</th>
+                                <th>On Site</th>
+                                <th>Flight</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="number" id="qInTanks" placeholder="Enter"></td>
+                                <td><input type="number" id="reserve" placeholder="Enter"></td>
+                                <td><input type="number" id="usable" readonly></td>
+                                <td><input type="number" id="consumption" placeholder="Enter"></td>
+                                <td><input type="text" id="flight" readonly></td>
+                                <td class="time-split">
+                                    <input type="number" id="onSiteHours" placeholder="H">
+                                    <input type="number" id="onSiteMinutes" placeholder="M">
+                                </td>
+                                <td><input type="text" id="legs" readonly></td>
+                                <td><input type="number" id="speedBox1" placeholder="Enter"></td>
+                                <td><input type="number" id="range" readonly></td>
+                                <td><input type="number" id="trip" readonly></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="calc-btn" onclick="calculateFirstTable()">Calculate RANGE</button>
+                </div>
+            </div>
+                    <!-- Fuel Consumption Chart Card -->
+            <div class="card full-width-card" id="card-chart-display">
+                <div class="card-header" onclick="toggleCard('card-chart-display')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                        Fuel Consumption Chart
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body chart-center">
+                    <canvas id="fuelChart" width="1241" height="1755"></canvas>
+                </div>
+            </div>
 
-                </tr>
-                <tr>
-                    <th class="col-small">Reserve</th>
-                    <th class="col-small">Needed</th>
-                    <th class="col-medium">Consumption/Hour</th>
-                    <th class="col-small">legs</th>
-                    <th class="col-small">On site</th>
-                    <th class="col-small">Flight</th>
-                </tr>
-                <tr>
-                    <td><input type="number" id="qInTanks" placeholder="Enter"></td>
-                    <td><input type="number" id="reserve" placeholder="Enter"></td>
-                    <td><input type="number" id="usable" readonly></td>
-                    <td><input type="number" id="consumption" placeholder="Enter"></td>
-                    <td><input type="text" id="flight" readonly></td>
-                    <td>
-                        <input type="number" id="onSiteHours" placeholder="H" class="highlight" style="width: 45%;">
-                        <input type="number" id="onSiteMinutes" placeholder="M" class="highlight" style="width: 45%;">
-                    </td>
-                    <td><input type="text" id="legs" readonly></td>
-                    <td><input type="number" id="speedBox1" placeholder="Enter"></td>
-                    <td><input type="number" id="range" readonly></td>
-                    <td><input type="number" id="trip" readonly></td>
-
-                </tr>
-            </table>
-            <button onclick="calculateFirstTable()">Calculate</button>
         </div>
-</div>
-<canvas id="fuelChart" width="1241" height="1755"></canvas> 
-<div class="toast-overlay" id="toast-overlay"></div>
-<img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
-<script src="dataPersistence.js"></script>
-<script src="navigation.js"></script>
-<script type="module" src="./datafolder/0ft_15C.js"></script>
-<script type="module" src="./fuel.js"></script>
-<script type="module" src="./fuelCalculation.js"></script>
-<script type="module" src="./datafolder/fuelLeak.js"></script>
-<script src="step3DataHandler.js"></script>
-
-<script> function setActiveStep(element, stepId) {
-    document.querySelectorAll('.step').forEach(step => {
-        step.classList.remove('active');
-    });
-    element.classList.add('active');
-    
-    switch(stepId) {
-        case 'STEP1':
-            saveDataAndGoToStep1();
-            break;
-        case 'STEP2':
-            saveDataAndGoToStep2();
-            break;
-        case 'STEP3':
-            saveDataAndGoToStep3();
-            break;
-        case 'FCF':
-            saveDataAndNavigate('FCF.html');
-            break;
+    </div>
+    </div>
+    <div class="toast-overlay" id="toast-overlay"></div>
+    <img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
+    <script src="dataPersistence.js"></script>
+    <script src="navigation.js"></script>
+    <script type="module" src="./datafolder/0ft_15C.js"></script>
+    <script type="module" src="./fuel.js"></script>
+    <script type="module" src="./fuelCalculation.js"></script>
+    <script type="module" src="./datafolder/fuelLeak.js"></script>
+    <script src="step3DataHandler.js"></script>
+    <script>
+    function toggleCard(cardId) {
+        const card = document.getElementById(cardId);
+        card.classList.toggle('collapsed');
     }
-}
-</script>
+
+    function setActiveStep(element, stepId) {
+        document.querySelectorAll('.step').forEach(step => {
+            step.classList.remove('active');
+        });
+        element.classList.add('active');
+        switch(stepId) {
+            case 'STEP1':
+                saveDataAndGoToStep1();
+                break;
+            case 'STEP2':
+                saveDataAndGoToStep2();
+                break;
+            case 'STEP3':
+                saveDataAndGoToStep3();
+                break;
+            case 'FCF':
+                saveDataAndNavigate('FCF.html');
+                break;
+        }
+    }
+    </script>
+    <script>
+    // Debug: Show if data is loaded from previous steps
+    document.addEventListener('DOMContentLoaded', function() {
+        setTimeout(function() {
+            const tw = document.getElementById('totalweight').value;
+            const h = document.getElementById('height').value;
+            const t = document.getElementById('temperature').value;
+            
+            console.log('STEP3 Hidden Values:', {totalweight: tw, height: h, temperature: t});
+            
+            if (!tw || !h || !t) {
+                console.warn('Missing data from STEP1/STEP2. Fuel calculation needs: totalweight, height, temperature');
+            }
+        }, 1000);
+    });
+    </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

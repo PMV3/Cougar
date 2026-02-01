@@ -266,21 +266,19 @@
                             <table class="data-table">
                                 <thead><tr><th>Tank</th><th>Fuel Quantity (lb)</th></tr></thead>
                                 <tbody>
-                                    <tr><td class="row-label">Internal (3969 lb max)</td><td><input type="text" id="internalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'internalFuelWeight', 'internalFuelMMNT', 173.46)"></td></tr>
-                                    <tr><td class="row-label">LH & RH Sponson (1044 lb)</td><td><input type="text" id="sponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'sponsonWeight', 'sponsonMMNT', 269.92)"></td></tr>
-                                    <tr><td class="row-label">Cabin Tank (1723 lb)</td><td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'cabinFuelWeight', 'cabinFuelMMNT', 335.51)"></td></tr>
-                                    <tr><td class="row-label">Fwd Longitudinal (2*827 lb)</td><td><input type="text" id="forwardLongitudinalSingleWeight" value="0" oninput="updateFuelQuantity(this, 'forwardLongitudinalWeight', 'forwardLongitudinalMMNT', 149.2)"></td></tr>
-                                    <tr><td class="row-label">Rear Longitudinal (2*827 lb)</td><td><input type="text" id="rearLongitudinalSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rearLongitudinalWeight', 'rearLongitudinalMMNT', 226.7)"></td></tr>
-                                    <tr><td class="row-label">Rear Transversal (827 lb)</td><td><input type="text" id="rearTransversalSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rearTransversalWeight', 'rearTransversalMMNT', 268.5)"></td></tr>
+                                    <tr><td class="row-label">LH Internal (1533 lb)</td><td><input type="text" id="lhInternalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'lhInternalFuelWeight', 'lhInternalFuelMMNT', 173.46, 1533)"></td></tr>
+                                    <tr><td class="row-label">RH Internal (1897 lb)</td><td><input type="text" id="rhInternalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rhInternalFuelWeight', 'rhInternalFuelMMNT', 173.46, 1897)"></td></tr>
+                                    <tr><td class="row-label">LH Sponson (522 lb)</td><td><input type="text" id="lhSponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'lhSponsonWeight', 'lhSponsonMMNT', 269.92, 522)"></td></tr>
+                                    <tr><td class="row-label">RH Sponson (522 lb)</td><td><input type="text" id="rhSponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rhSponsonWeight', 'rhSponsonMMNT', 269.92, 522)"></td></tr>
+                                    <tr><td class="row-label">Cabin Tank (1723 lb)</td><td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'cabinFuelWeight', 'cabinFuelMMNT', 335.51, 1723)"></td></tr>
                                     <tr class="total-row"><td class="row-label">Total Fuel</td><td><input type="text" id="totalFuelWeight" readonly></td></tr>
                                 </tbody>
                             </table>
-                            <input type="hidden" id="internalFuelNumber" value="1"><input type="hidden" id="internalFuelWeight" value="0"><input type="hidden" id="internalFuelMMNT" value="0">
-                            <input type="hidden" id="sponsonNumber" value="1"><input type="hidden" id="sponsonWeight" value="0"><input type="hidden" id="sponsonMMNT" value="0">
+                            <input type="hidden" id="lhInternalFuelNumber" value="1"><input type="hidden" id="lhInternalFuelWeight" value="0"><input type="hidden" id="lhInternalFuelMMNT" value="0">
+                            <input type="hidden" id="rhInternalFuelNumber" value="1"><input type="hidden" id="rhInternalFuelWeight" value="0"><input type="hidden" id="rhInternalFuelMMNT" value="0">
+                            <input type="hidden" id="lhSponsonNumber" value="1"><input type="hidden" id="lhSponsonWeight" value="0"><input type="hidden" id="lhSponsonMMNT" value="0">
+                            <input type="hidden" id="rhSponsonNumber" value="1"><input type="hidden" id="rhSponsonWeight" value="0"><input type="hidden" id="rhSponsonMMNT" value="0">
                             <input type="hidden" id="cabinFuelNumber" value="1"><input type="hidden" id="cabinFuelWeight" value="0"><input type="hidden" id="cabinFuelMMNT" value="0">
-                            <input type="hidden" id="forwardLongitudinalNumber" value="1"><input type="hidden" id="forwardLongitudinalWeight" value="0"><input type="hidden" id="forwardLongitudinalMMNT" value="0">
-                            <input type="hidden" id="rearLongitudinalNumber" value="1"><input type="hidden" id="rearLongitudinalWeight" value="0"><input type="hidden" id="rearLongitudinalMMNT" value="0">
-                            <input type="hidden" id="rearTransversalNumber" value="1"><input type="hidden" id="rearTransversalWeight" value="0"><input type="hidden" id="rearTransversalMMNT" value="0">
                             <input type="hidden" id="totalFuelCG"><input type="hidden" id="totalFuelMMNT" value="0">
                             <div style="margin: 0.75rem 0 0 0;">
                                 <div style="font-size: 0.85rem; font-weight: 600; color: white; display: flex; align-items: center; justify-content: center; gap: 0.5rem; padding: 0.6rem 1rem; background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%); border-radius: 8px; box-shadow: 0 2px 4px rgba(30, 64, 175, 0.3);">
@@ -350,8 +348,12 @@
             card.classList.toggle('collapsed');
         }
 
-        function updateFuelQuantity(input, weightId, momentId, cgLocation) {
-            const quantity = parseFloat(input.value) || 0;
+        function updateFuelQuantity(input, weightId, momentId, cgLocation, maxValue) {
+            let quantity = parseFloat(input.value) || 0;
+            if (maxValue && quantity > maxValue) {
+                quantity = maxValue;
+                input.value = maxValue;
+            }
             const moment = quantity * cgLocation;
             
             document.getElementById(weightId).value = quantity.toFixed(2);
@@ -361,8 +363,8 @@
         }
 
         function calculateTotalFuel() {
-            const weights = ['internalFuelWeight', 'sponsonWeight', 'cabinFuelWeight', 'forwardLongitudinalWeight', 'rearLongitudinalWeight', 'rearTransversalWeight'];
-            const moments = ['internalFuelMMNT', 'sponsonMMNT', 'cabinFuelMMNT', 'forwardLongitudinalMMNT', 'rearLongitudinalMMNT', 'rearTransversalMMNT'];
+            const weights = ['lhInternalFuelWeight', 'rhInternalFuelWeight', 'lhSponsonWeight', 'rhSponsonWeight', 'cabinFuelWeight'];
+            const moments = ['lhInternalFuelMMNT', 'rhInternalFuelMMNT', 'lhSponsonMMNT', 'rhSponsonMMNT', 'cabinFuelMMNT'];
             
             let totalWeight = 0;
             let totalMoment = 0;

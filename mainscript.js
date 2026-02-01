@@ -1,4 +1,4 @@
-function formatToTwoDecimals(value) {
+﻿function formatToTwoDecimals(value) {
   return typeof value === 'number' && !isNaN(value) ? Number(value.toFixed(2)) : value;
 }
 const newcanvas = document.getElementById("newcurveCanvas");
@@ -785,7 +785,7 @@ function showToast(
 function drawFoundPoint(ctx, x, y, colore = "red") {
   if (y !== null) {
     ctx.beginPath();
-    ctx.arc(x, y, 5, 0, 2 * Math.PI);
+    ctx.arc(x, y, 3, 0, 2 * Math.PI);
     ctx.fillStyle = colore; // Distinct color for the found point
     ctx.fill();
   }
@@ -961,6 +961,7 @@ function toggleJDDOption() {
       canvasWithoutJDD.style.display = "block";
   }
 }
+
 
 
 

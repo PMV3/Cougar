@@ -186,7 +186,7 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
-.btn-new-flight svg { width: 18px; height: 18px; }
+.btn-new-flight svg { width: 22px; height: 22px; }
 
 .form-field {
     display: flex;
@@ -703,3 +703,5 @@ canvas { border: 1px solid transparent; display: none; }
     max-width: 1600px;
     margin: 0 auto;
 }
+
+
