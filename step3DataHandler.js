@@ -22,6 +22,7 @@ function loadStep3Data() {
     // Load Step 3 specific data
     document.getElementById('speed').value = savedData.inputs?.['speed'] || '';
     document.getElementById('fuelconsumption').value = savedData.calculatedValues?.['fuelconsumption'] || '';
+    document.getElementById('windEnRoute').value = savedData.inputs?.['windEnRoute'] || '';
 
     // Load VFR Calculation data
     document.getElementById('distance').value = savedData.inputs?.['distance'] || '';
@@ -58,6 +59,7 @@ function saveStep3Data() {
     const data = {
         inputs: {
             speed: document.getElementById('speed').value,
+            windEnRoute: document.getElementById('windEnRoute').value,
             distance: document.getElementById('distance').value,
             windSpeed: document.getElementById('windSpeed').value,
             speedFuel: document.getElementById('speedFuel').value,
