@@ -71,8 +71,16 @@
                     <input type="number" id="temperature" name="temperature" placeholder="15">
                 </div>
                 <div class="form-field">
-                    <label for="height">Altitude (ft)</label>
-                    <input type="number" id="height" name="height" placeholder="0">
+                    <label for="elevation">Field Elev (ft)</label>
+                    <input type="number" id="elevation" name="elevation" placeholder="0" step="1" oninput="updatePressureAltitude()">
+                </div>
+                <div class="form-field">
+                    <label for="qnh">QNH (hPa)</label>
+                    <input type="number" id="qnh" name="qnh" placeholder="1013.2" step="0.1" min="850" max="1100" oninput="updatePressureAltitude()">
+                </div>
+                <div class="form-field">
+                    <label for="height">Press Alt (ft)</label>
+                    <input type="number" id="height" name="height" placeholder="--" readonly title="Pressure altitude computed from field elevation and QNH. Used by all performance charts.">
                 </div>
             </div>
 
@@ -329,7 +337,7 @@
                                 <thead><tr><th>Tank</th><th>Fuel Quantity (lb)</th></tr></thead>
                                 <tbody>
                                     <tr><td class="row-label">LH Internal (1533 lb)</td><td><input type="text" id="lhInternalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'lhInternalFuelWeight', 'lhInternalFuelMMNT', 173.46, 1533)"></td></tr>
-                                    <tr><td class="row-label">RH Internal (1897 lb)</td><td><input type="text" id="rhInternalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rhInternalFuelWeight', 'rhInternalFuelMMNT', 173.46, 1897)"></td></tr>
+                                    <tr><td class="row-label">RH Internal (2436 lb)</td><td><input type="text" id="rhInternalFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rhInternalFuelWeight', 'rhInternalFuelMMNT', 173.46, 2436)"></td></tr>
                                     <tr><td class="row-label">LH Sponson (522 lb)</td><td><input type="text" id="lhSponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'lhSponsonWeight', 'lhSponsonMMNT', 269.92, 522)"></td></tr>
                                     <tr><td class="row-label">RH Sponson (522 lb)</td><td><input type="text" id="rhSponsonSingleWeight" value="0" oninput="updateFuelQuantity(this, 'rhSponsonWeight', 'rhSponsonMMNT', 269.92, 522)"></td></tr>
                                     <tr><td class="row-label">Cabin Tank (1723 lb)</td><td><input type="text" id="cabinFuelSingleWeight" value="0" oninput="updateFuelQuantity(this, 'cabinFuelWeight', 'cabinFuelMMNT', 335.51, 1723)"></td></tr>
@@ -530,6 +538,43 @@ function updateAbsoluteMaxFuelInCard() {
     }
 }
 setInterval(updateAbsoluteMaxFuelInCard, 500);
+
+// ---------------------------------------------------------------------------
+// Pressure altitude
+// All performance charts (STEP2 hover/ceiling/climb, STEP3 fuel flow) are
+// entered with pressure altitude (Hp), not field elevation. Hp is derived from
+// field elevation and QNH with the ISA barometric formula and written into the
+// read-only #height field, which is the value the other pages already read.
+// ---------------------------------------------------------------------------
+const QNH_MIN_HPA = 850;
+const QNH_MAX_HPA = 1100;
+
+function computePressureAltitude(elevationFt, qnhHpa) {
+    if (!isFinite(elevationFt) || !isFinite(qnhHpa)) return null;
+    if (qnhHpa < QNH_MIN_HPA || qnhHpa > QNH_MAX_HPA) return null;
+    return elevationFt + 145366.45 * (1 - Math.pow(qnhHpa / 1013.25, 0.190284));
+}
+
+function updatePressureAltitude() {
+    const elevationEl = document.getElementById('elevation');
+    const qnhEl = document.getElementById('qnh');
+    const hpEl = document.getElementById('height');
+    if (!elevationEl || !qnhEl || !hpEl) return;
+
+    const hp = computePressureAltitude(parseFloat(elevationEl.value), parseFloat(qnhEl.value));
+    const newValue = hp === null ? '' : String(Math.round(hp));
+    if (hpEl.value === newValue) return;
+
+    hpEl.value = newValue;
+    // Notify the existing listeners in cg/cg.js (5 ft IGE lookup, CG summary,
+    // save to localStorage) exactly as a manual entry in this field used to.
+    hpEl.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+// Recompute after saved values are restored so Hp always matches the stored
+// elevation and QNH rather than a stale stored number.
+document.addEventListener('DOMContentLoaded', updatePressureAltitude);
+window.addEventListener('pageshow', updatePressureAltitude);
 </script>
 </body>
 </html>

@@ -155,7 +155,7 @@ body {
 /* Quick Info Bar */
 .quick-info-bar {
     display: grid;
-    grid-template-columns: auto repeat(4, 1fr);
+    grid-template-columns: auto repeat(6, 1fr);
     gap: 1rem;
     background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-dark) 100%);
     padding: 1rem 1.25rem;
@@ -219,6 +219,14 @@ body {
 .form-field select:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* Computed, read-only value in the quick-info bar (pressure altitude) */
+.form-field input[readonly] {
+    background: rgba(255,255,255,0.75);
+    color: var(--primary-dark);
+    font-weight: 700;
+    cursor: default;
 }
 
 .form-field select {

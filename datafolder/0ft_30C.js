@@ -1,4 +1,4 @@
-export const foraoe_8_FuelConsumption_30C = [
+const foraoe_8_FuelConsumption_30C = [
   {
       index: 24700,
       data: [

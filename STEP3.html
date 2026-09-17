@@ -375,10 +375,14 @@
     <img id="fuelImage" src="./0ft_15C.jpg" style="display:none;" alt="Fuel Consumption Chart">
     <script src="dataPersistence.js"></script>
     <script src="navigation.js"></script>
-    <script type="module" src="./datafolder/0ft_15C.js"></script>
-    <script type="module" src="./fuel.js"></script>
-    <script type="module" src="./fuelCalculation.js"></script>
-    <script type="module" src="./datafolder/fuelLeak.js"></script>
+    <!-- Fuel-flow datasets must load before fuel.js. Classic scripts (not modules)
+         so the page also works when opened directly from the file system. -->
+    <script src="./datafolder/0ft_15C.js"></script>
+    <script src="./datafolder/0ft_30C.js"></script>
+    <script src="./datafolder/6000ft_15C.js"></script>
+    <script src="./datafolder/6000ft_30C.js"></script>
+    <script src="./fuel.js"></script>
+    <script src="./datafolder/fuelLeak.js"></script>
     <script src="step3DataHandler.js"></script>
     <script>
     function toggleCard(cardId) {

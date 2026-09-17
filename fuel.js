@@ -1,3 +1,11 @@
+'use strict';
+// This file is loaded as a classic script (not an ES module) so that STEP3
+// also works when the app is opened directly from the file system, where
+// browsers block module scripts. The four fuel-flow datasets
+// (foraoe_8_FuelConsumption_15C, _30C, _6000ft_15C, _6000ft_30C) are plain
+// globals declared by the datafolder/*.js scripts that STEP3.html loads
+// before this one.
+
 document.addEventListener('DOMContentLoaded', function() {
     loadAllData();
 });
@@ -9,11 +17,6 @@ Object.assign(window, {
     saveDataAndNavigate
     // ... other functions ...
 });
-
-import { foraoe_8_FuelConsumption_15C } from './datafolder/0ft_15C.js';
-import { foraoe_8_FuelConsumption_30C } from './datafolder/0ft_30C.js';
-import { foraoe_8_FuelConsumption_6000ft_15C } from './datafolder/6000ft_15C.js';
-import { foraoe_8_FuelConsumption_6000ft_30C } from './datafolder/6000ft_30C.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('fuelChart');
