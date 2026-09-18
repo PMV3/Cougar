@@ -8,12 +8,70 @@
         gtag('js', new Date());
         gtag('config', 'G-YW913537F4');
     </script>
-    <meta charset="UTF-8" />`n    <link rel="icon" href="data:," />
+    <meta charset="UTF-8" />
+    <link rel="icon" href="data:," />
     <meta name="viewport" content="width=1600">
     <title>PMV 3 - Endurance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="step1-styles.css">
     <style>
+        #vfrOnSiteStatus:empty { display: none; }
+        .vfr-field-heading {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .vfr-field-heading > span { min-width: 0; }
+        .vfr-help-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            flex: 0 0 24px;
+            margin-left: 0;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: transparent;
+            color: #64748b;
+            font-size: 16px;
+            cursor: pointer;
+            vertical-align: middle;
+        }
+        .vfr-help-button svg { width: 15px; height: 15px; display: block; }
+        .vfr-help-button:hover, .vfr-help-button:focus-visible {
+            background: #dbeafe;
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
+        .vfr-help-popover {
+            position: fixed;
+            inset: auto 24px 24px auto;
+            margin: 0;
+            width: 320px;
+            max-width: calc(100vw - 48px);
+            padding: 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: white;
+            color: #24344b;
+            box-shadow: 0 8px 30px #0f172a26;
+            font-size: 14px;
+            line-height: 1.5;
+            text-transform: none;
+            letter-spacing: normal;
+            text-align: left;
+        }
+        .vfr-help-popover p { margin: 6px 0 12px; }
+        .vfr-help-close {
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            padding: 4px 12px;
+            background: #f1f5f9;
+            color: #24344b;
+            cursor: pointer;
+        }
         .calc-btn {
             width: 100%;
             padding: 0.75rem 1rem;
@@ -66,7 +124,7 @@
         }
         .quick-info-bar-step3 {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
             background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-dark) 100%);
             padding: 1rem 1.25rem;
@@ -74,7 +132,7 @@
             box-shadow: var(--shadow-xl);
             align-items: end;
             color: white;
-            max-width: 600px;
+            max-width: 1100px;
         }
         /* Canvas styling */
         .chart-center {
@@ -144,6 +202,7 @@
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
                 <span class="nav-arrow">&#8594;</span>
                 <button class="nav-tab step active" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'PLANNING')">PLANNING</button>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
             <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
@@ -165,6 +224,14 @@
                     <label for="fuelconsumption">AEO Fuel Consumption (lbs)</label>
                     <input type="text" id="fuelconsumption" name="fuelconsumption" placeholder="Auto-calculated" readonly>
                 </div>
+                <div class="form-field">
+                    <label for="windEnRoute">Wind en route kt ( + tail / &minus; head)</label>
+                    <input type="number" id="windEnRoute" name="windEnRoute" placeholder="0" step="1" min="-60" max="60">
+                </div>
+                <div class="form-field">
+                    <label for="bestRangeSpeed">Best range speed (TAS)</label>
+                    <input type="text" id="bestRangeSpeed" name="bestRangeSpeed" placeholder="--" readonly title="From the BEST RANGE SPEED inset of the level-flight chart, for the current weight and en-route wind component">
+                </div>
             </div>
             <div class="vfr-ifr-row">
                 <div class="card" id="card-vfr">
@@ -179,11 +246,12 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Distance (Nm)</th>
+                                    <th>One-way Distance (NM)</th>
                                     <th>Wind (Kts)</th>
                                     <th>Speed (Kts)</th>
                                     <th>Consumption/Min</th>
-                                    <th>Total Fuel</th>
+                                    <th>Entered Fuel (lb)</th>
+                                    <th><label for="vfrOnSiteMinutes">Time on Site (min)</label></th>
                                     <th>Day/Night</th>
                                 </tr>
                             </thead>
@@ -194,6 +262,7 @@
                                     <td><input type="number" id="speedFuel" placeholder="Enter"></td>
                                     <td><input type="number" id="fuelConsumption" placeholder="Enter"></td>
                                     <td><input type="number" id="fuelEntered" placeholder="Enter"></td>
+                                    <td><input type="number" id="vfrOnSiteMinutes" min="0" step="any" value="0"></td>
                                     <td><select id="dayNight"><option value="day">Day</option><option value="night">Night</option></select></td>
                                 </tr>
                             </tbody>
@@ -202,10 +271,10 @@
                             <thead>
                                 <tr>
                                     <th>BF</th>
-                                    <th>Time</th>
-                                    <th>Flight Fuel</th>
-                                    <th>Bingo</th>
-                                    <th>Endurance</th>
+                                    <th>One-way Travel Time</th>
+                                    <th>Total Required Fuel (lb)</th>
+                                    <th>Bingo (lb)</th>
+                                    <th>Extra Play Time</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -219,6 +288,7 @@
                             </tbody>
                         </table>
                         <button class="calc-btn" onclick="calculateMinimumFuel()">Calculate VFR</button>
+                        <p id="vfrOnSiteStatus" role="status" style="font-size: 0.8125rem; margin-top: 0.5rem;"></p>
                     </div>
                 </div>
                 <div class="card" id="card-ifr">
@@ -339,12 +409,12 @@
                                 <td><input type="number" id="reserve" placeholder="Enter"></td>
                                 <td><input type="number" id="usable" readonly></td>
                                 <td><input type="number" id="consumption" placeholder="Enter"></td>
-                                <td><input type="text" id="flight" readonly></td>
+                                <td><input type="text" id="legs" readonly></td>
                                 <td class="time-split">
                                     <input type="number" id="onSiteHours" placeholder="H">
                                     <input type="number" id="onSiteMinutes" placeholder="M">
                                 </td>
-                                <td><input type="text" id="legs" readonly></td>
+                                <td><input type="text" id="flight" readonly></td>
                                 <td><input type="number" id="speedBox1" placeholder="Enter"></td>
                                 <td><input type="number" id="range" readonly></td>
                                 <td><input type="number" id="trip" readonly></td>
@@ -377,10 +447,9 @@
     <script src="navigation.js"></script>
     <!-- Fuel-flow datasets must load before fuel.js. Classic scripts (not modules)
          so the page also works when opened directly from the file system. -->
-    <script src="./datafolder/0ft_15C.js"></script>
-    <script src="./datafolder/0ft_30C.js"></script>
-    <script src="./datafolder/6000ft_15C.js"></script>
-    <script src="./datafolder/6000ft_30C.js"></script>
+    <script src="./datafolder/levelflightData.js"></script>
+    <script src="./datafolder/bestRangeSpeed.js"></script>
+    <script src="./perf/levelflight.js"></script>
     <script src="./fuel.js"></script>
     <script src="./datafolder/fuelLeak.js"></script>
     <script src="step3DataHandler.js"></script>
@@ -408,8 +477,102 @@
             case 'FCF':
                 saveDataAndNavigate('FCF.html');
                 break;
+            case 'PLANNING':
+                saveDataAndNavigate('PLANNING.html');
+                break;
         }
     }
+    </script>
+    <script>
+    // Native popovers support click/tap, keyboard activation, Escape and outside click.
+    (() => {
+        const help = [
+            'Distance from departure to the operating site. The return is assumed to be the same distance and is added automatically to total required fuel.',
+            'Wind speed without direction. At 15 kt or higher, 5% is added to travel fuel. Travel time is not adjusted for wind.',
+            'Speed used to calculate one-way travel time: one-way distance divided by speed. Wind direction is not applied.',
+            'Fuel consumption in lb per minute, used for both travel and planned time on site.',
+            'Fuel on board at departure. Extra Play Time is what is left of it after 150 lb startup/taxi, the outbound leg, the planned time on site and Bingo.',
+            'Planned time on site in minutes. Its fuel is added to total required fuel and deducted when calculating time remaining until Bingo.',
+            'Landing reserve: 500 lb for day or 600 lb for night.',
+            'Basic factor: 60 divided by speed, giving minutes per nautical mile.',
+            'Travel time for one leg: one-way distance multiplied by the basic factor. Excludes the return and time on site.',
+            'Departure fuel for the complete trip, planned time on site, landing reserve and 150 lb startup/taxi.',
+            'Fuel threshold for return: fuel for one leg plus landing reserve. Assumes the return distance equals the entered one-way distance. Excludes startup/taxi and on-site fuel.',
+            'Extra minutes you can stay on site before reaching Bingo: entered fuel minus start-up/taxi, the flight out, the planned time on site and Bingo. 0h 0m means you are at or below Bingo.'
+        ];
+        const ifrHelp = [
+            'Distance from A to B in nautical miles. Travel time is distance × 60 ÷ speed. The calculation adds 5% to fuel for this leg.',
+            'Distance from B to C in nautical miles. Fuel for this leg is added separately, without the 5% allowance applied to A–B.',
+            'Speed in knots used for both legs. Each leg’s time in minutes is distance × 60 ÷ speed.',
+            'Fuel consumption in lb per minute. Used for both travel legs and reserve fuel.',
+            'Current calculation uses 20 minutes of reserve when the entered value is below 30, and 30 minutes when it is 30 or higher. Other entered values are not used as exact reserve minutes.',
+            'Minimum Fuel Quantity in lb: A–B fuel plus 5%, B–C fuel, reserve fuel and 150 lb startup/taxi.'
+        ];
+        const fuelHelp = [
+            'One-way distance in nautical miles. The calculator assumes an equal return leg.',
+            'Total outbound and return distance: Range × 2.',
+            'Speed in knots used directly to calculate travel time. Although labeled IAS, this calculator does not convert IAS to TAS or ground speed, or apply wind.',
+            'Fuel consumption in lb per hour, used for both travel and time on site.',
+            'Total fuel required in the tanks: Needed + Reserve + 150 lb startup/taxi.',
+            'Combined outbound and return travel time: Trip ÷ Speed. Excludes time on site.',
+            'Planned time on site. Enter hours in the left box and minutes in the right box.',
+            'Total flight time: combined leg time plus planned time on site.',
+            'Fuel for travel and time on site: total Flight time in hours × Consumption/Hr. Excludes reserve and startup/taxi.',
+            'Landing reserve in lb, added to flight fuel and the 150 lb startup/taxi allowance.'
+        ];
+        const rangeHelp = [
+            'Starting fuel quantity in lb. The calculator deducts Reserve and 150 lb startup/taxi to find fuel available for flight.',
+            'Speed in knots used directly to calculate distance. Although labeled IAS, this calculator does not convert IAS to TAS or ground speed, or apply wind.',
+            'Available one-way distance: Trip ÷ 2, assuming equal outbound and return legs.',
+            'Total outbound and return distance available: Legs time in hours × Speed.',
+            'Landing reserve in lb, deducted from Q in Tanks before calculating flight time.',
+            'Fuel available for flight: Q in Tanks − Reserve − 150 lb startup/taxi. Includes fuel for the planned time on site.',
+            'Fuel consumption in lb per hour, used for both travel and time on site.',
+            'Time available for outbound and return travel: Flight time minus On Site time, with a minimum of zero.',
+            'Planned time on site. Enter hours in the left box and minutes in the right box. This time is deducted before calculating range.',
+            'Total time supported by available flight fuel: Needed ÷ Consumption/Hr. Includes time on site.'
+        ];
+        function addFieldHelp(cardId, prefix, descriptions) {
+        document.querySelectorAll(`#${cardId} th:not([colspan])`).forEach((heading, index) => {
+            const label = heading.textContent.trim();
+            const id = `${prefix}-help-${index}`;
+            const button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'vfr-help-button';
+            button.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.5" r="1" fill="currentColor" stroke="none"/></svg>';
+            button.setAttribute('aria-label', `Explain ${label}`);
+            button.setAttribute('popovertarget', id);
+            const popover = document.createElement('div');
+            popover.id = id;
+            popover.className = 'vfr-help-popover';
+            popover.setAttribute('popover', 'auto');
+            const title = document.createElement('strong');
+            title.id = `${id}-title`;
+            title.textContent = label;
+            popover.setAttribute('aria-labelledby', title.id);
+            const text = document.createElement('p');
+            text.textContent = descriptions[index];
+            const close = document.createElement('button');
+            close.type = 'button';
+            close.className = 'vfr-help-close';
+            close.textContent = 'Close';
+            close.setAttribute('popovertarget', id);
+            close.setAttribute('popovertargetaction', 'hide');
+            popover.append(title, text, close);
+            document.body.append(popover);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'vfr-field-heading';
+            const labelContent = document.createElement('span');
+            while (heading.firstChild) labelContent.append(heading.firstChild);
+            wrapper.append(labelContent, button);
+            heading.append(wrapper);
+        });
+        }
+        addFieldHelp('card-vfr', 'vfr', help);
+        addFieldHelp('card-ifr', 'ifr', ifrHelp);
+        addFieldHelp('card-fuel-calc', 'fuel', fuelHelp);
+        addFieldHelp('card-range-calc', 'range', rangeHelp);
+    })();
     </script>
     <script>
     // Debug: Show if data is loaded from previous steps

@@ -22,13 +22,16 @@ function loadStep3Data() {
     // Load Step 3 specific data
     document.getElementById('speed').value = savedData.inputs?.['speed'] || '';
     document.getElementById('fuelconsumption').value = savedData.calculatedValues?.['fuelconsumption'] || '';
+    document.getElementById('windEnRoute').value = savedData.inputs?.['windEnRoute'] || '';
 
     // Load VFR Calculation data
-    document.getElementById('distance').value = savedData.inputs?.['distance'] || '';
+    // Do not reinterpret older saved total-trip distances as one-way values.
+    document.getElementById('distance').value = savedData.inputs?.['vfrOneWayDistance'] ?? '';
     document.getElementById('speedFuel').value = savedData.inputs?.['speedFuel'] || '';
     document.getElementById('fuelConsumption').value = savedData.inputs?.['fuelConsumption'] || '';
     document.getElementById('fuelEntered').value = savedData.inputs?.['fuelEntered'] || step1FuelData['totalFuelWeight'] || '';
     document.getElementById('dayNight').value = savedData.inputs?.['dayNight'] || 'day';
+    document.getElementById('vfrOnSiteMinutes').value = savedData.inputs?.['vfrOnSiteMinutes'] ?? '0';
 
     // Load IFR Calculation data
     document.getElementById('distanceAB').value = savedData.inputs?.['distanceAB'] || '';
@@ -58,12 +61,15 @@ function saveStep3Data() {
     const data = {
         inputs: {
             speed: document.getElementById('speed').value,
+            windEnRoute: document.getElementById('windEnRoute').value,
             distance: document.getElementById('distance').value,
+            vfrOneWayDistance: document.getElementById('distance').value,
             windSpeed: document.getElementById('windSpeed').value,
             speedFuel: document.getElementById('speedFuel').value,
             fuelConsumption: document.getElementById('fuelConsumption').value,
             fuelEntered: document.getElementById('fuelEntered').value,
             dayNight: document.getElementById('dayNight').value,
+            vfrOnSiteMinutes: document.getElementById('vfrOnSiteMinutes').value,
             distanceAB: document.getElementById('distanceAB').value,
             distanceBC: document.getElementById('distanceBC').value,
             speedIFR: document.getElementById('speedIFR').value,
@@ -108,26 +114,8 @@ function saveStep3Data() {
 }
 
 function calculateMinimumFuelVFR() {
-    const distance = parseFloat(document.getElementById('distance').value) || 0;
-    const windSpeed = parseFloat(document.getElementById('windSpeed').value) || 0;
-    const speed = parseFloat(document.getElementById('speedFuel').value) || 0;
-    const fuelConsumption = parseFloat(document.getElementById('fuelConsumption').value) || 0;
-    const totalFuel = parseFloat(document.getElementById('fuelEntered').value) || 0;
-    const dayNight = document.getElementById('dayNight').value;
-
-    const groundSpeed = speed - windSpeed;
-    const time = distance / groundSpeed;
-    const flightFuel = time * fuelConsumption;
-    const bf = dayNight === 'day' ? 200 : 300;
-    const bingo = flightFuel + bf;
-    const endurance = totalFuel / fuelConsumption;
-
-    document.getElementById('bf').value = bf.toFixed(2);
-    document.getElementById('time').value = time.toFixed(2);
-    document.getElementById('flightFuel').value = flightFuel.toFixed(2);
-    document.getElementById('bingo').value = bingo.toFixed(2);
-    document.getElementById('endurance').value = endurance.toFixed(2);
-
+    // Keep the legacy entry point consistent with the visible VFR button.
+    window.calculateMinimumFuel();
     saveStep3Data();
 }
 

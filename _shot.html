@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><title>shot</title>
+<style>html,body{margin:0;background:#f1f5f9}iframe{border:0;width:1600px;display:block}</style>
+</head><body>
+<iframe id="f"></iframe>
+<script>
+// Temporary helper for documentation screenshots (not part of the app; delete afterwards).
+// _shot.html?page=STEP1.html  ->  loads the page in a frame, fills example values, opens the
+// relevant cards and draws red highlight boxes with Arabic labels around what changed.
+const q = new URLSearchParams(location.search);
+const page = q.get('page');
+const s1 = JSON.stringify({ inputs: { elevation: '3000', qnh: '1020', temperature: '25', wind: '0', height: '2800' },
+                            summaryData: { zfw: '16903', 'ttl-weight': '20000' } });
+function setter(w, d) {
+    return (id, v) => { const e = d.getElementById(id); if (!e) return; e.value = v;
+        e.dispatchEvent(new w.Event('input', { bubbles: true })); e.dispatchEvent(new w.Event('change', { bubbles: true })); };
+}
+const CFG = {
+    'STEP1.html': {
+        before() { localStorage.setItem('step1SpecificData', s1); },
+        setup(w, d) { const set = setter(w, d); set('elevation', 3000); set('qnh', 1020); set('temperature', 25);
+            const fuel = d.getElementById('FuelSection'); if (fuel) fuel.style.display = 'block'; },
+        marks(d) {
+            const rh = [...d.querySelectorAll('tr')].find(tr => /RH\s*Internal/i.test(tr.textContent));
+            const ff = id => (d.getElementById(id) && (d.getElementById(id).closest('.form-field') || d.getElementById(id)));
+            return [
+                { el: ff('qnh'), label: 'جديد: خانة QNH' },
+                { el: ff('height'), label: 'الارتفاع الضغطي يُحسب تلقائيًا ويُستخدم في كل الشارتات' },
+                { el: [...d.querySelectorAll('.nav-tab')].find(b => b.textContent.trim() === 'PLANNING'), label: 'صفحة PLANNING جديدة' },
+                { el: rh, label: 'تصحيح سعة RH Internal إلى 2436 رطل', above: false }];
+        }
+    },
+    'STEP2.html': {
+        before() { localStorage.setItem('step1SpecificData', s1);
+            localStorage.setItem('allData', JSON.stringify({ elevation: '3000', qnh: '1020', temperature: '25', 'ttl-weight': '20000', wind: '0', height: '2800' })); },
+        setup(w, d) { const set = setter(w, d); set('#qat', 25); set('#hp', 3000); set('#acweight', 20000); set('#wind', 0);
+            if (w.serviceilingbuttondown) w.serviceilingbuttondown(); },
+        marks(d) {
+            const lbBox = [...d.querySelectorAll('.result-item')].find(r => /Service Ceiling \(lb\)/.test(r.textContent));
+            return [
+                { el: d.getElementById('curveCanvas2'), label: 'خطوط زرقاء لقراءة الوزن مثل باقي الشارتات' },
+                { el: lbBox, label: 'خانة جديدة: Service Ceiling (lb)' }];
+        }
+    },
+    'STEP3.html': {
+        before() { localStorage.setItem('step1SpecificData', s1); },
+        setup(w, d) { const set = setter(w, d);
+            set('height', 3000); set('temperature', 25); set('totalweight', 21000); set('speed', 130); set('windEnRoute', 0);
+            set('qInTanks', 2897); set('reserve', 500); set('consumption', 1290); set('onSiteHours', 0); set('onSiteMinutes', 5); set('speedBox1', 100);
+            if (w.calculateFirstTable) w.calculateFirstTable();
+            set('distance', 25); set('windSpeed', 10); set('speedFuel', 100); set('fuelConsumption', 21.5); set('fuelEntered', 1800); set('vfrOnSiteMinutes', 5);
+            if (w.calculateMinimumFuel) w.calculateMinimumFuel(); },
+        marks(d) {
+            const ff = id => (d.getElementById(id) && (d.getElementById(id).closest('.form-field') || d.getElementById(id)));
+            const play = d.getElementById('endurance') && d.getElementById('endurance').closest('td');
+            return [
+                { el: ff('windEnRoute'), label: 'جديد: رياح الطريق' },
+                { el: ff('bestRangeSpeed'), label: 'جديد: سرعة أفضل مدى من الشارت' },
+                { el: d.getElementById('fuelChart'), label: '12 شارت Level Flight جديدة، ويختار الأقرب تلقائيًا' },
+                { el: d.getElementById('card-range-calc'), label: 'تصحيح جدول RANGE: وقت الموقع يُخصم من وقت الطيران' },
+                { el: play, label: 'تصحيح Extra Play Time', above: false }];
+        }
+    },
+    'PLANNING.html': {
+        before() { localStorage.setItem('step1SpecificData', s1); localStorage.removeItem('planningRows'); localStorage.setItem('planningChartsRow', '2'); },
+        setup(w, d) { const sel = d.getElementById('chartsRowSelect'); if (sel) { sel.value = '2'; sel.dispatchEvent(new w.Event('change')); }
+            const help = d.getElementById('card-rules'); if (help) help.classList.remove('collapsed'); },
+        marks(d) {
+            return [
+                { el: d.getElementById('planningTable'), label: 'جدول التخطيط: لكل مطار أقصى وزن إقلاع (10 قدم، 5 قدم، AGW)، الوقود، الاستهلاك، المدى والـ Trip' },
+                { el: d.getElementById('btnZfwFromStep1'), label: 'ينقل الارتفاع و QNH و OAT و ZFW من STEP 1', above: false },
+                { el: d.getElementById('card-charts'), label: 'الشارتات المستخدمة في الحساب مع خطوط القراءة' },
+                { el: d.getElementById('card-rules'), label: 'شرح مبسّط لكل خانة' }];
+        }
+    }
+};
+function highlight(d, items) {
+    const w = d.defaultView;
+    items.forEach(({ el, label, pad = 6, above = true }) => {
+        if (!el) return;
+        const r = el.getBoundingClientRect();
+        const L = r.left + w.scrollX - pad, T = r.top + w.scrollY - pad;
+        const box = d.createElement('div');
+        box.style.cssText = `position:absolute;left:${L}px;top:${T}px;width:${r.width + 2 * pad}px;height:${r.height + 2 * pad}px;border:4px solid #e11d48;border-radius:10px;box-shadow:0 0 0 4px rgba(225,29,72,.22);z-index:9999;pointer-events:none;`;
+        d.body.appendChild(box);
+        const tag = d.createElement('div');
+        tag.textContent = label;
+        tag.style.cssText = `position:absolute;left:${L}px;top:${above ? T - 36 : T + r.height + 2 * pad + 6}px;background:#e11d48;color:#fff;font:bold 17px 'Segoe UI',Tahoma,Arial;padding:5px 12px;border-radius:7px;z-index:10000;white-space:nowrap;direction:rtl;pointer-events:none;`;
+        d.body.appendChild(tag);
+    });
+}
+const cfg = CFG[page];
+cfg.before();
+const f = document.getElementById('f');
+f.style.height = '1000px';
+f.addEventListener('load', () => {
+    const w = f.contentWindow, d = f.contentDocument;
+    setTimeout(() => {
+        cfg.setup(w, d);
+        setTimeout(() => {
+            highlight(d, cfg.marks(d));
+            f.style.height = (d.documentElement.scrollHeight + 40) + 'px';
+            document.title = 'ready';
+        }, 2500);
+    }, 1500);
+});
+f.src = page;
+</script>
+</body></html>

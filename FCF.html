@@ -8,7 +8,8 @@
         gtag('js', new Date());
         gtag('config', 'G-YW913537F4');
     </script>
-    <meta charset="UTF-8">`n    <link rel="icon" href="data:," />
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:," />
     <meta name="viewport" content="width=1600">
     <title>PMV 3 - FCF</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -190,6 +191,7 @@
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
                 <span class="nav-arrow">&rarr;</span>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'PLANNING')">PLANNING</button>
                 <button class="nav-tab step active" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
             <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
@@ -368,6 +370,7 @@
                 case 'STEP2': window.location.href = 'STEP2.html'; break;
                 case 'STEP3': window.location.href = 'STEP3.html'; break;
                 case 'FCF': window.location.href = 'FCF.html'; break;
+                case 'PLANNING': window.location.href = 'PLANNING.html'; break;
             }
         }
         

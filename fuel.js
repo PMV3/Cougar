@@ -21,25 +21,23 @@ Object.assign(window, {
 document.addEventListener('DOMContentLoaded', () => {
     const canvas = document.getElementById('fuelChart');
     const ctx = canvas.getContext('2d');
-    const backgroundImage15C = new Image();
-    const backgroundImage30C = new Image();
-    const backgroundImage6000ft15C = new Image();
-    const backgroundImage6000ft30C = new Image();
-    backgroundImage15C.src = '0ft_15C.jpg';
-    backgroundImage30C.src = '0ft_30C.jpg';
-    backgroundImage6000ft15C.src = '6000ft_15C.jpg';
-    backgroundImage6000ft30C.src = '6000ft_30C.jpg';
-
-    const desiredWidth = 1241;
-    const desiredHeight = 1755;
-    canvas.width = desiredWidth;
-    canvas.height = desiredHeight;
+    // One image per digitised level-flight chart (datafolder/levelflightData.js,
+    // images in levelflight/). The canvas takes the size of the chart drawn.
+    const chartImages = {};
+    Object.keys(LEVELFLIGHT_DATA).forEach(key => {
+        const img = new Image();
+        img.src = LEVELFLIGHT_DATA[key].src;
+        chartImages[key] = img;
+    });
+    const firstDef = LEVELFLIGHT_DATA[Object.keys(LEVELFLIGHT_DATA)[0]];
+    canvas.width = firstDef.w;
+    canvas.height = firstDef.h;
 
     let backgroundImageLoaded = false;
     let showerrornum = 0;
 
-    [backgroundImage15C, backgroundImage30C, backgroundImage6000ft15C, backgroundImage6000ft30C].forEach(img => {
-        img.onload = () => {
+    Object.keys(chartImages).forEach(key => {
+        chartImages[key].onload = () => {
             backgroundImageLoaded = true;
         };
     });
@@ -147,166 +145,127 @@ document.addEventListener('DOMContentLoaded', () => {
         drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin);
     };
 
+    // Which level-flight chart applies: the nearest of the twelve digitised
+    // charts (Hp 0/3000/6000/9000 ft, OAT 0/+15/+30/+45 C), chosen by
+    // LEVELFLIGHT.selectKey in perf/levelflight.js. Shared by the fuel-flow
+    // lookup and the best-range-speed lookup so both always read the same
+    // chart. Returns null outside -2000..10500 ft.
+    let currentChartKey = null;
+    function selectChart(height, temp) {
+        const key = LEVELFLIGHT.selectKey(height, temp);
+        currentChartKey = key;
+        if (!key) return null;
+        const def = LEVELFLIGHT_DATA[key];
+        return { key, def, backgroundImage: chartImages[key], originalWidth: def.w, originalHeight: def.h,
+                 margin: { top: 0, right: def.w - def.scaleX, bottom: def.h - def.axisY, left: 0 } };
+    }
+
     async function interpolateData(height, temp, inputSpeed, inputWeight) {
-        let chartData, backgroundImage, originalWidth, originalHeight, margin;
-
-        if (height >= 0 && height <= 5000) {
-            if (temp < 30) {
-                chartData = foraoe_8_FuelConsumption_15C;
-                backgroundImage = backgroundImage15C;
-                originalWidth = 1241;
-                originalHeight = 1755;
-                margin = {
-                    top: 100 * (desiredHeight / originalHeight),
-                    right: 220 * (desiredWidth / originalWidth),
-                    bottom: 400 * (desiredHeight / originalHeight),
-                    left: 120 * (desiredWidth / originalWidth)
-                };
-            } else {
-                chartData = foraoe_8_FuelConsumption_30C;
-                backgroundImage = backgroundImage30C;
-                originalWidth = 528;
-                originalHeight = 745;
-                margin = {
-                    top: 260 * (desiredHeight / originalHeight),
-                    right: 35 * (desiredWidth / originalWidth),
-                    bottom: 120 * (desiredHeight / originalHeight),
-                    left: 35 * (desiredWidth / originalWidth)
-                };
-            }
-        } else if (height > 5000 && height <= 9000) {
-            if (temp < 30) {
-                chartData = foraoe_8_FuelConsumption_6000ft_15C;
-                backgroundImage = backgroundImage6000ft15C;
-                originalWidth = 1241;
-                originalHeight = 1755;
-                margin = {
-                    top: 0 * (desiredHeight / originalHeight),
-                    right: 180 * (desiredWidth / originalWidth),
-                    bottom: 430 * (desiredHeight / originalHeight),
-                    left: 35 * (desiredWidth / originalWidth)
-                };
-            } else {
-                chartData = foraoe_8_FuelConsumption_6000ft_30C;
-                backgroundImage = backgroundImage6000ft30C;
-                originalWidth = 1241;
-                originalHeight = 1755;
-                margin = {
-                    top: 0 * (desiredHeight / originalHeight),
-                    right: 220 * (desiredWidth / originalWidth),
-                    bottom: 430 * (desiredHeight / originalHeight),
-                    left: 0 * (desiredWidth / originalWidth)
-                };
-            }
+        const chart = selectChart(height, temp);
+        if (!chart) {
+            return { fuelData: null, backgroundImage: null, originalWidth: null, originalHeight: null, margin: null };
         }
+        const { backgroundImage, originalWidth, originalHeight, margin } = chart;
 
-        const nearestWeight = chartData.reduce((prev, curr) =>
-            Math.abs(curr.index - inputWeight) < Math.abs(prev.index - inputWeight) ? curr : prev
-        );
-
-        const { data } = nearestWeight;
-        for (let i = 0; i < data.length - 1; i++) {
-            if (data[i].x <= inputSpeed && data[i + 1].x >= inputSpeed) {
-                const x1 = data[i].x;
-                const y1 = data[i].y;
-                const x2 = data[i + 1].x;
-                const y2 = data[i + 1].y;
-                const interpolatedY = y1 + ((y2 - y1) * (inputSpeed - x1)) / (x2 - x1);
-                return { fuelData: interpolatedY, backgroundImage, originalWidth, originalHeight, margin };
-            }
+        // Shared lookup (perf/levelflight.js): linear between the two weight
+        // curves that bracket the weight, instead of the nearest curve only.
+        const ff = LEVELFLIGHT.fuelFlow(chart.key, inputWeight, inputSpeed);
+        if (ff.lbPerHour == null) {
+            return { fuelData: null, backgroundImage: null, originalWidth: null, originalHeight: null, margin: null };
         }
-        return { fuelData: null, backgroundImage: null, originalWidth: null, originalHeight: null, margin: null };
+        return { fuelData: ff.lbPerHour, backgroundImage, originalWidth, originalHeight, margin };
+    }
+
+    // ---- Best range speed (the inset printed on the same level-flight charts) ----
+    // lastBestRange keeps the latest result so drawChart can mark it on the inset.
+    let lastBestRange = null;
+
+    // Best-range TAS lookup lives in perf/levelflight.js (shared with the
+    // planning page); null when the weight or wind is outside the inset.
+    function lookupBestRangeSpeed(chartKey, weight, windComponent) {
+        return LEVELFLIGHT.bestRangeSpeed(chartKey, weight, windComponent);
+    }
+
+    function updateBestRangeSpeed() {
+        const out = document.getElementById('bestRangeSpeed');
+        const windEl = document.getElementById('windEnRoute');
+        if (!out || !windEl) return;
+        const height = parseFloat(document.getElementById('height').value);
+        const temp = parseFloat(document.getElementById('temperature').value);
+        const weight = parseFloat(document.getElementById('totalweight').value);
+        const wind = parseFloat(windEl.value);
+        lastBestRange = null;
+        if ([height, temp, weight, wind].some(v => !isFinite(v))) { out.value = ''; return; }
+        if (wind < -60 || wind > 60) { out.value = 'Wind must be -60 to +60 kt'; return; }
+        const chart = selectChart(height, temp);
+        if (!chart) { out.value = 'Altitude outside charts'; return; }
+        const tas = lookupBestRangeSpeed(chart.key, weight, wind);
+        if (tas === null) { out.value = 'Outside chart for this weight/wind'; return; }
+        lastBestRange = { key: chart.key, tas: tas, weight: weight, wind: wind };
+        out.value = Math.round(tas) + ' kt';
+    }
+
+    // Marks the best-range result on the inset of the chart currently drawn.
+    function drawBestRangeMarker(widthRatio, heightRatio) {
+        if (!lastBestRange || lastBestRange.key !== currentChartKey) return;
+        const inset = BEST_RANGE_SPEED[lastBestRange.key].inset;
+        const x = (inset.x100kt + (lastBestRange.tas - 100) * inset.pxPerKt) * widthRatio;
+        const y = (inset.y25000lb + (25000 - lastBestRange.weight) * inset.pxPerLb) * heightRatio;
+        const xLeft = inset.x100kt * widthRatio;                                            // 100 kt axis
+        const yBottom = (inset.y25000lb + (25000 - 13000) * inset.pxPerLb) * heightRatio;  // bottom of the inset grid
+        ctx.save();
+        ctx.strokeStyle = 'blue';
+        ctx.fillStyle = 'blue';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(xLeft, y);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x, yBottom);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText(`Best range ${Math.round(lastBestRange.tas)} kt`, x + 8, y - 6);
+        ctx.restore();
     }
 
     function drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin) {
+        if (canvas.width !== originalWidth || canvas.height !== originalHeight) {
+            canvas.width = originalWidth;
+            canvas.height = originalHeight;
+        }
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 
         const widthRatio = canvas.width / originalWidth;
         const heightRatio = canvas.height / originalHeight;
 
-        let xMin, xMax, yMin, yMax;
-        let originalXScale, originalYScale, xScale, yScale, xOffset, yOffset, xPos, yPos;
-
-        if (backgroundImage === backgroundImage15C) {
-            xMin = 0;
-            xMax = 150;
-            yMin = 780;
-            yMax = 1300;
-
-            originalXScale = (855 - 142) / (xMax - xMin);
-            originalYScale = (1213 - 620) / (yMax - yMin);
-
-            xScale = originalXScale * widthRatio;
-            yScale = originalYScale * heightRatio;
-
-            xOffset = 142 * widthRatio;
-            yOffset = 1213 * heightRatio;
-
-            xPos = xOffset + speed * xScale;
-            yPos = yOffset - (fuelData - yMin) * yScale;
-        } else if (backgroundImage === backgroundImage30C) {
-            xMin = 0;
-            xMax = 150;
-            yMin = 760;
-            yMax = 1300;
-
-            originalXScale = (405 - 38) / (xMax - xMin);
-            originalYScale = (584 - 268) / (yMax - yMin);
-
-            xScale = originalXScale * widthRatio;
-            yScale = originalYScale * heightRatio;
-
-            xOffset = 38 * widthRatio;
-            yOffset = 584 * heightRatio;
-
-            xPos = xOffset + speed * xScale;
-            yPos = yOffset - (fuelData - yMin) * yScale;
-        } else if (backgroundImage === backgroundImage6000ft15C) {
-            xMin = 0;
-            xMax = 150;
-            yMin = 680;
-            yMax = 1440;
-
-            originalXScale = (910 - 194) / (xMax - xMin);
-            originalYScale = (1242 - 454) / (yMax - yMin);
-
-            xScale = originalXScale * widthRatio;
-            yScale = originalYScale * heightRatio;
-
-            xOffset = 194 * widthRatio;
-            yOffset = 1242 * heightRatio;
-
-            xPos = xOffset + speed * xScale;
-            yPos = yOffset - (fuelData - yMin) * yScale;
-        } else if (backgroundImage === backgroundImage6000ft30C) {
-            xMin = 0;
-            xMax = 150;
-            yMin = 680;
-            yMax = 1340;
-
-            originalXScale = (850 - 141) / (xMax - xMin);
-            originalYScale = (1250 - 537) / (yMax - yMin);
-
-            xScale = originalXScale * widthRatio;
-            yScale = originalYScale * heightRatio;
-
-            xOffset = 141 * widthRatio;
-            yOffset = 1250 * heightRatio;
-
-            xPos = xOffset + speed * xScale;
-            yPos = yOffset - (fuelData - yMin) * yScale;
-        }
+        // Chart calibration from datafolder/levelflightData.js: TAS axis linear,
+        // AEO lb/h scale interpolated between its printed ticks (it is not linear).
+        const def = LEVELFLIGHT_DATA[currentChartKey];
+        const xPos = LEVELFLIGHT.xOf(def, speed) * widthRatio;
+        const yPos = LEVELFLIGHT.yOf(def, fuelData) * heightRatio;
 
         ctx.beginPath();
-        ctx.arc(xPos, yPos, 5, 0, 2 * Math.PI);
+        ctx.arc(xPos, yPos, 8, 0, 2 * Math.PI);
         ctx.fillStyle = 'red';
         ctx.fill();
         
+        // White backing so the two title lines stay readable over the chart's printed frame line.
+        const title1 = `Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`;
+        const title2 = `${def.title} (${def.source})`;
+        ctx.font = 'bold 20px Arial';
+        const titleWidth = Math.max(ctx.measureText(title1).width, ctx.measureText(title2).width);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillRect(4, 8, titleWidth + 14, 56);
+        ctx.fillStyle = 'red';
+        ctx.fillText(title1, 10, 30);
         ctx.font = '16px Arial';
-        ctx.fillText(`Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`, 10, 30);
+        ctx.fillText(title2, 10, 54);
         
         ctx.strokeStyle = 'red';
+        ctx.lineWidth = 3;   // the chart is 1470 px wide and shown smaller: 1 px lines vanish
         ctx.beginPath();
         ctx.moveTo(xPos, yPos);
         ctx.lineTo(xPos, canvas.height - margin.bottom);
@@ -317,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(canvas.width - margin.right, yPos);
         ctx.stroke();
         
-        const triangleSize = 10;
+        const triangleSize = 16;
         ctx.fillStyle = 'red';
         ctx.beginPath();
         ctx.moveTo(canvas.width - margin.right, yPos);
@@ -325,6 +284,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(canvas.width - margin.right - triangleSize, yPos + triangleSize / 2);
         ctx.closePath();
         ctx.fill();
+
+        drawBestRangeMarker(widthRatio, heightRatio);
     }
 
     function showToast(message = "Sample Message", toastType = "info", duration = 5000, fortop = 0) {
@@ -352,10 +313,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const onSiteMinutes = parseFloat(document.getElementById('onSiteMinutes').value);
         const onSite = onSiteHours + (onSiteMinutes / 60);
         
+        // Flight: how long the usable fuel lasts in total. Legs: the flying time
+        // that is left after the time on site (out and back), which sets the range.
         const flight = usable / consumption;
+        const legs = Math.max(0, flight - onSite);
         document.getElementById('flight').value = formatTime(flight * 60);
-
-        const legs = flight + onSite;
         document.getElementById('legs').value = formatTime(legs * 60);
 
         const speedBox1 = parseFloat(document.getElementById('speedBox1').value);
@@ -403,6 +365,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function calculateMinimumFuel() {
+        const onSiteMinutes = Number(document.getElementById('vfrOnSiteMinutes').value.trim() || 0);
         const distance = parseFloat(document.getElementById('distance').value);
         const windSpeed = parseFloat(document.getElementById('windSpeed').value);
         const speed = parseFloat(document.getElementById('speedFuel').value);
@@ -410,8 +373,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const fuelEntered = parseFloat(document.getElementById('fuelEntered').value);
         const dayNight = document.getElementById('dayNight').value;
 
-        if (isNaN(distance) || isNaN(windSpeed) || isNaN(speed) || isNaN(fuelConsumption) || isNaN(fuelEntered)) {
-            alert("Please enter valid numbers for distance, wind speed, speed, fuel consumption, and fuel entered.");
+        if (![distance, windSpeed, speed, fuelConsumption, fuelEntered, onSiteMinutes].every(Number.isFinite)
+            || distance < 0 || windSpeed < 0 || speed <= 0 || fuelConsumption <= 0 || fuelEntered < 0 || onSiteMinutes < 0) {
+            ['bf', 'time', 'flightFuel', 'bingo', 'endurance'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('vfrOnSiteStatus').textContent = '';
+            alert("Enter non-negative distance, wind speed, departure fuel and on-site minutes, and positive speed and fuel consumption.");
             return;
         }
 
@@ -421,25 +389,39 @@ document.addEventListener('DOMContentLoaded', () => {
         document.getElementById('bf').value = bf.toFixed(2);
         document.getElementById('time').value = formatTime(time);
 
-        let fuelAtoB = time * fuelConsumption;
+        // Distance is one way. The return leg uses the same distance and rate.
+        let legFuel = time * fuelConsumption;
 
         if (windSpeed >= 15) {
-            fuelAtoB += 0.05 * fuelAtoB;
+            legFuel += 0.05 * legFuel;
         }
 
         const reserve = (dayNight === "day") ? 500 : 600;
         const startupTaxi = 150;
 
-        const flightFuel = fuelAtoB * 2 + reserve + startupTaxi;
+        const onSiteFuel = onSiteMinutes * fuelConsumption;
+        const flightFuel = legFuel * 2 + onSiteFuel + reserve + startupTaxi;
         document.getElementById('flightFuel').value = flightFuel.toFixed(2);
 
-        const totalFuelRequired = fuelAtoB + reserve + startupTaxi;
-
-        const bingo = fuelEntered - totalFuelRequired;
+        // Bingo is the onboard fuel threshold for return, not fuel available
+        // to burn. Startup/taxi is included only in departure fuel planning.
+        const bingo = legFuel + reserve;
         document.getElementById('bingo').value = bingo.toFixed(2);
 
-        const endurance = bingo / fuelConsumption;
-        document.getElementById('endurance').value = formatTimeFromMinutes(endurance);
+        // Extra play time: what is left of the entered (departure) fuel after
+        // startup/taxi, the outbound leg, the planned on-site fuel and Bingo
+        // (Bingo = return leg + landing reserve), in minutes at the consumption.
+        const fuelAfterOnSite = fuelEntered - startupTaxi - legFuel - onSiteFuel;
+        const minutesAfterOnSite = (fuelAfterOnSite - bingo) / fuelConsumption;
+        // Show remaining time after the plan, without rounding up.
+        document.getElementById('endurance').value = minutesAfterOnSite <= 0
+            ? '0h 0m - At/below Bingo'
+            : formatTimeFromMinutes(Math.floor(minutesAfterOnSite));
+        document.getElementById('vfrOnSiteStatus').textContent = fuelAfterOnSite < bingo
+            ? `Planned on-site time leaves fuel below Bingo by ${(bingo - fuelAfterOnSite).toFixed(2)} lb.`
+            : fuelAfterOnSite === bingo
+                ? 'Planned on-site time leaves fuel exactly at Bingo.'
+                : '';
     }
 
     function calculateMFQIFR() {
@@ -471,8 +453,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function formatTime(totalMinutes) {
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = Math.round(totalMinutes % 60);
+        const roundedMinutes = Math.round(totalMinutes);
+        const hours = Math.floor(roundedMinutes / 60);
+        const minutes = roundedMinutes % 60;
         return `${hours}h ${minutes}m`;
     }
 
@@ -503,6 +486,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (speedInput) {
         speedInput.addEventListener('input', debounce(calculateAEOFuelConsumption, 500));
     }
+
+    const windEnRouteInput = document.getElementById('windEnRoute');
+    if (windEnRouteInput) {
+        windEnRouteInput.addEventListener('input', function() {
+            updateBestRangeSpeed();
+            // Redraw so the inset marker follows the new wind when a chart is already shown.
+            if (canvas.style.display === 'block' && isFinite(parseFloat(document.getElementById('speed').value))) {
+                window.fuelconsumption();
+            }
+        });
+    }
+    // The hidden weight / pressure altitude / OAT fields are restored by the
+    // persistence scripts before this handler runs; compute once now and again
+    // when the page is restored from the back/forward cache.
+    updateBestRangeSpeed();
+    window.addEventListener('pageshow', updateBestRangeSpeed);
 
     document.getElementById('calculateFuelLeak').addEventListener('click', function() {
         const totalFuel = parseFloat(document.getElementById('totalFuel').value);
