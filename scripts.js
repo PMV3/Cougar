@@ -544,24 +544,21 @@ function count_3() {
               : firstval_3 +
               ((forqatindex_3[qatindex_3] - qat) * (secondval_3 - firstval_3)) /
               (forqatindex_3[qatindex_3] - forqatindex_3[qatindex_3 + 1]);
-      // Blue line removed - drawFoundPoint(
-      //     ctx2,
-      //     ceilingwightmap_3,
-      //     hptfmapval_3,
-      //     "blue"
-      // );
-      // drawline(
-      //     ctx2,
-      //     { x: 35, y: hptfmapval_3 },
-      //     { x: ceilingwightmap_3, y: hptfmapval_3 },
-      //     "blue"
-      // );
-      // drawline(
-      //     ctx2,
-      //     { x: ceilingwightmap_3, y: hptfmapval_3 },
-      //     { x: ceilingwightmap_3, y: 750 },
-      //     "blue"
-      // );
+      // Blue: the weight reading. Enter at the pressure altitude on the Hp
+      // axis, across to the OAT curve, down to the weight axis.
+      drawFoundPoint(ctx2, ceilingwightmap_3, hptfmapval_3, "blue");
+      drawline(
+          ctx2,
+          { x: 35, y: hptfmapval_3 },
+          { x: ceilingwightmap_3, y: hptfmapval_3 },
+          "blue"
+      );
+      drawline(
+          ctx2,
+          { x: ceilingwightmap_3, y: hptfmapval_3 },
+          { x: ceilingwightmap_3, y: 769 },
+          "blue"
+      );
       const ceilingwight_3 =
           21500 - ((477 - ceilingwightmap_3) / (477 - 35)) * (21500 - 13200);
       document.getElementById("#ceilingweight_3").value = formatToTwoDecimals(ceilingwight_3);

@@ -56,17 +56,21 @@ body {
 .header-content {
     max-width: 1600px;
     margin: 0 auto;
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    justify-content: flex-start;
-    gap: 3rem;
-    padding-left: 2rem;
+    gap: 2rem;
+    padding-left: 1rem;
 }
 
 .brand {
     display: flex;
     align-items: center;
     gap: 1rem;
+}
+
+.header-content > img {
+    justify-self: end;
 }
 
 .brand-logo {
@@ -80,6 +84,7 @@ body {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: -0.02em;
+    white-space: nowrap;
 }
 
 .brand-text span {
@@ -87,24 +92,29 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.1em;
     opacity: 0.8;
+    white-space: nowrap;
 }
 
 /* Navigation */
 .nav-tabs {
     display: flex;
-    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    justify-self: center;
+    min-width: 0;
+    gap: 0.5rem;
     background: rgba(255,255,255,0.1);
     padding: 0.5rem;
     border-radius: var(--radius-lg);
 }
 
 .nav-tab {
-    padding: 1rem 2rem;
+    padding: 0.85rem 1.25rem;
     border-radius: var(--radius-md);
     border: none;
     background: transparent;
     color: rgba(255,255,255,0.7);
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
     transition: var(--transition);
@@ -129,6 +139,14 @@ body {
     display: flex;
     align-items: center;
     padding: 0 0.25rem;
+}
+
+/* Narrower windows (laptops): tighter tabs, no arrows, so the five tabs stay on one line */
+@media (max-width: 1500px) {
+    .nav-tab { padding: 0.7rem 0.85rem; font-size: 0.9rem; }
+    .nav-tabs { gap: 0.3rem; }
+    .nav-arrow { display: none; }
+    .header-content { gap: 1.25rem; }
 }
 
 /* Main Layout */

@@ -33,6 +33,7 @@
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
                 <span class="nav-arrow">&#8594;</span>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'PLANNING')">PLANNING</button>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
             <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
@@ -522,6 +523,7 @@
                 case 'STEP2': saveDataAndGoToStep2(); break;
                 case 'STEP3': saveDataAndGoToStep3(); break;
                 case 'FCF': saveDataAndNavigate('FCF.html'); break;
+                case 'PLANNING': saveDataAndNavigate('PLANNING.html'); break;
             }
         }
     </script>
