@@ -187,7 +187,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateBestRangeSpeed() {
-        updateMaxContinuousSpeed();
         const out = document.getElementById('bestRangeSpeed');
         const windEl = document.getElementById('windEnRoute');
         if (!out || !windEl) return;
@@ -204,19 +203,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tas === null) { out.value = 'Outside chart for this weight/wind'; return; }
         lastBestRange = { key: chart.key, tas: tas, weight: weight, wind: wind };
         out.value = Math.round(tas) + ' kt';
-    }
-
-    function updateMaxContinuousSpeed() {
-        const out = document.getElementById('maxContinuousSpeed');
-        if (!out) return;
-        const values = ['height', 'temperature', 'totalweight'].map(id => parseFloat(document.getElementById(id).value));
-        if (values.some(v => !Number.isFinite(v))) { out.value = ''; return; }
-        const key = LEVELFLIGHT.selectKey(values[0], values[1]);
-        const tas = LEVELFLIGHT.maxContinuousSpeed(key, values[2]);
-        out.value = tas === null ? 'Outside chart' : tas.toFixed(1) + ' kt';
-        const def = LEVELFLIGHT.chartDef(key);
-        out.title = 'Estimated high-speed intersection with AEO MAX CONT; not VNE. ' +
-            (def ? 'Selected chart: ' + def.hp + ' ft / ' + def.oat + ' °C (nearest available conditions).' : 'Altitude outside available charts.');
     }
 
     // Marks the best-range result on the inset of the chart currently drawn.
@@ -244,60 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.restore();
     }
 
-    function drawMaxContinuousMarker(weight, widthRatio, heightRatio) {
-        const tas = LEVELFLIGHT.maxContinuousSpeed(currentChartKey, weight);
-        if (tas === null) return;
-        const def = LEVELFLIGHT.chartDef(currentChartKey);
-        const x = LEVELFLIGHT.xOf(def, tas) * widthRatio;
-        const y = def.maxContY * heightRatio;
-        const bottom = def.axisY * heightRatio;
-        ctx.save();
-        ctx.strokeStyle = '#087f5b';
-        ctx.fillStyle = '#087f5b';
-        ctx.lineWidth = 3;
-        ctx.setLineDash([12, 7]);
-        ctx.beginPath();
-        ctx.moveTo(def.tas.x0kt * widthRatio, y);
-        ctx.lineTo(x, y);
-        ctx.lineTo(x, bottom);
-        ctx.stroke();
-        ctx.setLineDash([]);
-        ctx.beginPath();
-        ctx.arc(x, y, 7, 0, 2 * Math.PI);
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(x, bottom);
-        ctx.lineTo(x - 7, bottom - 14);
-        ctx.lineTo(x + 7, bottom - 14);
-        ctx.closePath();
-        ctx.fill();
-        const label = `Max continuous ${tas.toFixed(1)} kt TAS (not VNE)`;
-        ctx.font = 'bold 20px Arial';
-        const labelWidth = ctx.measureText(label).width;
-        const labelX = Math.max(8, Math.min(x - labelWidth / 2, canvas.width - labelWidth - 16));
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
-        ctx.fillRect(labelX - 6, y - 37, labelWidth + 12, 28);
-        ctx.fillStyle = '#087f5b';
-        ctx.fillText(label, labelX, y - 16);
-        ctx.restore();
-    }
-
-    window.showTargetFuelChart = async function(plan) {
-        const def = LEVELFLIGHT.chartDef(plan.key), img = chartImages[plan.key];
-        if (!def || !img || !Number.isFinite(plan.rate)) return;
-        try { await img.decode(); } catch (_) { showToast('Unable to load the target source chart.', 'danger'); return; }
-        currentChartKey = plan.key;
-        lastBestRange = null;
-        const card = document.getElementById('card-chart-display');
-        card.classList.remove('collapsed');
-        canvas.style.display = 'block';
-        drawChart(img, def.w, def.h, plan.speed, plan.rate, plan.rate.toFixed(2), (plan.rate / 60).toFixed(2), plan.weight,
-            {bottom:def.h-def.axisY,right:def.w-def.scaleX},
-            `${plan.phase} average: ${plan.rate.toFixed(2)} lb/h at ${plan.speed} kt TAS | Weight ${plan.weight.toFixed(0)} to ${(plan.weight-plan.burn).toFixed(0)} lb`);
-        card.scrollIntoView({behavior:'smooth',block:'start'});
-    };
-
-    function drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin, missionTitle) {
+    function drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin) {
         if (canvas.width !== originalWidth || canvas.height !== originalHeight) {
             canvas.width = originalWidth;
             canvas.height = originalHeight;
@@ -320,8 +253,8 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
         
         // White backing so the two title lines stay readable over the chart's printed frame line.
-        const title1 = missionTitle || `Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`;
-        const title2 = `${def.title} (${def.source})` + (missionTitle ? ' | Red: average fuel flow; green: max continuous at phase start' : '');
+        const title1 = `Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`;
+        const title2 = `${def.title} (${def.source})`;
         ctx.font = 'bold 20px Arial';
         const titleWidth = Math.max(ctx.measureText(title1).width, ctx.measureText(title2).width);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
@@ -353,7 +286,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
 
         drawBestRangeMarker(widthRatio, heightRatio);
-        drawMaxContinuousMarker(totalWeight, widthRatio, heightRatio);
     }
 
     function showToast(message = "Sample Message", toastType = "info", duration = 5000, fortop = 0) {
@@ -570,10 +502,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // when the page is restored from the back/forward cache.
     updateBestRangeSpeed();
     window.addEventListener('pageshow', updateBestRangeSpeed);
-    ['height', 'temperature', 'totalweight'].forEach(id => {
-        document.getElementById(id)?.addEventListener('input', updateBestRangeSpeed);
-        document.getElementById(id)?.addEventListener('change', updateBestRangeSpeed);
-    });
 
     document.getElementById('calculateFuelLeak').addEventListener('click', function() {
         const totalFuel = parseFloat(document.getElementById('totalFuel').value);

@@ -124,7 +124,7 @@
         }
         .quick-info-bar-step3 {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 1rem;
             background: linear-gradient(135deg, var(--secondary) 0%, var(--primary-dark) 100%);
             padding: 1rem 1.25rem;
@@ -184,8 +184,6 @@
             to { width: 0%; }
         }
     </style>
-    <link rel="stylesheet" href="planning/target-mission.css">
-    <script defer src="planning/target-mission-page.js"></script>
 </head>
 <body>
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785); max-width: 1600px; margin: 0 auto;">
@@ -233,10 +231,6 @@
                 <div class="form-field">
                     <label for="bestRangeSpeed">Best range speed (TAS)</label>
                     <input type="text" id="bestRangeSpeed" name="bestRangeSpeed" placeholder="--" readonly title="From the BEST RANGE SPEED inset of the level-flight chart, for the current weight and en-route wind component">
-                </div>
-                <div class="form-field">
-                    <label for="maxContinuousSpeed">Max continuous speed (kt TAS)</label>
-                    <input type="text" id="maxContinuousSpeed" name="maxContinuousSpeed" placeholder="--" readonly title="Estimated speed at AEO MAX CONT for the selected chart and weight; not VNE.">
                 </div>
             </div>
             <div class="vfr-ifr-row">
