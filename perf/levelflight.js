@@ -149,35 +149,6 @@ var LEVELFLIGHT = (function () {
         return null;
     }
 
-    // Interpolate weight at the high-speed intersection with AEO MAX CONT.
-    // A digitised curve ending short of that line is not a speed limit.
-    function maxContinuousSpeed(key, weightLb) {
-        var def = chartDef(key);
-        if (!def || !Number.isFinite(weightLb) || !Number.isFinite(def.maxContLbh)) return null;
-        var curves = def.curves.filter(function (c) { return Number.isFinite(c.index); })
-            .slice().sort(function (a, b) { return a.index - b.index; });
-        function intersection(curve) {
-            var result = null;
-            for (var i = 1; i < curve.data.length; i++) {
-                var a = curve.data[i - 1], b = curve.data[i], limit = def.maxContLbh;
-                if (b[1] > a[1] && a[1] <= limit && b[1] >= limit) {
-                    result = a[0] + (limit - a[1]) * (b[0] - a[0]) / (b[1] - a[1]);
-                }
-            }
-            return result;
-        }
-        for (var i = 0; i < curves.length; i++) {
-            var lo = curves[i], hi = curves[i + 1];
-            if (weightLb === lo.index) return intersection(lo);
-            if (hi && weightLb > lo.index && weightLb < hi.index) {
-                var a = intersection(lo), b = intersection(hi);
-                if (a === null || b === null) return null;
-                return a + (b - a) * (weightLb - lo.index) / (hi.index - lo.index);
-            }
-        }
-        return null;
-    }
-
     return { CHARTS: CHARTS, ALTS: ALTS, selectKey: selectKey, chartDef: chartDef, xOf: xOf, yOf: yOf,
-             fuelFlow: fuelFlow, bestRangeSpeed: bestRangeSpeed, maxContinuousSpeed: maxContinuousSpeed };
+             fuelFlow: fuelFlow, bestRangeSpeed: bestRangeSpeed };
 })();
