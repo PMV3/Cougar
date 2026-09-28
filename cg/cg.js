@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { number: 'rocketLauncherNumber', weight: 'rocketLauncherWeight', cg: 117, mmnt: 'rocketLauncherMMNT', singleWeight: 170 },
             { number: 'rocketLauncherLoadedNumber', weight: 'rocketLauncherLoadedWeight', cg: 117, mmnt: 'rocketLauncherLoadedMMNT', singleWeight: 682 },
             { number: 'refuelingProbeNumber', weight: 'refuelingProbeWeight', cg: 194.5, mmnt: 'refuelingProbeMMNT', singleWeight: 330 },
-            { number: 'jddNumber', weight: 'jddWeight', cg: 194.5, mmnt: 'jddMMNT', singleWeight: 320 },
+            { number: 'jddNumber', weight: 'jddWeight', cg: 194.5, mmnt: 'jddMMNT', singleWeight: 160 },
             { number: 'doorsArmouredNumber', weight: 'doorsArmouredWeight', cg: 56.73, mmnt: 'doorsArmouredMMNT', singleWeight: 40 },
             { number: 'seatsArmouredNumber', weight: 'seatsArmouredWeight', cg: 58.31, mmnt: 'seatsArmouredMMNT', singleWeight: 118 },
             { number: 'floorArmouredNumber', weight: 'floorArmouredWeight', cg: 141.84, mmnt: 'floorArmouredMMNT', singleWeight: 522 },
