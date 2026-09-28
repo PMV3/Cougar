@@ -149,6 +149,7 @@ var LEVELFLIGHT = (function () {
         return null;
     }
 
+<<<<<<< HEAD
     // Interpolate weight at the high-speed intersection with AEO MAX CONT.
     // A digitised curve ending short of that line is not a speed limit.
     function maxContinuousSpeed(key, weightLb) {
@@ -180,4 +181,8 @@ var LEVELFLIGHT = (function () {
 
     return { CHARTS: CHARTS, ALTS: ALTS, selectKey: selectKey, chartDef: chartDef, xOf: xOf, yOf: yOf,
              fuelFlow: fuelFlow, bestRangeSpeed: bestRangeSpeed, maxContinuousSpeed: maxContinuousSpeed };
+=======
+    return { CHARTS: CHARTS, ALTS: ALTS, selectKey: selectKey, chartDef: chartDef, xOf: xOf, yOf: yOf,
+             fuelFlow: fuelFlow, bestRangeSpeed: bestRangeSpeed };
+>>>>>>> 3c942a6da30edfbacf93ab0802414d28652d0848
 })();

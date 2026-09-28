@@ -34,8 +34,17 @@ var WEIGHTINDEX = (function () {
 
         var wIdx = Math.trunc((acweight <= 24700 && acweight > 24000) ? 0 : (24000 - acweight - 0.01) / 1000) + 1;
         if (wIdx >= forActualweightlb_6.length - 1) wIdx = forActualweightlb_6.length - 2;
+<<<<<<< HEAD
         var X = weightIndexXAtY(Y, acweight, wIdx);
         if(X==null) return null;
+=======
+        var x1 = getXForY(Y, forActualweightlb_6[wIdx]);
+        if (x1 == null) return null;
+        var x2 = getXForY(Y, forActualweightlb_6[wIdx + 1]);
+        if (x2 == null) return null;
+        var X = ((x1 - x2) * (acweight - forActualweightlb_6list[wIdx + 1])) /
+                (forActualweightlb_6list[wIdx] - forActualweightlb_6list[wIdx + 1]) + x2;
+>>>>>>> 3c942a6da30edfbacf93ab0802414d28652d0848
         return { index: 13 - ((X - 507) / (860 - 507)) * 6, qatX: qatX, Y: Y, X: X };
     }
 

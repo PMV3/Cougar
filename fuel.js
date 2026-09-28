@@ -158,6 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const def = LEVELFLIGHT_DATA[key];
         return { key, def, backgroundImage: chartImages[key], originalWidth: def.w, originalHeight: def.h,
                  margin: { top: 0, right: def.w - def.scaleX, bottom: def.h - def.axisY, left: 0 } };
+<<<<<<< HEAD
     }
 
     async function interpolateData(height, temp, inputSpeed, inputWeight) {
@@ -298,6 +299,81 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     function drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin, missionTitle) {
+=======
+    }
+
+    async function interpolateData(height, temp, inputSpeed, inputWeight) {
+        const chart = selectChart(height, temp);
+        if (!chart) {
+            return { fuelData: null, backgroundImage: null, originalWidth: null, originalHeight: null, margin: null };
+        }
+        const { backgroundImage, originalWidth, originalHeight, margin } = chart;
+
+        // Shared lookup (perf/levelflight.js): linear between the two weight
+        // curves that bracket the weight, instead of the nearest curve only.
+        const ff = LEVELFLIGHT.fuelFlow(chart.key, inputWeight, inputSpeed);
+        if (ff.lbPerHour == null) {
+            return { fuelData: null, backgroundImage: null, originalWidth: null, originalHeight: null, margin: null };
+        }
+        return { fuelData: ff.lbPerHour, backgroundImage, originalWidth, originalHeight, margin };
+    }
+
+    // ---- Best range speed (the inset printed on the same level-flight charts) ----
+    // lastBestRange keeps the latest result so drawChart can mark it on the inset.
+    let lastBestRange = null;
+
+    // Best-range TAS lookup lives in perf/levelflight.js (shared with the
+    // planning page); null when the weight or wind is outside the inset.
+    function lookupBestRangeSpeed(chartKey, weight, windComponent) {
+        return LEVELFLIGHT.bestRangeSpeed(chartKey, weight, windComponent);
+    }
+
+    function updateBestRangeSpeed() {
+        const out = document.getElementById('bestRangeSpeed');
+        const windEl = document.getElementById('windEnRoute');
+        if (!out || !windEl) return;
+        const height = parseFloat(document.getElementById('height').value);
+        const temp = parseFloat(document.getElementById('temperature').value);
+        const weight = parseFloat(document.getElementById('totalweight').value);
+        const wind = parseFloat(windEl.value);
+        lastBestRange = null;
+        if ([height, temp, weight, wind].some(v => !isFinite(v))) { out.value = ''; return; }
+        if (wind < -60 || wind > 60) { out.value = 'Wind must be -60 to +60 kt'; return; }
+        const chart = selectChart(height, temp);
+        if (!chart) { out.value = 'Altitude outside charts'; return; }
+        const tas = lookupBestRangeSpeed(chart.key, weight, wind);
+        if (tas === null) { out.value = 'Outside chart for this weight/wind'; return; }
+        lastBestRange = { key: chart.key, tas: tas, weight: weight, wind: wind };
+        out.value = Math.round(tas) + ' kt';
+    }
+
+    // Marks the best-range result on the inset of the chart currently drawn.
+    function drawBestRangeMarker(widthRatio, heightRatio) {
+        if (!lastBestRange || lastBestRange.key !== currentChartKey) return;
+        const inset = BEST_RANGE_SPEED[lastBestRange.key].inset;
+        const x = (inset.x100kt + (lastBestRange.tas - 100) * inset.pxPerKt) * widthRatio;
+        const y = (inset.y25000lb + (25000 - lastBestRange.weight) * inset.pxPerLb) * heightRatio;
+        const xLeft = inset.x100kt * widthRatio;                                            // 100 kt axis
+        const yBottom = (inset.y25000lb + (25000 - 13000) * inset.pxPerLb) * heightRatio;  // bottom of the inset grid
+        ctx.save();
+        ctx.strokeStyle = 'blue';
+        ctx.fillStyle = 'blue';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(xLeft, y);
+        ctx.lineTo(x, y);
+        ctx.lineTo(x, yBottom);
+        ctx.stroke();
+        ctx.beginPath();
+        ctx.arc(x, y, 5, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText(`Best range ${Math.round(lastBestRange.tas)} kt`, x + 8, y - 6);
+        ctx.restore();
+    }
+
+    function drawChart(backgroundImage, originalWidth, originalHeight, speed, fuelData, fuelConsumptionPerHour, fuelConsumptionPerMinute, totalWeight, margin) {
+>>>>>>> 3c942a6da30edfbacf93ab0802414d28652d0848
         if (canvas.width !== originalWidth || canvas.height !== originalHeight) {
             canvas.width = originalWidth;
             canvas.height = originalHeight;
@@ -320,8 +396,13 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.fill();
         
         // White backing so the two title lines stay readable over the chart's printed frame line.
+<<<<<<< HEAD
         const title1 = missionTitle || `Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`;
         const title2 = `${def.title} (${def.source})` + (missionTitle ? ' | Red: average fuel flow; green: max continuous at phase start' : '');
+=======
+        const title1 = `Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`;
+        const title2 = `${def.title} (${def.source})`;
+>>>>>>> 3c942a6da30edfbacf93ab0802414d28652d0848
         ctx.font = 'bold 20px Arial';
         const titleWidth = Math.max(ctx.measureText(title1).width, ctx.measureText(title2).width);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
@@ -352,8 +433,12 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.closePath();
         ctx.fill();
 
+<<<<<<< HEAD
         drawBestRangeMarker(widthRatio, heightRatio);
         drawMaxContinuousMarker(totalWeight, widthRatio, heightRatio);
+=======
+        drawBestRangeMarker(widthRatio, heightRatio);
+>>>>>>> 3c942a6da30edfbacf93ab0802414d28652d0848
     }
 
     function showToast(message = "Sample Message", toastType = "info", duration = 5000, fortop = 0) {
@@ -569,11 +654,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // persistence scripts before this handler runs; compute once now and again
     // when the page is restored from the back/forward cache.
     updateBestRangeSpeed();
+<<<<<<< HEAD
     window.addEventListener('pageshow', updateBestRangeSpeed);
     ['height', 'temperature', 'totalweight'].forEach(id => {
         document.getElementById(id)?.addEventListener('input', updateBestRangeSpeed);
         document.getElementById(id)?.addEventListener('change', updateBestRangeSpeed);
     });
+=======
+    window.addEventListener('pageshow', updateBestRangeSpeed);
+>>>>>>> 3c942a6da30edfbacf93ab0802414d28652d0848
 
     document.getElementById('calculateFuelLeak').addEventListener('click', function() {
         const totalFuel = parseFloat(document.getElementById('totalFuel').value);
