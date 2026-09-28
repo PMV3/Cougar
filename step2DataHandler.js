@@ -1,4 +1,5 @@
 function loadStep2Data() {
+    if(window.STEP2_PHASES?.active) return window.STEP2_PHASES.refresh();
     const step1Data = JSON.parse(localStorage.getItem('step1SpecificData') || '{}');
     const savedData = JSON.parse(localStorage.getItem('step2SpecificData') || '{}');
     console.log('Loading Step 2 data:', { step1Data, savedData });

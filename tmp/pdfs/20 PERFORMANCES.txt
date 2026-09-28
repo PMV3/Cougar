@@ -1,0 +1,376 @@
+
+PDF PAGE 1
+
+
+PDF PAGE 2
+ALTIMETRY
+STD
+1022
+ALTITUDE PRESSURE
+ALTITUDE RADIO ALTITUDE
+Or
+HEIGHT
+QNH
+Pressure at sea level
+QNE / STD
+1013.25
+DENSITY
+ALTITUDEO.A.T
+ALTITUDE of the airfield
+H L
+
+PDF PAGE 3
+T/O AND LANDING PROCEDURES / CATEGORY AND CLASS
+MANUFACTURER
+CAT A CAT B
+OEI YES TDP OEI NO NO TDP
+PMV VOL 1 SUPP 1 PMV VOL 1 SECT 4
+OPERATOR
+CLASS 1 CLASS 2 CLASS 3
+OEI ALWAYS OEI IF POSSIBLE OEI NO
+CAT A CAT A CAT B
+PMV VOL 1 SUPP 1 PMV VOL 1 SECT 4
+TDP Take off Decision Point 
+This point is to be defined when using CAT A procedures only
+There is no TDP or LDP in CAT B 
+In CAT B the decision to land immediately or continue flight depends on the performances only 
+IAS > V MIN
+NR = 250 rpm
+positive rate of climb
+
+PDF PAGE 4
+TAKE OFF RECOMMENDED PROCEDURES / CLASS 3 / CAT B
+10 ft 35 kt TAS
+45 kt
+Vy
+50 ft
+Take off distance
+300 m maximum for weight less tan 20500 lb
+Or
+400 m maximum for weight more than 20500 lb
+12 ft
+50 ft
+25 kt
+Airspeed / height 
+enveloppe
+V1
+SAFE LDG in this area
+Is NOT GUARANTEED
+In KKAB 7000’ / 30deg
+OEI max cont - Vy - R/C = 0ft/mn maxi weight 17100lb (OEI rate of climb chart)
+OEI max cont - Vy - R/C = 100ft/mn maxi weight 16700lb (service ceiling chart)
+V1 = 35 KTS = DECISION OR ROTATION SPEED
+Means that :
+Before V1 take off is aborted in case of an engine failure
+After V1 take off is continued if possible (positive R/C)
+
+PDF PAGE 5
+LANDING RECOMMENDED PROCEDURES / CLASS 3 / CAT B
+50 ft
+30 kt
+10 ft
+30 kt
+Speed reduction until hover
+Speed reduction
+SAFE
+UNSAFE
+50 ft
+25 kt
+Airspeed / height enveloppe
+Landing distance
+200 m maximum for weight less tan 20500 lb
+Or
+300 m maximum for weight more than 20500 lb
+
+PDF PAGE 6
+PERFORMANCE CLASS 1 / CAT A PROCEDURES / CLEAR AREA TAKE OFF / LANDING 
+D1
+TDP
+H1/V1
+Vy
+VTOSS
+35 ft
+200 ft
+Vy
+200 ft
+RUNWAY LENGTH (D1) VTOSS V1 = VTOSS - 10 Kt h1
+Chart 6 - PMV SUPP1 table h1/V1 - PMV SUPP 1 p5
+LDP
+V1 40 Kt TAS
+H = 130 ft
+650m MAX
+35 ft MINI
+VTOSS
+200 ft
+Vy
+200 ft
+
+
+PDF PAGE 7
+PERFORMANCE CLASS 1 / CAT A PROCEDURES / HELIPAD TAKE OFF / LANDING 
+LDP
+V1 40 Kt TAS
+H = 130 ft
+35 ft MINI
+VTOSS
+200 ft
+Vy
+200 ft
+Vy
+TDP
+H = 130 ft
+35 ft MINI
+VTOSS
+Vy
+200 ft
+V1 VTOSS
+125 M 100 M
+200 ft
+
+PDF PAGE 8
+PERFORMANCES PURPOSE 
+QUESTIONS CHARTS
+Am I able to fly in hover IGE ? Performance in hover IGE 5’ / 10’ sect 5
+Am I able to climb in case of an engine failure during take off ? Rate of climb at 45 kt / Vy OEI sect 5
+Am I able to fly in case of an engine failure during the mission ? Service ceiling OEI sect 10
+Am I able to fly in hover OGE in AEO ? Performance in hover OGE in AEO sect 5
+Am I able to fly in hover OGE in OEI ? Performance in hover OGE in OEI sect 5
+What is the hover height OGE I have to fly to be safe in case of an OEI ? Height loss sup 5
+
+PDF PAGE 9
+Am I able to fly in hover IGE ?
+As an example
+7000 ft 30° maxi T/O weight is 19 400 lb
+If the actual weight is equal or below this weight 
+The aircraft can fly in hover IGE
+0 ft 45° maxi T/O weight is 21 450 lb
+If the actual weight is equal or below this weight 
+The aircraft can fly in hover IGE
+When bullet are closed this weight must be reduced by 2%
+When JDD are installed this weight must be reduced by 2%
+PERFORMANCES PURPOSE 
+
+PDF PAGE 10
+Am I able to climb in case of an engine failure during take off ?
+PART 1
+COMPUTATION OF THE WEIGHT INDEX
+The weight index is the density weight of the aircraft
+As an example :
+20°at 5000 ft
+Actual weight 18000 lb weight index =  10
+This weight index is used to compute the rate of climb
+See next slide
+Weight index 10 is the density weight of the aircraft 
+10 is 10 tons = 10 000 kg = 22 000 lbs
+So
+18 000 lbs at 5 000 ft and 20 deg = 22 000 lbs at 0 ft and 15 deg (ISA)
+PERFORMANCES PURPOSE 
+
+PDF PAGE 11
+Am I able to climb in case of an engine failure during take off ?
+PART 2
+COMPUTATION OF THE RATE OF CLIMB IN OEI AT VY
+As an example :
+20°at 5000 ft weight index =  10
+RATE OF CLIMB = 200 ft/mn
+With no wind 200 ft/mn
+With 20 kt headwind 400 ft/mn
+These values must be corrected regarding 
+the optional installed on the aircraft (as hoist, JDD, …) 
+check the corresponding SUPP
+When the R/C is negative, an immediate landing is to be C/O
+Apply the procedure according to the flight condition
+Hover IGE / OGE
+Take off below 50 ft
+Stabilized flight (climb, level or descent)
+Approach 
+PERFORMANCES PURPOSE 
+
+PDF PAGE 12
+SERVICE CEILING
+HOW TO READ THE CHART
+Enter the highest pressure altitude 
+you are suppose to overfly during your mission
+Select the OAT computed at this altitude 
+The result is the weight matching with Hp and OAT
+This weight is the maximum weight that will allow you 
+to fly in OEI MCP during your mission
+The actual weight is less you are safe
+The actual weight is more you have to be ready to land in emergency
+Am I able to fly in case of an engine failure during the mission ? PERFORMANCES PURPOSE 
+
+PDF PAGE 13
+Am I able to fly in case of an engine failure during the mission ?
+COMPUTATION OF THE MAXIMUM WEIGHT I CAN FLY 
+IN OEI MAX CONTINUOUS RATING
+First determine the altitude you are suppose to fly during the mission
+Then compute the OAT you will have at this altitude
+Enter the chart from the altitude joining the temperature 
+and you will find the maximum weight you can fly at this level
+As an example :
+Departing from KKAB : altitude 7000 ft / OAT 30°
+You will fly at an altitude of 9000 ft
+The OAT will be 30 – 4 = 26°
+The weight will be  15800 lb
+It means that as long as the actual weight is more than 15800 lb
+You are not able to fly OEI max continuous level in these condition
+This computation can be done for any other altitude and temperature 
+Depending on the profile of the mission
+See next slide 
+PERFORMANCES PURPOSE 
+
+PDF PAGE 14
+Am I able to fly in case of an engine failure during the mission ?
+COMPUTATION OF THE MAXIMUM WEIGHT I CAN FLY 
+IN OEI MAX CONTINUOUS RATING
+Your mission is to go from Al Gharma to KKAB
+Al Gharma alt 0 ft / OAT 35°A/C weight 17 000 lb
+Maximum altitude during the flight 10 000 ft / OAT 15°
+Maxi weight in OEI level flight 16 000 lb
+Intermediate altitudes 
+3 000 ft / OAT 29° maxi weight in OEI   19 600 lb
+6 000 ft / OAT 23° maxi weight in OEI   17 900 lb
+8 000 ft / OAT 19° maxi weight in OEI   17 000 lb
+10 000 ft / OAT 15° maxi weight in OEI  16 000 lb
+So, you know that climbing up to 8 000 ft
+you are safe in case of an OEI occurence
+PERFORMANCES PURPOSE 
+
+PDF PAGE 15
+Am I able to fly in case of an engine failure during the mission ?
+COMPUTATION OF THE MAXIMUM WEIGHT I CAN FLY 
+IN OEI MAX CONTINUOUS RATING
+Your mission is to go from Al Gharma to KKAB
+Al Gharma alt 0 ft / OAT 35°A/C weight 17 000 lb
+Maximum altitude during the flight 10 000 ft / OAT 15°
+Maxi weight in OEI level flight 16 000 lb
+Intermediate altitudes 
+3 000 ft / OAT 29° maxi weight in OEI   19 600 lb
+6 000 ft / OAT 23° maxi weight in OEI   17 900 lb
+8 000 ft / OAT 19° maxi weight in OEI   17 000 lb
+10 000 ft / OAT 15° maxi weight in OEI  16 000 lb
+So, you know that up to 8 000 ft you are safe in case of an OEI occurence
+8 000 ft
+As well this chart will help you in deciding about :
+The weight of the aircraft at takeoff
+The fuel quantity to take
+The altitude to fly 
+The navigation track
+…
+In accordance with the mission profile
+PERFORMANCES PURPOSE 
+
+PDF PAGE 16
+SERVICE CEILING A.E.O.
+Hp / OAT / weight
+At departure
+Computation of :
+- OAT  (-2° per 1000ft)
+- Weight (- fuel consumption from departure)
+At the highest point of the trip
+Check on the chart :
+The weight at the highest point in AEO
+Is less than or equal to the weight given by the chart
+Time to go
+Hp / OAT / weight
+At highest point of the nav
+Am I able to fly in case of an engine failure during the mission ? PERFORMANCES PURPOSE 
+
+PDF PAGE 17
+SERVICE CEILING O.E.I.
+Hp / OAT / weight
+At departure
+Time to go
+Computation of :
+- OAT  (-2° per 1000ft)
+- Weight (- fuel consumption from departure)
+At the highest point of the trip
+ Hp / OAT / weight
+At highest point of the nav
+Check on the chart :
+The weight at the highest point in OEI
+Is less than or equal to the weight given by the chart
+Am I able to fly in case of an engine failure during the mission ? PERFORMANCES PURPOSE 
+
+PDF PAGE 18
+SERVICE CEILING O.E.I.
+KKAB
+Hp 6500 ft
+OAT 30°
+North training area
+6000 ft
+Hills
+Z (altitude) 8000ft
+QNH 1024
+Engine failed in north training area !
+Are you able to RTB ?
+BEFORE FLIGHT :
+Compute the HP of the hills 8000 – ((1024-1013) x 28) = 7692 ft 7700 ft
+Compute the OAT at the level of the hills 30° – ((7692 – 6500) x 2° ) = 27,6° 28°
+On the chart :
+Compute the maximum weight you can fly in OEI MCP over the hills 16550 lb
+Maximum weight when on this side of the hills 16500 lb
+to make sure to be able to RTB in case of an engine failure
+Am I able to fly in case of an engine failure during the mission ? PERFORMANCES PURPOSE 
+
+PDF PAGE 19
+Am I able to fly in hover OGE in AEO ?
+As an example
+7000 ft 20° maxi weight in hover OGE is 18 600 lb
+If the actual weight is equal or below this weight 
+The aircraft can fly in hover OGE
+0 ft 45° maxi weight in hover OGE is 21 450 lb
+If the actual weight is equal or below this weight 
+The aircraft can fly in hover OGE
+When bullet are closed this weight must be reduced by 2%
+When JDD are installed this weight must be reduced by 2%
+PERFORMANCES PURPOSE 
+
+PDF PAGE 20
+Am I able to fly in hover OGE in OEI ?
+As an example
+7000 ft 20° maxi weight in hover OGE is less than the 
+minimum weight of tha A/C
+0 ft 45° maxi weight in hover OGE is 13 900 lb
+In both cases the aircraft is not able to fly hover OGE in OEI 
+That’s why the HEIGHT LOSS must be computed to know if 
+You are in committed config or if it is possible to fly away.
+See next slide 
+PERFORMANCES PURPOSE 
+
+PDF PAGE 21
+What is the hover height OGE I have to fly to be safe in case of an OEI ?
+In hoisting operation, the height for hover OGE is determined in 
+accordance with the height loss.
+Hover height = height loss + 20 ft minimum
+As an example
+Altitude 0 ft / OAT 25°/ aircraft weight 17 000 lb / no wind
+HEIGHT LOSS = 70 ft
+Hover height will be 70 + 20 = 90 ft minimum
+Altitude 0 ft / OAT 35°/ aircraft weight 19 000 lb / 20 kt wind
+HEIGHT LOSS = 110 ft
+Hover height will be 110 + 20 = 130 ft minimum
+Altitude 7000 ft / OAT 25°/ aircraft weight 16500 lb /  10 kt wind
+HEIGHT LOSS = impossible to compute 
+Go to next slide
+PERFORMANCES PURPOSE 
+
+PDF PAGE 22
+What is the hover height OGE I have to fly to be safe in case of an OEI ?
+20 FT MINIMUM
+HEIGHT LOSS
+FLY AWAY
+HEIGHT LOSS
+COMITTED
+In hoisting operation, the height for hover OGE is determined in 
+comparison to the height loss.
+Hover height = height loss + 20 ft minimum
+Flying in this condition will allow you to take off in case of an engine 
+failure.
+You are in FLY AWAY condition
+If you fly hover OGE below this value you are in COMMITTED condition 
+and not able to fly away in case of an engine failure.
+PERFORMANCES PURPOSE 
+
+PDF PAGE 23
+PERFORMANCES PURPOSE 

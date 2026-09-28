@@ -1,0 +1,310 @@
+
+PDF PAGE 1
+
+
+PDF PAGE 2
+WEIGHT & BALANCE PURPOSE / COMPUTATION
+EMPTY WEIGHT O F THE AIRCRAFT EW on the ID plate
+WEIGHT OF THE CREW CW 200 lb per crew
+WEIGHT OF OPERATIONAL EQUIPMENT EQW PMV section 6
+WEIGHT OF THE PASSENGERS PW 250 lb per passenger
+ZERO FUEL WEIGHT ZFW ---------------------------
+FUEL WEIGHT FW displayed on the fuel management panel
+TOTAL WEIGHT TW ------------------------------
+- TO CHECK THAT THE AIRCRAFT WEIGHT IS BELOW THE MAXI TAKE OFF WEIGHT
+- TO COMPUTE THE LIMITATION AND PERFORMANCE OF THE AIRCRAFT
+LIFT
+TOTAL WEIGHT
+
+PDF PAGE 3
+LIMITATIONWEIGHT AND BALANCE
+T W
+D
+4.954.32
+20 172 lb
+18 000 lb
+21 495 lb
+24700 lb
+4.6
+4.4
+A
+B
+The total weight of the aircraft is applied on the center of gravity (COG)
+The COG must be located within an defined area
+When out of the area , the helicopter is not properly balanced
+and becomes dangerous to fly
+That’s why the W & B must be computed to check the aircraft balance
+is within limits defined by the manufacturer
+
+PDF PAGE 4
+AIRCRAFT BALANCE
+4.67 m
+Aircraft balanced
+COG is within the area
+Aircraft unbalanced
+COG is out of the area
+WEIGHT AND BALANCE
+- THE ATTITUDE OF THE AIRCRAFT DEPENDS ON THE BALANCE.
+- THE CENTER OF GRAVITY OF THE AIRCRAFT IN FLIGHT MUST BE QUITE ALIGNED WITH THE ROTOR AXIS;
+- LIMITATIONS ARE GIVEN IN THE PMV SECTION 2
+
+PDF PAGE 5
+ WEIGHT AND BALANCE
+ Purpose
+ The center of gravity position of the helicopter is computed to check that it is
+within limits determined by the manufacturer. Operation outside of
+prescribed weight and balance limitation could result in an accident and
+serious or fatal injury
+ Principle of computation (see next slides)
+ Aircraft weight and balance documents / Charts
+ A equipment list (weight, arm and moment)
+ B helicopter weighing record
+ C basic weight and balance record
+ D data for helicopter weight and balance computation
+ E weight and balance computation form
+WEIGHT & BALANCE PURPOSE / COMPUTATION
+
+PDF PAGE 6
+ WEIGHT AND BALANCE
+ DEFINITIONS
+ WEIGHT
+This is the weight of the object put on the
+plate
+ ARM
+This is the distance of the weight from the
+fulcrum.
+ MOMENT
+- The momentum is representative of the
+effect of the weight on the balancing system.
+- It is the result of the weight multiplied by
+the arm.
+WEIGHT
+ARM
+Plate 
+Fulcrum  
+WEIGHT & BALANCE WEIGHT BALANCING PRINCIPLE
+
+PDF PAGE 7
+ HOW TO RESET AN UNBALANCED SYSTEM
+d
+W
+D
+w
+D x w      =      d x W
+WEIGHT & BALANCE CG BALANCING PRINCIPLE
+
+PDF PAGE 8
+ BALANCING SYSTEM REPORTED TO THE HELICOPTER
+WEIGHT & BALANCE CG VARIATIONS
+
+PDF PAGE 9
+ WEIGHT AND BALANCE
+ LIMITATIONS
+ WEIGHT
+The weight is limited to the maximum take-off
+weight regarding to the outside conditions and
+performances (OAT,pressure altitude, wind)
+In hover or horizontal flight the weight and the
+lift are aligned and opposite on a same axis
+which is the main rotor shaft.
+ ARM
+The distance of the weight from the reference
+station must be within limits determined by the
+chart (longitudinal, lateral)
+WEIGHT
+LIFT
+WEIGHT & BALANCE LIMITATIONS
+
+PDF PAGE 10
+ WEIGHT AND BALANCE / longitudinal
+WEIGHT
+WEIGHT
+WEIGHT & BALANCE LONGITUDINAL LIMITATIONS
+Aircraft attitude in hover
+Nose down
+Nose up
+
+PDF PAGE 11
+COMPUTATION
+REFER TO PMV SECTION 6
+and
+WEIGHT AND BALANCE BOOK
+WEIGHT DISTANCE MOMENTUM
+AIRCRAFT W1 D1 M1
+AIRCREW W2 D2 M2
+EQUIPMENT W3 D3 M3
+FUEL W4 D4 M4
+TOTAL T W D T M
+W1
+W2
+W3
+W4
+D1
+D2
+D3
+D4
+T W D
+WEIGHT AND BALANCE
+
+PDF PAGE 12
+ WEIGHT AND BALANCE
+ How to compute the weight and balance before a flight ?
+D1
+D2
+D3
+D4
+D5
+D6
+D7
+D1  Aircraft empty weight
+D2  Pilots
+D3  Armament
+D4  Rear crew
+D5  Fuel weight 
+D6  Rescuemen
+D7  Cabin tank
+WEIGHT & BALANCE COMPUTATION
+
+PDF PAGE 13
+ WEIGHT AND BALANCE
+ How to compute the weight and balance before a flight ?
+ITEM WEIGHT(Lb) CG ARM(mm) MOMENT(kg-mm)
+A/C Empty weight 13700 X D1   4800 = 65760000
+Pilots (2) 400 X D2   1280 = 512000
+Armament 1200 X D3   2550 = 3060000
+Rear crew 200 X D4   3550 = 710000
+Fuel 3500 X D5   4200 = 14700000
+Rescuemen (2) 400 X D6   7200 = 2880000
+Cabin Fuel tank 1700 X D7   8500 = 14450000
+TAKE-OFF 
+WEIGHT
+21100 4837 102072000
+WEIGHT & BALANCE COMPUTATION
+
+PDF PAGE 14
+ WEIGHT AND BALANCE
+ How to compute the weight and balance before a flight ?
+D1  Aircraft empty weight
+D2  Pilots
+D3  Armament
+D4  Rear crew
+D5  Fuel weight 
+D6  Rescuemen
+D7  Cabin tank
+D result Total weight
+WEIGHT & BALANCE COMPUTATION
+D1
+D result
+TOTAL WEIGHT
+D2
+D3
+D4
+D5
+D6
+D7
+
+PDF PAGE 15
+WEIGHT & BALANCE COUGAR BASIC CONFIGURATION
+FLIRFLOATATION
+JDD 
+REPLACEMENT 
+PIPES
+DECOY
+DISPENSER
+EMPTY
+CABIN 
+FUEL TANK
+FOLDABLE
+REAR SEATS
+FOLDABLE
+FORWARD SEATS
+TOOL KIT
+LADDER
+
+PDF PAGE 16
+WEIGHT & BALANCE OPTIONALS WEIGHTS
+Weights to be added to the basic configuration
+When installed
+SEARCHLIGHT
+50 lb
+A A R PROBE
+330 lb
+JDD RH
+80 lb
+DECOY DISPENSER 
+MAGAZINE FULL
+15 lb
+HOIST
+100 lb
+EMPTY
+270 lb
+LOADED
+450 lb
+LOADED
+680 lb
+EMPTY
+170 lb
+WEAPON ARM
+130 lb LH
+JDD LH
+80 lb
+WEAPON ARM
+RH 130 lb
+DECOY DISPENSER 
+MAGAZINE FULL
+15 lb
+MAG 58
+EMPTY 70 lb
+LOADED 105 lb
+MAG 58
+EMPTY 70 lb
+LOADED 105 lb
+ROCKET LAUNCHER20 MM GUN
+
+PDF PAGE 17
+FLOATATION GEAR 360 lb FORWARD 80 lb
+REAR 100 lb x 2
+RODS 30 lb x 2
+CONTROL UNIT20 lb
+AIR REFUELLING PROBE 330 lb
+FLIR CAMERA 90 lb
+HOIST 100 lb
+SEARCH LIGHT 50 lb
+TOOL KIT 80 lb
+CABIN TANK INSTALLATION 220 lb
+FERRY FUEL TANKS 278 lb FORWARD 53 lb x 2
+REAR 47 lb x 2
+5TH 78 lb x 1
+FAST ROPE 55 lb
+ONE BOX MAG 58 ROUNDS 31 lb
+DRIP TUB 23 lb
+CREW LIFERAFT 40 lb
+STRETCHER 18 lb x 12 max
+SAR KIT
+COMMON KIT 90 lb
+LAND SAR KIT 135 lb
+SEA SAR KIT 150 lb
+MEDICAL KIT 70 lb
+TRANSACO STRETCHER 90 lb
+NET 13 LB
+TOTAL SAR KIT WEIGHT 548 lb
+COMPLETE SAR INSTALLATION
+SAR KIT + NET 550 lb
+HOIST INSTALLATION 100 lb
+SEARCH LIGHT 50 lb
+DRIP TUB 20 lb
+3 STRETCHER 60 lb
+SEATS 40 lb
+TOTAL SAR INSTALLATION WEIGHT 820 lb
+SEATS DOUBLE SIDE WALL FWD 8 lb x 2
+DOUBLE CENTER 18 lb x 1
+4 SEATS CENTER 29 lb x 4
+SINGLE SIDE WALL BKWD 5 lb x 2
+STANDARD EXHAUST 22 lb x 2
+JDD REPLACEMENT PIPES 50 lb x 2
+JDD 130 lb x 2
+COCKPIT ARMORING PLATES 80 lb x 2 SEAT 30 lb x 2
+LATERAL 30 lb x 2
+WINDOW 20 lb x 2
+CABIN ARMORING PLATES 522 lb
+WEIGHT & BALANCE OPTIONALS / SAR EQUIPMENT
