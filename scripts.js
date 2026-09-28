@@ -13,6 +13,7 @@ Object.assign(window, {
 });
 
 function performCalculations() {
+  if(window.STEP2_PHASES?.active && !window.STEP2_PHASES.busy) return window.STEP2_PHASES.refresh();
   count_6();
   count(1);
   count_3();
@@ -56,6 +57,7 @@ function errorpanclear() {
 }
 
 function totalcount() {
+  if(window.STEP2_PHASES?.active && !window.STEP2_PHASES.busy) return window.STEP2_PHASES.refresh();
   errorpanclear();
   count_6();
   count(1);
@@ -124,8 +126,8 @@ function count(num) {
           mainflag_1 = true;
 
       if (!(qat >= -50 && qat <= 50 && hp >= 0 && hp <= 10000 && acweight >= 13000 && acweight <= 21495 && wind >= 0 && wind <= 50)) {
-          document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-          document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+          document.getElementById("#heightloose").value = 'Outside chart';
+          document.getElementById("#weighindex").value = '';
           if (mainflag_1) {
               const val_1_1 = count_1_1();
               return val_1_1;
@@ -140,7 +142,7 @@ function count(num) {
           return false;
       }
 
-      const hppos = parseInt(hp / 1000);
+      const hppos = Math.min(parseInt(hp / 1000), hpftline.length - 2);
       const weightpos = parseInt(
           acweight > 21000 && acweight <= 21495
               ? 0
@@ -164,8 +166,8 @@ function count(num) {
               showerrornum
           );
           showerrornum += 1;
-          document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-          document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+          document.getElementById("#heightloose").value = 'Outside chart';
+          document.getElementById("#weighindex").value = '';
           return;
       }
 
@@ -182,12 +184,12 @@ function count(num) {
               showerrornum
           );
           showerrornum += 1;
-          document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-          document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+          document.getElementById("#heightloose").value = 'Outside chart';
+          document.getElementById("#weighindex").value = '';
           return;
       }
       const Yval =
-          firstval + ((secondval - firstval) * (hp - hptf[hppos])) / 1000;
+          firstval + ((secondval - firstval) * (hp - hptf[hppos])) / (hptf[hppos + 1] - hptf[hppos]);
 
       drawFoundPoint(ctx, qatmapval, Yval);
       drawline(ctx, { x: qatmapval, y: 531 }, { x: qatmapval, y: Yval });
@@ -205,8 +207,8 @@ function count(num) {
               showerrornum
           );
           showerrornum += 1;
-          document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-          document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+          document.getElementById("#heightloose").value = 'Outside chart';
+          document.getElementById("#weighindex").value = '';
           return;
       }
       const fourthval = getXForY(Yval, ActualWeightline[weightpos + 1]);
@@ -222,8 +224,8 @@ function count(num) {
               showerrornum
           );
           showerrornum += 1;
-          document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-          document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+          document.getElementById("#heightloose").value = 'Outside chart';
+          document.getElementById("#weighindex").value = '';
           return;
       }
       const wightindexMapval =
@@ -258,13 +260,13 @@ function count(num) {
               showerrornum
           );
           showerrornum += 1;
-          document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-          document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+          document.getElementById("#heightloose").value = 'Outside chart';
+          document.getElementById("#weighindex").value = '';
           return;
       }
       const sixthval = getYForX(
           wightindexMapval,
-          windspeedline[windpos + 1]
+          windspeedline[Math.min(windpos + 1, windspeedline.length - 1)]
       );
       if (sixthval == null) {
           if (mainflag_1) {
@@ -278,8 +280,8 @@ function count(num) {
               showerrornum
           );
           showerrornum += 1;
-          document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-          document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+          document.getElementById("#heightloose").value = 'Outside chart';
+          document.getElementById("#weighindex").value = '';
           return;
       }
       const heightloosemap =
@@ -310,8 +312,8 @@ function count_1_1() {
   const windElement = document.getElementById("#wind").value;
   const wind = parseFloat(windElement);
   if (!(wind >= 0 && wind <= 50)) {
-      document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-      document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+      document.getElementById("#heightloose").value = 'Outside chart';
+      document.getElementById("#weighindex").value = '';
       showToast(
           "Height Loss: Wind must be 0-50 kt",
           "danger",
@@ -337,13 +339,13 @@ function count_1_1() {
           showerrornum
       );
       showerrornum += 1;
-      document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-      document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+      document.getElementById("#heightloose").value = 'Outside chart';
+      document.getElementById("#weighindex").value = '';
       return;
   }
   const sixthval = getYForX(
       wightindexMapval,
-      windspeedline[windpos + 1]
+      windspeedline[Math.min(windpos + 1, windspeedline.length - 1)]
   );
   if (sixthval == null) {
       showToast(
@@ -353,8 +355,8 @@ function count_1_1() {
           showerrornum
       );
       showerrornum += 1;
-      document.getElementById("#heightloose").value = formatToTwoDecimals(heightloose);
-      document.getElementById("#weighindex").value = formatToTwoDecimals(weightindex);
+      document.getElementById("#heightloose").value = 'Outside chart';
+      document.getElementById("#weighindex").value = '';
       return;
   }
   const heightloosemap =
@@ -447,42 +449,12 @@ function count_6() {
               ? 0
               : (24000 - acweight - 0.01) / 1000
       ) + 1;
-  const thirdval_6 = getXForY(
-      Y_6,
-      forActualweightlb_6[actualweightindex_6]
-  );
-  if (thirdval_6 == null) {
-      showToast(
-          "Weight Index: Value outside chart limits",
-          "info",
-          5000,
-          showerrornum
-      );
-      showerrornum += 1;
-      document.getElementById("#Wheight_index_6").value = "";
+  const WeightIndexMapaval_6 = weightIndexXAtY(Y_6, acweight, actualweightindex_6);
+  if(WeightIndexMapaval_6==null) {
+      document.getElementById("#Wheight_index_6").value = "Outside chart";
+      showToast("Weight Index: Value outside chart limits", "info", 5000, showerrornum++);
       return;
   }
-  const fourthval_6 = getXForY(
-      Y_6,
-      forActualweightlb_6[actualweightindex_6 + 1]
-  );
-  if (fourthval_6 == null) {
-      showToast(
-          "Weight Index: Value outside chart limits",
-          "info",
-          5000,
-          showerrornum
-      );
-      showerrornum += 1;
-      document.getElementById("#Wheight_index_6").value = "";
-      return;
-  }
-  const WeightIndexMapaval_6 =
-      ((thirdval_6 - fourthval_6) *
-          (acweight - forActualweightlb_6list[actualweightindex_6 + 1])) /
-      (forActualweightlb_6list[actualweightindex_6] -
-          forActualweightlb_6list[actualweightindex_6 + 1]) +
-      fourthval_6;
   drawFoundPoint(ctx1, WeightIndexMapaval_6, Y_6);
   drawline(
       ctx1,
@@ -544,24 +516,21 @@ function count_3() {
               : firstval_3 +
               ((forqatindex_3[qatindex_3] - qat) * (secondval_3 - firstval_3)) /
               (forqatindex_3[qatindex_3] - forqatindex_3[qatindex_3 + 1]);
-      // Blue line removed - drawFoundPoint(
-      //     ctx2,
-      //     ceilingwightmap_3,
-      //     hptfmapval_3,
-      //     "blue"
-      // );
-      // drawline(
-      //     ctx2,
-      //     { x: 35, y: hptfmapval_3 },
-      //     { x: ceilingwightmap_3, y: hptfmapval_3 },
-      //     "blue"
-      // );
-      // drawline(
-      //     ctx2,
-      //     { x: ceilingwightmap_3, y: hptfmapval_3 },
-      //     { x: ceilingwightmap_3, y: 750 },
-      //     "blue"
-      // );
+      // Blue: the weight reading. Enter at the pressure altitude on the Hp
+      // axis, across to the OAT curve, down to the weight axis.
+      drawFoundPoint(ctx2, ceilingwightmap_3, hptfmapval_3, "blue");
+      drawline(
+          ctx2,
+          { x: 35, y: hptfmapval_3 },
+          { x: ceilingwightmap_3, y: hptfmapval_3 },
+          "blue"
+      );
+      drawline(
+          ctx2,
+          { x: ceilingwightmap_3, y: hptfmapval_3 },
+          { x: ceilingwightmap_3, y: 769 },
+          "blue"
+      );
       const ceilingwight_3 =
           21500 - ((477 - ceilingwightmap_3) / (477 - 35)) * (21500 - 13200);
       document.getElementById("#ceilingweight_3").value = formatToTwoDecimals(ceilingwight_3);

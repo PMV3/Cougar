@@ -14,6 +14,8 @@
     <title>PMV 3 - Weight & Balance</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="step1-styles.css">
+    <link rel="stylesheet" href="planning/target-mission.css">
+    <script defer src="planning/target-mission-page.js"></script>
 </head>
 <body >
     <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785); max-width: 1600px; margin: 0 auto;">
@@ -33,6 +35,7 @@
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
                 <span class="nav-arrow">&#8594;</span>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'PLANNING')">PLANNING</button>
                 <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
             </nav>
             <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
@@ -196,7 +199,7 @@
                                     <tr><td class="row-label">MG58 RH (empty)</td><td class="ref-weight">72</td><td><input type="text" id="mg58RHNumber" value="" oninput="updateWeight('mg58RHNumber', 72, 'mg58RHWeight', 'mg58RHMMNT', 108.94)"></td><td><input type="text" id="mg58RHWeight" value="" readonly></td></tr><input type="hidden" id="mg58RHMMNT" value="">
                                     <tr><td class="row-label">MG58 LH (empty)</td><td class="ref-weight">72</td><td><input type="text" id="mg58LHNumber" value="" oninput="updateWeight('mg58LHNumber', 72, 'mg58LHWeight', 'mg58LHMMNT', 116.42)"></td><td><input type="text" id="mg58LHWeight" value="" readonly></td></tr><input type="hidden" id="mg58LHMMNT" value="">
                                     <tr><td class="row-label">MG58 Ammo Boxes</td><td class="ref-weight">31</td><td><input type="text" id="extraAmmoBoxNumber" value="" oninput="updateWeight('extraAmmoBoxNumber', 31, 'extraAmmoBoxWeight', 'extraAmmoBoxMMNT', 95)"></td><td><input type="text" id="extraAmmoBoxWeight" value="" readonly></td></tr><input type="hidden" id="extraAmmoBoxMMNT" value="">
-                                    <tr><td class="row-label">JDD Both Sides</td><td class="ref-weight">320</td><td><input type="text" id="jddNumber" value="" oninput="updateWeight('jddNumber', 320, 'jddWeight', 'jddMMNT', 194.5)"></td><td><input type="text" id="jddWeight" value="" readonly></td></tr><input type="hidden" id="jddMMNT" value="">
+                                    <tr><td class="row-label">JDD Both Sides</td><td class="ref-weight">160</td><td><input type="text" id="jddNumber" value="" oninput="updateWeight('jddNumber', 160, 'jddWeight', 'jddMMNT', 194.5)"></td><td><input type="text" id="jddWeight" value="" readonly></td></tr><input type="hidden" id="jddMMNT" value="">
                                     <tr><td class="row-label">20MM Gun (empty)</td><td class="ref-weight">269</td><td><input type="text" id="gunNumber" value="" oninput="updateWeight('gunNumber', 269, 'gunWeight', 'gunMMNT', 100.4)"></td><td><input type="text" id="gunWeight" value="" readonly></td></tr><input type="hidden" id="gunMMNT" value="">
                                     <tr><td class="row-label">20MM Gun (loaded)</td><td class="ref-weight">452</td><td><input type="text" id="gunLoadedNumber" value="" oninput="updateWeight('gunLoadedNumber', 452, 'gunLoadedWeight', 'gunLoadedMMNT', 100.4)"></td><td><input type="text" id="gunLoadedWeight" value="" readonly></td></tr><input type="hidden" id="gunLoadedMMNT" value="">
                                     <tr><td class="row-label">Rocket Launcher (empty)</td><td class="ref-weight">170</td><td><input type="text" id="rocketLauncherNumber" value="" oninput="updateWeight('rocketLauncherNumber', 170, 'rocketLauncherWeight', 'rocketLauncherMMNT', 117)"></td><td><input type="text" id="rocketLauncherWeight" value="" readonly></td></tr><input type="hidden" id="rocketLauncherMMNT" value="">
@@ -522,6 +525,7 @@
                 case 'STEP2': saveDataAndGoToStep2(); break;
                 case 'STEP3': saveDataAndGoToStep3(); break;
                 case 'FCF': saveDataAndNavigate('FCF.html'); break;
+                case 'PLANNING': saveDataAndNavigate('PLANNING.html'); break;
             }
         }
     </script>

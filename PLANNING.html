@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YW913537F4"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-YW913537F4');
+    </script>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:," />
+    <meta name="viewport" content="width=1600">
+    <title>PMV 3 - Planning</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="step1-styles.css">
+    <style>
+        .planning-toolbar { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-bottom: 1rem; }
+        .planning-toolbar .btn { padding: 0.6rem 1.1rem; border: none; border-radius: var(--radius-md); font-weight: 600; font-size: 0.85rem; cursor: pointer; color: white; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); box-shadow: var(--shadow-sm); }
+        .planning-toolbar .btn.secondary { background: #64748b; }
+        .planning-toolbar .hint { font-size: 0.8rem; color: var(--text-secondary); }
+        .planning-wrap { overflow-x: auto; }
+        table.planning { border-collapse: collapse; width: 100%; font-size: 0.8rem; min-width: 1500px; }
+        table.planning th { background: var(--bg-main); color: var(--text-secondary); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.03em; padding: 0.4rem 0.35rem; border-bottom: 1px solid var(--border); white-space: nowrap; text-align: center; }
+        table.planning th.group { background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%); color: white; font-size: 0.7rem; }
+        table.planning td { padding: 0.3rem 0.35rem; border-bottom: 1px solid var(--border); text-align: center; vertical-align: middle; }
+        table.planning td.in input, table.planning td.in select { width: 5.5rem; padding: 0.35rem 0.4rem; border: 1.5px solid var(--border); border-radius: var(--radius-sm); font-size: 0.8rem; text-align: center; background: var(--bg-card); }
+        table.planning td.in select { width: 8rem; }
+        table.planning td.in input.wide { width: 7rem; }
+        table.planning td.out { font-weight: 600; color: var(--primary-dark); background: #f8fafc; white-space: nowrap; }
+        table.planning td.out.no { color: var(--danger); }
+        table.planning td.out.ok { color: #16a34a; }
+        table.planning td.out.warn { color: #ea580c; }
+        table.planning td.notes { text-align: left; font-weight: 400; font-size: 0.7rem; color: var(--text-secondary); max-width: 18rem; white-space: normal; }
+        table.planning td .sub { display: block; font-size: 0.65rem; font-weight: 400; color: var(--text-secondary); }
+        .chart-select { font: inherit; font-size: 0.9rem; font-weight: 600; margin-left: 0.5rem; padding: 0.25rem 0.5rem; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.6); background: rgba(255,255,255,0.15); color: white; cursor: pointer; max-width: 28rem; }
+        .chart-select option { color: #1e293b; background: white; font-weight: 500; }
+        .chart-note { margin-left: 0.75rem; font-size: 0.8rem; font-weight: 400; opacity: 0.9; }
+        table.planning tr.selected td { background: #eff6ff; }
+        .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .chart-fig { margin: 0; }
+        .chart-fig figcaption { font-size: 0.95rem; font-weight: 600; color: var(--primary-dark); margin-bottom: 0.6rem; padding-left: 0.6rem; border-left: 3px solid var(--primary); line-height: 1.3; }
+        .chart-fig figcaption .src { font-weight: 500; color: var(--text-secondary); font-size: 0.8rem; }
+        .chart-fig canvas { display: block; width: 100%; height: auto; max-width: 100%; border: 1px solid var(--border); border-radius: var(--radius-sm); background: white; }
+        .rules { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.55; max-width: 1100px; }
+        .rules b { color: var(--text-primary); }
+        .rules h4 { margin: 1rem 0 0.35rem; font-size: 0.88rem; color: var(--primary-dark); text-transform: uppercase; letter-spacing: 0.03em; }
+        .rules h4:first-child { margin-top: 0; }
+        .rules p { margin: 0.25rem 0 0.5rem; }
+        .rules ol, .rules ul { margin: 0.2rem 0 0.5rem 1.3rem; padding: 0; }
+        .rules li { margin-bottom: 0.3rem; }
+        .rules dl { display: grid; grid-template-columns: 11rem 1fr; gap: 0.35rem 0.9rem; margin: 0.3rem 0 0.5rem; }
+        .rules dt { font-weight: 600; color: var(--text-primary); }
+        .rules dd { margin: 0; }
+        .rules .ok { color: #16a34a; font-weight: 600; }
+        .rules .no { color: var(--danger); font-weight: 600; }
+        .rules .warn { color: #ea580c; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container" style="border: 1px solid black; border-radius: 10px; padding: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.785); max-width: 1600px; margin: 0 auto;">
+    <header class="app-header">
+        <div class="header-content">
+            <div class="brand">
+                <img src="SAUDI_CARACAL_TRANSPARENT.png" alt="Cougar Helicopter" class="brand-logo" style="height: 60px; width: auto;">
+                <div class="brand-text">
+                    <h1>PMV 3</h1>
+                    <span>COUGAR<br>AS 532 A2</span>
+                </div>
+            </div>
+            <nav class="nav-tabs">
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP1')">STEP 1: Weight &amp; Balance</button>
+                <span class="nav-arrow">&rarr;</span>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP2')">STEP 2: Performance</button>
+                <span class="nav-arrow">&rarr;</span>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'STEP3')">STEP 3: Endurance</button>
+                <button class="nav-tab step active" onclick="setActiveStep(this, 'PLANNING')">PLANNING</button>
+                <button class="nav-tab step" onclick="setActiveStep(this, 'FCF')">FCF</button>
+            </nav>
+            <img src="sqn-trans.png" alt="Squadron Logo" style="height: 80px; width: auto; filter: brightness(0) invert(1);">
+        </div>
+    </header>
+
+    <div class="app-container">
+        <div class="main-content">
+            <div class="card" id="card-planning">
+                <div class="card-header" onclick="toggleCard('card-planning')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                        Mission Planning &mdash; Max Takeoff Weight, Fuel and Range per Airfield
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body">
+                    <div class="planning-toolbar">
+                        <button class="btn" id="btnAddRow">+ Add row</button>
+                        <button class="btn secondary" id="btnZfwFromStep1" title="Copy the elevation, QNH, OAT and zero-fuel weight from STEP 1 into the first row (the zero-fuel weight into every row)">Use STEP 1 info</button>
+                        <button class="btn secondary" id="btnClearRows">Clear all</button>
+                        <span class="hint" id="planningHint"></span>
+                    </div>
+                    <div class="planning-wrap">
+                        <table class="planning" id="planningTable">
+                            <thead>
+                                <tr>
+                                    <th colspan="9" class="group">Inputs</th>
+                                    <th colspan="3" class="group">Max T/O weight (lb)</th>
+                                    <th colspan="8" class="group">Results</th>
+                                </tr>
+                                <tr>
+                                    <th>T/O from</th>
+                                    <th>Code</th>
+                                    <th>Elev (ft)</th>
+                                    <th>QNH (hPa)</th>
+                                    <th>Time on site (min)</th>
+                                    <th>OAT (&deg;C)</th>
+                                    <th>Wind en route kt<br>(+ tail / &minus; head)</th>
+                                    <th>ZFW (lb)</th>
+                                    <th>Reserve (lb)</th>
+                                    <th>10 ft</th>
+                                    <th>5 ft</th>
+                                    <th>AGW</th>
+                                    <th>P ALT (ft)</th>
+                                    <th>ZD (ft)</th>
+                                    <th>Fuel Q (lb)</th>
+                                    <th>Best range TAS (kt)</th>
+                                    <th>Consumption (lb/h)</th>
+                                    <th>Range (NM)</th>
+                                    <th>Trip (NM)</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody id="planningBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card collapsed" id="card-charts">
+                <div class="card-header" onclick="toggleCard('card-charts')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+                        Charts &mdash;
+                        <select id="chartsRowSelect" class="chart-select" title="Choose the row to show on the charts" onclick="event.stopPropagation()"></select>
+                        <span id="chartsRowNote" class="chart-note"></span>
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body">
+                    <div class="chart-grid">
+                        <figure class="chart-fig"><figcaption id="chartTitle10"></figcaption><canvas id="chart10ft"></canvas></figure>
+                        <figure class="chart-fig"><figcaption id="chartTitle5"></figcaption><canvas id="chart5ft"></canvas></figure>
+                        <figure class="chart-fig"><figcaption id="chartTitleWI"></figcaption><canvas id="chartWI"></canvas></figure>
+                        <figure class="chart-fig"><figcaption id="chartTitleLF"></figcaption><canvas id="chartLF"></canvas></figure>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card collapsed" id="card-rules">
+                <div class="card-header" onclick="toggleCard('card-rules')">
+                    <h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                        Help: how to use this page and what each column means
+                    </h3>
+                    <span class="card-toggle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+                </div>
+                <div class="card-body rules">
+                    <h4>What this page does</h4>
+                    <p>For each airfield and temperature you enter, it works out the heaviest weight the helicopter can take off at, how much fuel that leaves room for, the best cruise speed, the fuel burn, and how far you can fly out and back. The numbers are read from the Flight Manual and SUP.51 charts by the app, exactly as you would read them by hand but without the rounding.</p>
+
+                    <h4>How to use it, step by step</h4>
+                    <ol>
+                        <li><b>Pick the takeoff airfield</b> in the first column. KHAMIS and JAZAN fill in the code and elevation for you. Choose <i>Custom</i> to type any other airfield and its elevation in feet.</li>
+                        <li><b>Enter the weather</b>: the QNH in hPa and the outside air temperature in &deg;C expected at takeoff.</li>
+                        <li><b>Enter the mission</b>: the minutes you will spend on site (hover, landing or waiting before flying back), and the wind along the route in knots (positive for a tailwind, negative for a headwind).</li>
+                        <li><b>Check the weights</b>: ZFW is the zero-fuel weight (helicopter, crew and load, no fuel). It is filled from STEP 1 when a row is empty; change it here if needed. Reserve is the fuel you want to land with; it is kept out of the range calculation.</li>
+                        <li><b>Read the results</b>. They update as you type, and the rows are saved in this browser so they are still here next time.</li>
+                        <li><b>Look at the charts</b> if you want to see where a number came from: pick the row in the Charts card below the table.</li>
+                    </ol>
+                    <p><b>Use STEP 1 info</b> copies the elevation, QNH, OAT and zero-fuel weight entered in STEP 1 into the first row (and the zero-fuel weight into every row), so the first row is the flight you are preparing. Use <b>+ Add row</b> to compare another airfield or temperature (the new row copies the last one), and <b>Clear all</b> to go back to one row per airfield. Rows cannot be removed one by one, so nothing is lost by a mis-click.</p>
+
+                    <h4>What each column means</h4>
+                    <dl>
+                        <dt>T/O from, Code, Elev (ft)</dt><dd>The takeoff airfield, its ICAO code and its elevation above sea level.</dd>
+                        <dt>QNH (hPa)</dt><dd>The altimeter setting. With the elevation it gives the pressure altitude that all the charts use. 1013.25 hPa is the standard day.</dd>
+                        <dt>Time on site (min)</dt><dd>Minutes spent at the destination between the outbound and the return leg. The fuel burned during this time is taken away from the range.</dd>
+                        <dt>OAT (&deg;C)</dt><dd>Outside air temperature at the airfield. Hotter air means less lift and a lower takeoff weight.</dd>
+                        <dt>Wind en route (kt)</dt><dd>The wind component along the route: + tailwind, &minus; headwind. It only changes the best range speed; the range itself is computed from true airspeed.</dd>
+                        <dt>ZFW (lb)</dt><dd>Zero-fuel weight: everything on board except fuel. Taken from STEP 1 when available.</dd>
+                        <dt>Reserve (lb)</dt><dd>Fuel that must still be in the tanks on landing. It is subtracted before the range is worked out. Leave it empty and the reserve is zero.</dd>
+                        <dt>10 ft / 5 ft</dt><dd>The heaviest weight at which the helicopter can hover in ground effect at 10 ft or 5 ft with both engines, at this pressure altitude and temperature (Flight Manual 5.1 Figures 3a and 3b). Never more than 21495 lb, the normal maximum weight.</dd>
+                        <dt>AGW</dt><dd>Alternate gross weight: the heavier takeoff weight, up to 24700 lb, that SUP.51 allows under conditions. It is read from SUP.51 Figure 1 (hover at 5 ft) and shown in green when allowed. It says <span class="no">no</span> with the reason when the pressure altitude is below &minus;2000 ft, the density altitude is above 3000 ft, or the chart gives no more than the normal weight. The weight is also reduced, if needed, so the weight index (SUP.51 Figure 6) stays at 11.6 or less. Two pilots and the equipment listed in SUP.51 1.1 are required; that stays the crew's check. Above 22046 lb the emergency floats only slow the sinking, they do not keep the helicopter afloat.</dd>
+                        <dt>P ALT (ft)</dt><dd>Pressure altitude: the elevation corrected for the QNH. This is the altitude used to enter every chart.</dd>
+                        <dt>ZD (ft)</dt><dd>Density altitude: the pressure altitude corrected for the temperature. It is <span class="ok">green</span> when 3000 ft or less, so AGW is possible, and <span class="no">red</span> above 3000 ft.</dd>
+                        <dt>Fuel Q (lb)</dt><dd>The fuel you can load: the allowed takeoff weight (AGW if allowed, otherwise the 5 ft weight) minus the ZFW, but never more than the 6700 lb the tanks hold. The resulting takeoff weight is written underneath. <span class="warn">Orange</span> means the tanks are the limit, not the weight.</dd>
+                        <dt>Best range TAS (kt)</dt><dd>The cruise speed that gives the most miles per pound of fuel, read from the small inset on the level-flight chart at the takeoff weight and the wind. The inset stops at 21000 lb, so heavier weights are read at 21000 lb. If that speed is past the end of the fuel curve (all engines maximum continuous power), the cruise speed actually used is written underneath.</dd>
+                        <dt>Which level-flight chart</dt><dd>SUP.51 prints one chart per altitude and temperature. The app has twelve of them: 0 ft (0, +15, +30, +45 &deg;C), 3000 ft (0, +15, +30 &deg;C), 6000 ft (0, +15, +30 &deg;C) and 9000 ft (0, +15 &deg;C). It uses the nearest one, like a pilot would: the nearest chart altitude (0 ft up to 1500 ft, 3000 ft up to 4500 ft, 6000 ft up to 7500 ft, 9000 ft above), then the nearest temperature printed for that altitude, taking the warmer chart when halfway. The chart used is written under the consumption.</dd>
+                        <dt>Consumption (lb/h)</dt><dd>Fuel burn per hour at that speed and takeoff weight, read between the two weight curves of the level-flight chart. The chart used is written underneath. On the hot and high charts the heaviest curves are printed dashed and only exist where they come below the maximum continuous line; a weight above the heaviest usable curve is read at that curve and noted.</dd>
+                        <dt>Range (NM)</dt><dd>How far out you can fly and still come back. Usable fuel = Fuel Q &minus; reserve &minus; 150 lb for start-up and taxi. Total time = usable fuel &divide; consumption. Flying time = total time &minus; time on site. Range = flying time &times; TAS &divide; 2. The one-way flying time is written underneath. This is the same arithmetic as the STEP 3 range table.</dd>
+                        <dt>Trip (NM)</dt><dd>The whole mission as a distance: out and back (2 &times; range) plus the time on site converted to miles at the cruise speed. The total time, including the time on site, is written underneath.</dd>
+                        <dt>Notes</dt><dd>Cautions and remarks about the row, for example when a chart limit was reached or a value had to be read at the edge of a chart.</dd>
+                    </dl>
+
+                    <h4>Colours</h4>
+                    <p><span class="ok">Green</span>: allowed or within limits. <span class="no">Red</span>: not allowed, or nothing left (for example a range of 0). <span class="warn">Orange</span>: a caution or a limit was reached, read the note. <b>--</b>: the value cannot be read because the inputs are outside the printed chart; the note says why.</p>
+
+                    <h4>The Charts card</h4>
+                    <p>Choose a row in the drop-down and the four charts are drawn for it: the 10 ft hover chart, the 5 ft / AGW hover chart, the weight index chart and the level-flight chart. <span style="color:#1d4ed8;font-weight:600">Blue</span> lines show how the app entered the chart (altitude, temperature, weight). <span style="color:#dc2626;font-weight:600">Red</span> marks the normal 5 ft weight and the fuel-burn reading. Dashed lines are limits: 21495 lb on the 5 ft chart and the 11.6 weight index.</p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Datasets and lookups (classic scripts so the page also works from the file system) -->
+    <script src="./datafolder/heightloosemap.js"></script>
+    <script src="./datafolder/weightindex.js"></script>
+    <script src="./datafolder/newIGE.js"></script>
+    <script src="./datafolder/ige5ft_agw.js"></script>
+    <script src="./datafolder/levelflightData.js"></script>
+    <script src="./datafolder/bestRangeSpeed.js"></script>
+    <script src="./perf/atmosphere.js"></script>
+    <script src="./perf/hover5ft.js"></script>
+    <script src="./perf/hover10ft.js"></script>
+    <script src="./perf/levelflight.js"></script>
+    <script src="./perf/weightindex.js"></script>
+    <script src="./perf/planning.js"></script>
+    <script src="./perf/charts.js"></script>
+    <script src="./planning/planning-charts.js"></script>
+    <script src="./planning/planning-page.js"></script>
+    <script>
+        function toggleCard(cardId) {
+            const card = document.getElementById(cardId);
+            if (card) card.classList.toggle('collapsed');
+        }
+        function setActiveStep(element, stepId) {
+            document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
+            element.classList.add('active');
+            switch (stepId) {
+                case 'STEP1': window.location.href = 'STEP1.html'; break;
+                case 'STEP2': window.location.href = 'STEP2.html'; break;
+                case 'STEP3': window.location.href = 'STEP3.html'; break;
+                case 'FCF': window.location.href = 'FCF.html'; break;
+                case 'PLANNING': window.location.href = 'PLANNING.html'; break;
+            }
+        }
+    </script>
+</body>
+</html>
