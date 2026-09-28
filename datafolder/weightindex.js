@@ -2330,3 +2330,25 @@ const forActualweightlb_6 = [
     { x: 861, y: 526 },
   ],
 ];
+
+// Interpolate an intermediate weight curve inside the printed chart rectangle.
+// Near its left edge one bounding curve may not cross Y, even though the
+// intermediate curve does. Solve that curve only within both curves' X ranges.
+function weightIndexXAtY(y, weight, i) {
+    const a=forActualweightlb_6[i], b=forActualweightlb_6[i+1];
+    if(!a || !b) return null;
+    const t=(weight-forActualweightlb_6list[i+1])/(forActualweightlb_6list[i]-forActualweightlb_6list[i+1]);
+    if(!Number.isFinite(t) || t<0 || t>1) return null;
+    const xa=getXForY(y,a), xb=getXForY(y,b);
+    if(xa!=null && xb!=null) return xb+(xa-xb)*t;
+    let lo=Math.max(507,a[0].x,b[0].x), hi=Math.min(860,a[a.length-1].x,b[b.length-1].x);
+    const yAt=(x,points)=>{
+        for(let j=1;j<points.length;j++){const p=points[j-1],q=points[j];if(x>=p.x && x<=q.x)return p.y+(q.y-p.y)*(x-p.x)/(q.x-p.x);}
+        return null;
+    };
+    const at=x=>{const ya=yAt(x,a),yb=yAt(x,b);return ya==null||yb==null?null:yb+(ya-yb)*t;};
+    const yl=at(lo), yh=at(hi);
+    if(yl==null || yh==null || y<yl || y>yh) return null;
+    for(let n=0;n<45;n++){const mid=(lo+hi)/2, ym=at(mid);if(ym==null)return null;if(ym<y)lo=mid;else hi=mid;}
+    return (lo+hi)/2;
+}
