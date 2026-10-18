@@ -212,9 +212,11 @@ document.addEventListener('DOMContentLoaded', function () {
             { number: 'searchLightNumberWSAR', weight: 'searchLightWeightWSAR', cg: 120.56, mmnt: 'searchLightMMNTWSAR', singleWeight: 53 },
             { number: 'fastRopeNumberWSAR', weight: 'fastRopeWeightWSAR', cg: 167.98, mmnt: 'fastRopeMMNTWSAR', singleWeight: 80 },
             { number: 'flirNumberWSAR', weight: 'flirWeightWSAR', cg: 0, mmnt: 'flirMMNTWSAR', singleWeight: -88 },
+            { number: 'refuelingProbeNumberWSAR', weight: 'refuelingProbeWeightWSAR', cg: 194.5, mmnt: 'refuelingProbeMMNTWSAR', singleWeight: 330 },
             { number: 'hoistNumberCSAR', weight: 'hoistWeightCSAR', cg: 162.2, mmnt: 'hoistMMNTCSAR', singleWeight: 97 },
             { number: 'fastRopeNumberCSAR', weight: 'fastRopeWeightCSAR', cg: 167.98, mmnt: 'fastRopeMMNTCSAR', singleWeight: 80 },
             { number: 'flirNumberCSAR', weight: 'flirWeightCSAR', cg: 0, mmnt: 'flirMMNTCSAR', singleWeight: -88 },
+            { number: 'refuelingProbeNumberCSAR', weight: 'refuelingProbeWeightCSAR', cg: 194.5, mmnt: 'refuelingProbeMMNTCSAR', singleWeight: 330 },
             { number: 'transacoStretcherNumber', weight: 'transacoStretcherWeight', cg: 257, mmnt: 'transacoStretcherMMNT', singleWeight: 91 },
             { number: 'sarKitNetNumber', weight: 'sarKitNetWeight', cg: 257, mmnt: 'sarKitNetMMNT', singleWeight: 13 },
             { number: 'medicalKitNumber', weight: 'medicalKitWeight', cg: 257, mmnt: 'medicalKitMMNT', singleWeight: 70 },
@@ -297,9 +299,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     { weight: 'searchLightWeightWSAR', mmnt: 'searchLightMMNTWSAR' },
                     { weight: 'fastRopeWeightWSAR', mmnt: 'fastRopeMMNTWSAR' },
                     { weight: 'flirWeightWSAR', mmnt: 'flirMMNTWSAR' },
+                    { weight: 'refuelingProbeWeightWSAR', mmnt: 'refuelingProbeMMNTWSAR' },
                     { weight: 'hoistWeightCSAR', mmnt: 'hoistMMNTCSAR' },
                     { weight: 'fastRopeWeightCSAR', mmnt: 'fastRopeMMNTCSAR' },
-                    { weight: 'flirWeightCSAR', mmnt: 'flirMMNTCSAR' }
+                    { weight: 'flirWeightCSAR', mmnt: 'flirMMNTCSAR' },
+                    { weight: 'refuelingProbeWeightCSAR', mmnt: 'refuelingProbeMMNTCSAR' }
                 ];
                 wsarCsarItems.forEach(item => {
                     const weightEl = document.getElementById(item.weight);
