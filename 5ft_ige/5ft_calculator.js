@@ -1,4 +1,5 @@
-function findWeight(temperature, height) {
+// capLb: optional; defaults to the 21495 lb basic-manual maximum.
+function findWeight(temperature, height, capLb) {
     let weights = chartData.map(tempData => ({
         temperature: tempData.temperature,
         weight: findWeightForHeight(tempData, height)
@@ -19,7 +20,7 @@ function findWeight(temperature, height) {
     const tempRatio = (temperature - lowerTemp.temperature) / (upperTemp.temperature - lowerTemp.temperature);
     const weight = lowerTemp.weight + tempRatio * (upperTemp.weight - lowerTemp.weight);
 
-    return Math.min(weight, 21495);
+    return Math.min(weight, capLb === undefined ? 21495 : capLb);
 }
 
 function findWeightForHeight(tempData, height) {

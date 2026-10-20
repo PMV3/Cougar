@@ -30,6 +30,11 @@
 //    TAS / 2 (radius of action).
 //  - Trip: 2 * range + the on-site time converted to NM at the cruise TAS
 //    (the distance the usable fuel covers at cruise speed).
+//  - Equipment fitted in STEP 1 (perf/equipment.js, optional): JDD hover
+//    weights -2 % (SUP.33), applied to the chart weight before the 21495 /
+//    24700 lb caps (SUP.0); level-flight speed and fuel-flow penalties of
+//    SUP.51 5.5.1 applied to the best-range point read on the chart. The
+//    *Chart fields keep the raw chart readings for the chart panel.
 
 var PLANNING = (function () {
     'use strict';
@@ -52,9 +57,22 @@ var PLANNING = (function () {
         return Math.round(v * m) / m;
     }
 
-    // inp: { elevationFt, qnhHpa, oatC, windKt, zfwLb, reserveLb, onSiteH (hours, optional) }
+    // Equipment list: inp.equipment if given, else STEP 1's (perf/equipment.js), else none.
+    function equipmentOf(inp) {
+        if (inp.equipment) return inp.equipment;
+        return (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.current() : [];
+    }
+
+    // inp: { elevationFt, qnhHpa, oatC, windKt, zfwLb, reserveLb, onSiteH (hours, optional), equipment (optional) }
     function compute(inp) {
         var r = { inputs: inp, notes: [], cautions: [] };
+        var eq = equipmentOf(inp);
+        var EQ = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT : null;
+        var hoverPen = function (w, cap) {
+            if (w == null) return w;
+            return EQ ? EQ.hoverWeight(w, cap, eq) : (cap != null ? Math.min(w, cap) : w);
+        };
+        r.equipment = eq.map(function (it) { return it.label; });
 
         r.hpFt = ATM.pressureAltitude(inp.elevationFt, inp.qnhHpa);
         if (r.hpFt == null) { r.error = 'Elevation and QNH are required'; return r; }
@@ -63,10 +81,12 @@ var PLANNING = (function () {
         r.densityAltFt = Math.round(ATM.densityAltitude(r.hpFt, inp.oatC));
 
         // Max takeoff weight, basic manual
-        r.w10ft = HOVER10FT.maxWeight(inp.oatC, r.hpFt);
+        r.w10ftChart = HOVER10FT.maxWeight(inp.oatC, r.hpFt);
+        r.w10ft = hoverPen(r.w10ftChart, RULES.normalMaxLb);
         if (r.w10ft == null) r.notes.push('10 ft: outside chart (no hover at any charted weight)');
         var h5 = HOVER5FT.maxWeight(r.hpFt, inp.oatC, RULES.normalMaxLb);
-        r.w5ft = h5.weight;
+        r.w5ftChart = h5.weight;
+        r.w5ft = h5.weight == null ? null : hoverPen(h5.chartWeight, RULES.normalMaxLb);
         r.w5ftLimit = h5.limit || null;
         if (r.w5ft == null) r.notes.push('5 ft: ' + h5.reason);
 
@@ -75,12 +95,13 @@ var PLANNING = (function () {
         if (r.hpFt < RULES.agwMinHpFt) agw.reasons.push('pressure altitude below -2000 ft');
         if (r.densityAltFt > RULES.agwMaxDensityAltFt) agw.reasons.push('density altitude > 3000 ft');
         var h5agw = HOVER5FT.maxWeight(r.hpFt, inp.oatC, RULES.agwMaxLb);
-        agw.chartWeight = h5agw.weight;
+        agw.chartWeight = h5agw.weight;                               // raw chart reading (chart panel)
+        agw.equipmentWeight = h5agw.weight == null ? null : hoverPen(h5agw.chartWeight, null);
         if (agw.chartWeight == null) agw.reasons.push('5 ft AGW chart: ' + h5agw.reason);
         agw.weightIndexLimitLb = WEIGHTINDEX.maxWeightForIndex(inp.oatC, r.hpFt, RULES.agwMaxWeightIndex);
         if (agw.weightIndexLimitLb == null) r.notes.push('weight index chart not available for these conditions; index limit not applied');
         if (agw.reasons.length === 0) {
-            var w = Math.min(agw.chartWeight, RULES.agwMaxLb);
+            var w = Math.min(agw.equipmentWeight, RULES.agwMaxLb);
             agw.limitedBy = (h5agw.limit === 'maxline') ? '24700 lb limit line' : (h5agw.limit === 'isa40' ? 'ISA+40 line' : '5 ft AGW chart');
             if (agw.weightIndexLimitLb != null && agw.weightIndexLimitLb < w) { w = agw.weightIndexLimitLb; agw.limitedBy = 'weight index 11.6'; }
             if (w > RULES.normalMaxLb) { agw.allowed = true; agw.weight = w; }
@@ -107,20 +128,26 @@ var PLANNING = (function () {
             var wInset = Math.min(r.takeoffWeightLb, RULES.bestRangeInsetMaxLb);
             var wind = isFinite(inp.windKt) ? inp.windKt : 0;
             var tas = LEVELFLIGHT.bestRangeSpeed(r.chartKey, wInset, wind);
-            r.bestRangeTasKt = tas == null ? null : Math.round(tas);
+            r.bestRangeChartKt = tas == null ? null : Math.round(tas);
+            // With equipment, the aircraft flies slower at the chart's best-range
+            // power and burns more fuel (SUP.51 5.5.1).
+            r.bestRangeTasKt = tas == null ? null : Math.round(EQ ? EQ.actualSpeed(tas, eq) : tas);
             if (tas == null) r.notes.push('best range speed: outside the inset for this weight/wind');
             if (r.bestRangeTasKt != null) {
                 // The heavy fuel curves end at the AEO max-continuous line; if the
                 // best-range TAS is beyond it, cruise at the max-continuous speed.
-                var ff = LEVELFLIGHT.fuelFlow(r.chartKey, r.takeoffWeightLb, r.bestRangeTasKt, { clampToMaxSpeed: true });
-                r.consumptionLbH = ff.lbPerHour == null ? null : Math.round(ff.lbPerHour);
-                r.cruiseTasKt = ff.lbPerHour == null ? null : Math.round(ff.tasUsed);
+                var ff = LEVELFLIGHT.fuelFlow(r.chartKey, r.takeoffWeightLb, r.bestRangeChartKt, { clampToMaxSpeed: true });
+                r.consumptionChartLbH = ff.lbPerHour == null ? null : Math.round(ff.lbPerHour);
+                r.cruiseChartKt = ff.lbPerHour == null ? null : Math.round(ff.tasUsed);
+                r.consumptionLbH = ff.lbPerHour == null ? null : Math.round(ff.lbPerHour * (EQ ? EQ.fuelFactor(eq) : 1));
+                r.cruiseTasKt = ff.lbPerHour == null ? null : Math.round(EQ ? EQ.actualSpeed(ff.tasUsed, eq) : ff.tasUsed);
                 r.speedLimited = !!ff.speedLimited;
                 if (ff.lbPerHour == null) r.notes.push('consumption: ' + ff.reason);
                 else if (ff.weightClamped) r.notes.push('consumption read at the ' + ff.heaviest + ' lb curve, the heaviest usable on this chart');
                 else if (ff.speedLimited && r.cruiseTasKt < r.bestRangeTasKt) r.notes.push('best range ' + r.bestRangeTasKt + ' kt exceeds AEO max continuous at this weight; cruise at ' + r.cruiseTasKt + ' kt');
             }
         }
+        if (eq.length) r.notes.push('equipment corrections applied: ' + r.equipment.join(', '));
 
         // Range
         if (r.fuelQLb != null && r.consumptionLbH && r.cruiseTasKt) {

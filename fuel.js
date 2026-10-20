@@ -151,6 +151,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // lookup and the best-range-speed lookup so both always read the same
     // chart. Returns null outside -2000..10500 ft.
     let currentChartKey = null;
+    // Equipment fitted in STEP 1 (perf/equipment.js): level-flight speed and
+    // fuel-flow penalties of SUP.51 5.5.1. Without it, everything is 1:1.
+    const EQ = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT : null;
+    const eqChartSpeed = v => EQ ? EQ.chartSpeed(v) : v;
+    const eqActualSpeed = v => EQ ? EQ.actualSpeed(v) : v;
+    const eqFuelFactor = () => EQ ? EQ.fuelFactor() : 1;
+    const eqLevelLabels = () => EQ ? EQ.current().filter(it => it.speedPct || it.speedKt || it.fuelPct).map(it => it.label) : [];
+    // Where the last fuel-flow reading sits on the (uncorrected) chart.
+    let lastReading = null;
     function selectChart(height, temp) {
         const key = LEVELFLIGHT.selectKey(height, temp);
         currentChartKey = key;
@@ -169,11 +178,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Shared lookup (perf/levelflight.js): linear between the two weight
         // curves that bracket the weight, instead of the nearest curve only.
-        const ff = LEVELFLIGHT.fuelFlow(chart.key, inputWeight, inputSpeed);
+        // With equipment, read the chart at the speed that gives the wanted TAS
+        // once the equipment speed loss is applied, then add the fuel penalty.
+        const chartKt = eqChartSpeed(inputSpeed);
+        const ff = LEVELFLIGHT.fuelFlow(chart.key, inputWeight, chartKt);
+        lastReading = null;
         if (ff.lbPerHour == null) {
             return { fuelData: null, backgroundImage: null, originalWidth: null, originalHeight: null, margin: null };
         }
-        return { fuelData: ff.lbPerHour, backgroundImage, originalWidth, originalHeight, margin };
+        lastReading = { key: chart.key, speed: chartKt, fuel: ff.lbPerHour };
+        return { fuelData: ff.lbPerHour * eqFuelFactor(), backgroundImage, originalWidth, originalHeight, margin };
     }
 
     // ---- Best range speed (the inset printed on the same level-flight charts) ----
@@ -202,8 +216,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!chart) { out.value = 'Altitude outside charts'; return; }
         const tas = lookupBestRangeSpeed(chart.key, weight, wind);
         if (tas === null) { out.value = 'Outside chart for this weight/wind'; return; }
-        lastBestRange = { key: chart.key, tas: tas, weight: weight, wind: wind };
-        out.value = Math.round(tas) + ' kt';
+        // With equipment the aircraft flies slower at the chart's best-range power:
+        // show the speed it will actually fly (SUP.51 5.5.1).
+        const actual = eqActualSpeed(tas);
+        lastBestRange = { key: chart.key, tas: tas, actual: actual, weight: weight, wind: wind };
+        out.value = Math.round(actual) + ' kt';
+        out.title = eqLevelLabels().length
+            ? 'Chart best range ' + Math.round(tas) + ' kt, corrected for ' + eqLevelLabels().join(', ') + ' (SUP.51 5.5.1).'
+            : 'From the BEST RANGE SPEED inset of the level-flight chart.';
     }
 
     function updateMaxContinuousSpeed() {
@@ -213,9 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (values.some(v => !Number.isFinite(v))) { out.value = ''; return; }
         const key = LEVELFLIGHT.selectKey(values[0], values[1]);
         const tas = LEVELFLIGHT.maxContinuousSpeed(key, values[2]);
-        out.value = tas === null ? 'Outside chart' : tas.toFixed(1) + ' kt';
+        out.value = tas === null ? 'Outside chart' : eqActualSpeed(tas).toFixed(1) + ' kt';
         const def = LEVELFLIGHT.chartDef(key);
         out.title = 'Estimated high-speed intersection with AEO MAX CONT; not VNE. ' +
+            (tas !== null && eqLevelLabels().length ? 'Chart ' + tas.toFixed(1) + ' kt, corrected for ' + eqLevelLabels().join(', ') + '. ' : '') +
             (def ? 'Selected chart: ' + def.hp + ' ft / ' + def.oat + ' °C (nearest available conditions).' : 'Altitude outside available charts.');
     }
 
@@ -240,7 +261,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.arc(x, y, 5, 0, 2 * Math.PI);
         ctx.fill();
         ctx.font = 'bold 14px Arial';
-        ctx.fillText(`Best range ${Math.round(lastBestRange.tas)} kt`, x + 8, y - 6);
+        const brLabel = Math.round(lastBestRange.actual) !== Math.round(lastBestRange.tas)
+            ? `Best range ${Math.round(lastBestRange.tas)} kt chart, ${Math.round(lastBestRange.actual)} kt with equipment`
+            : `Best range ${Math.round(lastBestRange.tas)} kt`;
+        ctx.fillText(brLabel, x + 8, y - 6);
         ctx.restore();
     }
 
@@ -271,7 +295,10 @@ document.addEventListener('DOMContentLoaded', () => {
         ctx.lineTo(x + 7, bottom - 14);
         ctx.closePath();
         ctx.fill();
-        const label = `Max continuous ${tas.toFixed(1)} kt TAS (not VNE)`;
+        const actualMc = eqActualSpeed(tas);
+        const label = Math.abs(actualMc - tas) > 0.05
+            ? `Max continuous ${actualMc.toFixed(1)} kt TAS with equipment (chart ${tas.toFixed(1)} kt, not VNE)`
+            : `Max continuous ${tas.toFixed(1)} kt TAS (not VNE)`;
         ctx.font = 'bold 20px Arial';
         const labelWidth = ctx.measureText(label).width;
         const labelX = Math.max(8, Math.min(x - labelWidth / 2, canvas.width - labelWidth - 16));
@@ -311,8 +338,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Chart calibration from datafolder/levelflightData.js: TAS axis linear,
         // AEO lb/h scale interpolated between its printed ticks (it is not linear).
         const def = LEVELFLIGHT_DATA[currentChartKey];
-        const xPos = LEVELFLIGHT.xOf(def, speed) * widthRatio;
-        const yPos = LEVELFLIGHT.yOf(def, fuelData) * heightRatio;
+        // The marker goes where the chart was read: with equipment that is the
+        // chart speed and the uncorrected fuel flow (see interpolateData).
+        const onChart = (!missionTitle && lastReading && lastReading.key === currentChartKey) ? lastReading : { speed: speed, fuel: fuelData };
+        const xPos = LEVELFLIGHT.xOf(def, onChart.speed) * widthRatio;
+        const yPos = LEVELFLIGHT.yOf(def, onChart.fuel) * heightRatio;
 
         ctx.beginPath();
         ctx.arc(xPos, yPos, 8, 0, 2 * Math.PI);
@@ -321,7 +351,10 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // White backing so the two title lines stay readable over the chart's printed frame line.
         const title1 = missionTitle || `Fuel Consumption: ${fuelConsumptionPerHour} lbs/h, ${fuelConsumptionPerMinute} lbs/m at ${speed} kt and ${totalWeight} lbs`;
-        const title2 = `${def.title} (${def.source})` + (missionTitle ? ' | Red: average fuel flow; green: max continuous at phase start' : '');
+        const eqNote = (!missionTitle && eqLevelLabels().length && lastReading)
+            ? ` | ${eqLevelLabels().join(', ')}: chart read at ${lastReading.speed.toFixed(1)} kt, ${lastReading.fuel.toFixed(0)} lb/h x ${eqFuelFactor().toFixed(2)}`
+            : '';
+        const title2 = `${def.title} (${def.source})` + (missionTitle ? ' | Red: average fuel flow; green: max continuous at phase start' : '') + eqNote;
         ctx.font = 'bold 20px Arial';
         const titleWidth = Math.max(ctx.measureText(title1).width, ctx.measureText(title2).width);
         ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';

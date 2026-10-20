@@ -64,6 +64,9 @@
             text-align: left;
         }
         .vfr-help-popover p { margin: 6px 0 12px; }
+        /* Browsers without the native popover feature (older phones): shown by script. */
+        .vfr-help-popover.no-native { display: none; z-index: 10000; }
+        .vfr-help-popover.no-native.is-open { display: block; }
         .vfr-help-close {
             border: 1px solid #cbd5e1;
             border-radius: 6px;
@@ -456,7 +459,30 @@
     <script src="./datafolder/levelflightData.js"></script>
     <script src="./datafolder/bestRangeSpeed.js"></script>
     <script src="./perf/levelflight.js"></script>
+    <script src="./perf/equipment.js"></script>
     <script src="./fuel.js"></script>
+    <script>
+        // Equipment ticked in STEP 1 that changes level-flight speed or fuel flow (perf/equipment.js)
+        document.addEventListener('DOMContentLoaded', function () {
+            // Shown beside the speed bar (wraps underneath on narrow screens), like the STEP 2 note.
+            if (typeof EQUIPMENT === 'undefined') return;
+            const bar = document.querySelector('.quick-info-bar-step3');
+            if (!bar) return;
+            const row = document.createElement('div');
+            row.style.cssText = 'display:flex;flex-wrap:wrap;gap:1rem;align-items:flex-start;';
+            bar.parentNode.insertBefore(row, bar);
+            row.appendChild(bar);
+            bar.style.flex = '0 1 980px';
+            const eqNote = EQUIPMENT.mountBanner(bar, 'level', true);
+            if (eqNote) {
+                eqNote.style.margin = '0';
+                eqNote.style.flex = '1 1 360px';
+                eqNote.style.minWidth = '360px';
+                eqNote.style.fontSize = '0.8rem';
+                eqNote.style.padding = '0.6rem 0.9rem';
+            }
+        });
+    </script>
     <script src="./datafolder/fuelLeak.js"></script>
     <script src="step3DataHandler.js"></script>
     <script>
@@ -578,6 +604,67 @@
         addFieldHelp('card-ifr', 'ifr', ifrHelp);
         addFieldHelp('card-fuel-calc', 'fuel', fuelHelp);
         addFieldHelp('card-range-calc', 'range', rangeHelp);
+
+        // Open each note next to the (i) that was tapped, inside what is visible on
+        // screen and at a readable size. Phones show this 1600 px page zoomed out,
+        // so a note fixed to the page corner opened far off screen and tiny.
+        const vv = window.visualViewport;
+        let openButton = null;
+        function placeNote(note, button) {
+            if (!button) return;
+            const scale = vv ? vv.scale : 1;
+            const view = vv ? { left: vv.offsetLeft, top: vv.offsetTop, width: vv.width, height: vv.height }
+                            : { left: 0, top: 0, width: innerWidth, height: innerHeight };
+            const k = 1 / scale;                                  // undo the zoom so the note reads at normal size
+            const width = Math.min(320, view.width * scale - 24); // on-screen pixels
+            Object.assign(note.style, { inset: 'auto', width: width + 'px', maxWidth: 'none',
+                transform: 'scale(' + k + ')', transformOrigin: 'top left' });
+            const w = width * k, h = note.offsetHeight * k, gap = 8 * k, pad = 12 * k;
+            const b = button.getBoundingClientRect();
+            let left = b.left + b.width / 2 - w / 2;
+            left = Math.max(view.left + pad, Math.min(left, view.left + view.width - w - pad));
+            let top = b.bottom + gap;                                    // below the (i) ...
+            if (top + h > view.top + view.height - pad) top = b.top - gap - h;   // ... or above it
+            top = Math.max(view.top + pad, Math.min(top, view.top + view.height - h - pad));
+            note.style.left = left + 'px';
+            note.style.top = top + 'px';
+        }
+        const native = HTMLElement.prototype.hasOwnProperty('popover');
+        document.querySelectorAll('.vfr-help-button').forEach(button => {
+            const note = document.getElementById(button.getAttribute('popovertarget'));
+            if (!note) return;
+            if (native) {
+                button.addEventListener('click', () => { openButton = button; });
+                note.addEventListener('toggle', e => {
+                    if (e.newState === 'open') placeNote(note, openButton || button);
+                });
+            } else {
+                // Fallback: show/hide by class, close on Close or a tap elsewhere.
+                note.classList.add('no-native');
+                button.removeAttribute('popovertarget');
+                button.addEventListener('click', ev => {
+                    ev.stopPropagation();
+                    const wasOpen = note.classList.contains('is-open');
+                    document.querySelectorAll('.vfr-help-popover.is-open').forEach(n => n.classList.remove('is-open'));
+                    if (!wasOpen) { note.classList.add('is-open'); placeNote(note, button); }
+                });
+                const close = note.querySelector('.vfr-help-close');
+                if (close) { close.removeAttribute('popovertarget'); close.addEventListener('click', () => note.classList.remove('is-open')); }
+                note.addEventListener('click', ev => ev.stopPropagation());
+            }
+        });
+        if (!native) document.addEventListener('click', () => document.querySelectorAll('.vfr-help-popover.is-open').forEach(n => n.classList.remove('is-open')));
+        // Keep an open note in view when the phone is zoomed or scrolled.
+        if (vv) {
+            const replace = () => {
+                let open = document.querySelector('.vfr-help-popover.is-open');
+                if (!open && native) open = document.querySelector('.vfr-help-popover:popover-open');
+                if (open && openButton) placeNote(open, openButton);
+            };
+            vv.addEventListener('resize', replace);
+            vv.addEventListener('scroll', replace);
+        }
+        if (!native) document.querySelectorAll('.vfr-help-button').forEach(b => b.addEventListener('click', () => { openButton = b; }));
     })();
     </script>
     <script>

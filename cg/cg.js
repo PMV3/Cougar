@@ -214,6 +214,7 @@ document.addEventListener('DOMContentLoaded', function () {
             { number: 'flirNumberWSAR', weight: 'flirWeightWSAR', cg: 0, mmnt: 'flirMMNTWSAR', singleWeight: -88 },
             { number: 'refuelingProbeNumberWSAR', weight: 'refuelingProbeWeightWSAR', cg: 194.5, mmnt: 'refuelingProbeMMNTWSAR', singleWeight: 330 },
             { number: 'hoistNumberCSAR', weight: 'hoistWeightCSAR', cg: 162.2, mmnt: 'hoistMMNTCSAR', singleWeight: 97 },
+            { number: 'searchLightNumberCSAR', weight: 'searchLightWeightCSAR', cg: 120.56, mmnt: 'searchLightMMNTCSAR', singleWeight: 53 },
             { number: 'fastRopeNumberCSAR', weight: 'fastRopeWeightCSAR', cg: 167.98, mmnt: 'fastRopeMMNTCSAR', singleWeight: 80 },
             { number: 'flirNumberCSAR', weight: 'flirWeightCSAR', cg: 0, mmnt: 'flirMMNTCSAR', singleWeight: -88 },
             { number: 'refuelingProbeNumberCSAR', weight: 'refuelingProbeWeightCSAR', cg: 194.5, mmnt: 'refuelingProbeMMNTCSAR', singleWeight: 330 },
@@ -301,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     { weight: 'flirWeightWSAR', mmnt: 'flirMMNTWSAR' },
                     { weight: 'refuelingProbeWeightWSAR', mmnt: 'refuelingProbeMMNTWSAR' },
                     { weight: 'hoistWeightCSAR', mmnt: 'hoistMMNTCSAR' },
+                    { weight: 'searchLightWeightCSAR', mmnt: 'searchLightMMNTCSAR' },
                     { weight: 'fastRopeWeightCSAR', mmnt: 'fastRopeMMNTCSAR' },
                     { weight: 'flirWeightCSAR', mmnt: 'flirMMNTCSAR' },
                     { weight: 'refuelingProbeWeightCSAR', mmnt: 'refuelingProbeMMNTCSAR' }

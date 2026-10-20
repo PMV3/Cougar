@@ -224,6 +224,7 @@
     <script src="./perf/hover10ft.js"></script>
     <script src="./perf/levelflight.js"></script>
     <script src="./perf/weightindex.js"></script>
+    <script src="./perf/equipment.js"></script>
     <script src="./perf/planning.js"></script>
     <script src="./perf/charts.js"></script>
     <script src="./planning/planning-charts.js"></script>
@@ -233,6 +234,8 @@
             const card = document.getElementById(cardId);
             if (card) card.classList.toggle('collapsed');
         }
+        // Equipment ticked in STEP 1 that changes hover, speed or fuel (perf/equipment.js)
+        if (typeof EQUIPMENT !== 'undefined') EQUIPMENT.mountBanner('#card-planning .planning-toolbar', 'all');
         function setActiveStep(element, stepId) {
             document.querySelectorAll('.step').forEach(step => step.classList.remove('active'));
             element.classList.add('active');

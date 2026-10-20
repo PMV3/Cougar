@@ -22,7 +22,7 @@ var PlanningCharts = (function () {
         caption('chartTitle10', d);
         CHARTS.draw(el('chart10ft'), d, function (ctx) {
             if (r.w10ft == null) { CHARTS.label(ctx, 'Outside chart', 80, 60, RED); return; }
-            var y = d.y(r.hpFt), x = d.x(r.w10ft);
+            var y = d.y(r.hpFt), x = d.x(r.w10ftChart != null ? r.w10ftChart : r.w10ft);
             CHARTS.arrow(ctx, d.axisX, y, x, y, BLUE);
             CHARTS.arrow(ctx, x, y, x, d.axisY, BLUE);
             CHARTS.dot(ctx, x, y, BLUE);
@@ -46,7 +46,7 @@ var PlanningCharts = (function () {
             var xc = d.x(Math.min(chart5, 24700));
             CHARTS.arrow(ctx, d.axisX, y, xc, y, BLUE);
             // 5 ft normal weight (capped 21495), red
-            var x5 = d.x(r.w5ft);
+            var x5 = d.x(r.w5ftChart != null ? r.w5ftChart : r.w5ft);
             CHARTS.arrow(ctx, x5, y, x5, d.axisY, RED);
             CHARTS.dot(ctx, x5, y, RED);
             CHARTS.label(ctx, '5 ft: ' + fmt(r.w5ft) + ' lb', Math.max(240, x5 - 200 * k), y - 14 * k, RED, 16);
@@ -92,7 +92,7 @@ var PlanningCharts = (function () {
         CHARTS.draw(el('chartLF'), d, function (ctx) {
             var k = CHARTS.scale(ctx);
             if (r.consumptionLbH == null || r.cruiseTasKt == null) { CHARTS.label(ctx, 'Consumption: outside chart', 60, 40 * k, RED); return; }
-            var x = CHARTS.lfX(d, r.cruiseTasKt), y = CHARTS.lfY(d, r.consumptionLbH);
+            var x = CHARTS.lfX(d, r.cruiseChartKt != null ? r.cruiseChartKt : r.cruiseTasKt), y = CHARTS.lfY(d, r.consumptionChartLbH != null ? r.consumptionChartLbH : r.consumptionLbH);
             var xe = d.def.scaleX;                     // end of the fuel-flow arrow, at the lb/h scale
             CHARTS.arrow(ctx, x, d.def.axisY, x, y, RED);
             CHARTS.arrow(ctx, x, y, xe, y, RED);
@@ -105,7 +105,7 @@ var PlanningCharts = (function () {
             var ins = (typeof BEST_RANGE_SPEED !== 'undefined' && BEST_RANGE_SPEED[key]) ? BEST_RANGE_SPEED[key].inset : null;
             if (ins && r.bestRangeTasKt != null) {
                 var wi = Math.min(r.takeoffWeightLb, PLANNING.RULES.bestRangeInsetMaxLb);
-                var ix = ins.x100kt + (r.bestRangeTasKt - 100) * ins.pxPerKt;
+                var ix = ins.x100kt + ((r.bestRangeChartKt != null ? r.bestRangeChartKt : r.bestRangeTasKt) - 100) * ins.pxPerKt;
                 var iy = ins.y25000lb + (25000 - wi) * ins.pxPerLb;
                 var ib = ins.y25000lb + (25000 - 13000) * ins.pxPerLb;
                 CHARTS.line(ctx, ins.x100kt, iy, ix, iy, BLUE, 2);

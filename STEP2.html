@@ -588,6 +588,7 @@
     <script src="./5ft_ige/5ft_ige.js"></script>
     <script src="./5ft_ige/5ft_calculator.js"></script>
     <script src="./datafolder/serviceclimbing.js"></script>
+    <script src="./perf/equipment.js"></script>
     <script src="./scripts.js"></script>
     <script src="step2DataHandler.js"></script>
     
@@ -747,8 +748,9 @@
                 return;
             }
             
-            // Calculate max altitude for given weight and temperature
-            const maxAlt = findHeight5ft(qat, acweight);
+            // Calculate max altitude for given weight and temperature (at the
+            // equivalent weight when equipment reduces hover performance)
+            const maxAlt = findHeight5ft(qat, (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverChartWeight(acweight) : acweight);
             console.log('5ft IGE - Input: OAT=' + qat + ', Alt=' + hp + ', Weight=' + acweight);
             console.log('5ft IGE - Max Altitude for weight ' + acweight + ': ' + maxAlt);
             console.log('5ft IGE - chartData available: ' + (typeof chartData !== 'undefined'));
@@ -760,7 +762,7 @@
             
             // Calculate max weight for given altitude and temperature using findWeight from 5ft_calculator.js
             if (typeof findWeight === 'function') {
-                const maxWeight = findWeight(qat, hp);
+                const maxWeight = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverWeight(findWeight(qat, hp, Infinity), 21495) : findWeight(qat, hp);
                 console.log('5ft IGE - Max Weight for altitude ' + hp + ': ' + maxWeight);
                 if (maxWeight !== null && !isNaN(maxWeight)) {
                     document.getElementById('#enginIGE5ft_weight').value = maxWeight.toFixed(2);
@@ -768,8 +770,10 @@
                     document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: Weight outside chart limits';
                 }
                 
-                // Draw on canvas
-                draw5ftIGEChart(ctx6, canvas6, qat, hp, acweight, maxWeight, maxAlt);
+                // Draw on canvas the plain chart reading (no equipment penalty), like
+                // the other STEP 2 charts: max weight at this altitude, and max
+                // altitude at the actual weight.
+                draw5ftIGEChart(ctx6, canvas6, qat, hp, acweight, findWeight(qat, hp), findHeight5ft(qat, acweight));
             } else {
                 document.getElementById('#enginIGE5ft_weight').value = 'Twin IGE 5ft: Calculator not loaded';
             }
@@ -795,8 +799,9 @@
                 return;
             }
             
-            // Calculate max altitude for given weight and temperature
-            const maxAlt = findHeight5ft(qat, acweight);
+            // Calculate max altitude for given weight and temperature (at the
+            // equivalent weight when equipment reduces hover performance)
+            const maxAlt = findHeight5ft(qat, (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverChartWeight(acweight) : acweight);
             if (maxAlt !== null && !isNaN(maxAlt)) {
                 document.getElementById('#enginIGE5ft').value = maxAlt.toFixed(2);
             } else {
@@ -805,7 +810,7 @@
             
             // Calculate max weight for given altitude and temperature
             if (typeof findWeight === 'function') {
-                const maxWeight = findWeight(qat, hp);
+                const maxWeight = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverWeight(findWeight(qat, hp, Infinity), 21495) : findWeight(qat, hp);
                 if (maxWeight !== null && !isNaN(maxWeight)) {
                     document.getElementById('#enginIGE5ft_weight').value = maxWeight.toFixed(2);
                 } else {
@@ -1262,6 +1267,20 @@
 
 
         document.addEventListener('DOMContentLoaded', function() {
+            // Equipment ticked in STEP 1 that changes hover or climb (perf/equipment.js):
+            // note under the Performance Calculations card, left column; the
+            // Calculation Results card spans both rows on the right.
+            if (typeof EQUIPMENT !== 'undefined') {
+                const eqNote = EQUIPMENT.mountBanner('#card-calculations', 'hover-climb', true);
+                const results = document.getElementById('card-results');
+                if (eqNote && results) {
+                    eqNote.style.gridColumn = '1';
+                    eqNote.style.margin = '0';
+                    results.style.gridColumn = '2';
+                    results.style.gridRow = '1 / span 2';
+                }
+            }
+
             // Remove any existing toasts
             document.querySelectorAll('.toast').forEach(t => t.remove());
             

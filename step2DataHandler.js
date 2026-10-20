@@ -67,31 +67,10 @@ function loadStep2Data() {
     }
 }
 
-// Add this function to check for Step 1 updates
-function checkForStep1Updates() {
-    const step1Data = JSON.parse(localStorage.getItem('step1SpecificData') || '{}');
-    const savedData = JSON.parse(localStorage.getItem('step2SpecificData') || '{}');
-
-    let updatesDetected = false;
-
-    if (step1Data.summaryData?.['ttl-weight'] !== savedData.inputs?.['#acweight']) updatesDetected = true;
-    if (step1Data.inputs?.['wind'] !== savedData.inputs?.['#wind']) updatesDetected = true;
-    if (step1Data.inputs?.['temperature'] !== savedData.inputs?.['#qat']) updatesDetected = true;
-    if (step1Data.inputs?.['height'] !== savedData.inputs?.['#hp']) updatesDetected = true;
-
-    if (updatesDetected) {
-        loadStep2Data();
-    }
-}
-
-// Modify the DOMContentLoaded event listener
+// Step 1 values are read on every load of STEP2.html, so no polling is needed.
 document.addEventListener('DOMContentLoaded', function() {
     if (window.location.href.includes('STEP2.html')) {
         console.log('DOMContentLoaded: Loading Step 2 data...');
         loadStep2Data();
-        initializeStep2Listeners();
-        
-        // Add periodic check for Step 1 updates
-        setInterval(checkForStep1Updates, 5000); // Check every 5 seconds
     }
 });

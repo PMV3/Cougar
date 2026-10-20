@@ -8,6 +8,9 @@ var TARGET_MISSION = (() => {
     [120,140,180,220,260].forEach((arm,i) => positions['section'+String.fromCharCode(65+i)] = {label:'Cargo section '+String.fromCharCode(65+i), arm, kind:'cargo'});
     function finite(n) { return typeof n === 'number' && Number.isFinite(n); }
     function fail(message) { throw new Error(message); }
+    // Equipment fitted in STEP 1 (perf/equipment.js); identity when not loaded.
+    const EQ = () => (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT : null;
+    const hoverPen = (w, cap) => w == null ? w : (EQ() ? EQ().hoverWeight(w, cap) : (cap != null ? Math.min(w, cap) : w));
     function conditions(hp,oat) { return finite(hp) && finite(oat) && hp >= -2000 && hp <= 25000 && oat >= -45 && oat <= 50; }
     function bracket(values, value) {
         for(let i=0;i<values.length-1;i++) if(value<=values[i] && value>=values[i+1]) return i;
@@ -24,7 +27,7 @@ var TARGET_MISSION = (() => {
         if(hp<=20000 && weight>=13200 && weight<=21500) {
             const y=37+(679-37)*(20000-hp)/20000;
             const x=mix(getXForY(y,Qat_4[i]),getXForY(y,Qat_4[i+1]),f);
-            if(x!=null) r.oge=13200+(x-52)/(568-52)*(21500-13200);
+            if(x!=null) r.oge=hoverPen(13200+(x-52)/(568-52)*(21500-13200),null);
             const wx=477-(21500-weight)/(21500-13200)*(477-35);
             const cy=mix(getYForXanother(wx,Qat_3[i]),getYForXanother(wx,Qat_3[i+1]),f);
             if(cy!=null) r.ceiling=20000-(cy-6)/(683-6)*20000;
@@ -39,13 +42,14 @@ var TARGET_MISSION = (() => {
         if(y==null) return r;
         const j=Math.min(weightindexcomple_7.length-2,Math.floor((13-wi)/0.5));
         const x=mix(getXForYanother(y,weightindexcomple_7[j]),getXForYanother(y,weightindexcomple_7[j+1]),(13-0.5*j-wi)/0.5);
-        if(x!=null) r.climb=1500-(868.5-x)/(868.5-612.5)*1500;
+        if(x!=null) { const basic=1500-(868.5-x)/(868.5-612.5)*1500; r.climb=EQ()?EQ().climb(basic):basic; }
         return r;
     }
     function performance(weight,hp,oat) {
         const valid=conditions(hp,oat);
-        const five=valid && oat<ATM.isaTemperature(hp)+40 ? HOVER5FT.maxWeight(hp,oat,21495) : {weight:null};
-        const ten=valid && hp>=0 && hp<=20000 ? HOVER10FT.maxWeight(oat,hp) : null;
+        const five5=valid && oat<ATM.isaTemperature(hp)+40 ? HOVER5FT.maxWeight(hp,oat,21495) : {weight:null};
+        const five={weight:five5.weight==null?null:hoverPen(five5.chartWeight,21495)};
+        const ten=hoverPen(valid && hp>=0 && hp<=20000 ? HOVER10FT.maxWeight(oat,hp) : null,21495);
         const other=valid ? otherPerformance(weight,hp,oat) : {oge:null,ceiling:null,climb:null,index:null};
         return {...other, five:five.weight,ten, fiveMargin:five.weight==null?null:five.weight-weight,tenMargin:ten==null?null:ten-weight,ogeMargin:other.oge==null?null:other.oge-weight};
     }
@@ -64,7 +68,9 @@ var TARGET_MISSION = (() => {
         for(let t=0;t<minutes;t+=1) {
             const w=weight-used;
             if(w<min || w>max) fail('Fuel estimate unavailable: aircraft weight is outside the selected chart curves.');
-            const flow=LEVELFLIGHT.fuelFlow(chosen.key,w,speed);
+            // Equipment: read the chart at the equivalent chart speed, then add the fuel penalty (SUP.51 5.5.1).
+            const raw=LEVELFLIGHT.fuelFlow(chosen.key,w,EQ()?EQ().chartSpeed(speed):speed);
+            const flow={...raw,lbPerHour:raw.lbPerHour==null?raw.lbPerHour:raw.lbPerHour*(EQ()?EQ().fuelFactor():1)};
             if(!finite(flow.lbPerHour) || flow.lbPerHour<=0 || flow.speedLimited || flow.weightClamped) fail('Fuel estimate unavailable: speed/weight is outside the selected chart curves.');
             used+=flow.lbPerHour/60*Math.min(1,minutes-t);
             if(used>fuel+1e-7) fail('Not enough fuel for the planned outbound/on-site duration.');

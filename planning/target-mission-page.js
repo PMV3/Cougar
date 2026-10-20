@@ -157,7 +157,7 @@
         render();window.addEventListener('pageshow',render);window.addEventListener('storage',event=>{if(event.key===KEY||event.key===null)render();});
     }
     async function init() {
-        const dependencies=['datafolder/heightloosemap.js','datafolder/weightindex.js','datafolder/newIGE.js','datafolder/ige5ft_agw.js','datafolder/newhoge.js','datafolder/serviceCeiling.js','datafolder/serviceclimbing.js','datafolder/levelflightData.js','perf/atmosphere.js','perf/hover5ft.js','perf/hover10ft.js','perf/weightindex.js','perf/levelflight.js','perf/charts.js','perf/target-mission.js'];
+        const dependencies=['datafolder/heightloosemap.js','datafolder/weightindex.js','datafolder/newIGE.js','datafolder/ige5ft_agw.js','datafolder/newhoge.js','datafolder/serviceCeiling.js','datafolder/serviceclimbing.js','datafolder/levelflightData.js','perf/atmosphere.js','perf/hover5ft.js','perf/hover10ft.js','perf/weightindex.js','perf/levelflight.js','perf/charts.js','perf/equipment.js','perf/target-mission.js'];
         for(const src of dependencies) {
             if([...document.scripts].some(s=>s.src&&new URL(s.src).pathname.endsWith('/'+src)))continue;
             await new Promise((resolve,reject)=>{const s=document.createElement('script');s.src=src;s.onload=resolve;s.onerror=()=>reject(new Error('Cannot load '+src));document.body.append(s);});

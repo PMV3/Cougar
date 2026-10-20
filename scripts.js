@@ -594,8 +594,10 @@ function count_4() {
       return false;
   }
 
-  // Calculate and display altitude result
-  const weightmapval_4 = 568 - ((21500 - acweight) / (21500 - 13200)) * (568 - 52);
+  // Calculate and display altitude result. With equipment that reduces hover
+  // performance (perf/equipment.js), read the chart at the equivalent weight.
+  const chartweight_4 = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverChartWeight(acweight) : acweight;
+  const weightmapval_4 = 568 - ((21500 - chartweight_4) / (21500 - 13200)) * (568 - 52);
   const qatindex_4 = parseInt(qat >= -45 && qat <= -40 ? 9 : (50 - qat) / 10);
   const thirdval_4 = getYForXanother(weightmapval_4, Qat_4[qatindex_4]);
   const fourthval_4 = getYForXanother(weightmapval_4, Qat_4[qatindex_4 + 1]);
@@ -609,17 +611,23 @@ function count_4() {
       const enginehoge_4 = 20000 - ((enginehogemap_4 - 37) / (679 - 37)) * 20000;
       document.getElementById("#enginhoge").value = enginehoge_4.toFixed(2);
 
-      // Draw altitude point and lines
-      drawFoundPoint(ctx3, weightmapval_4, enginehogemap_4);
+      // Draw the plain chart reading at the actual weight (no equipment penalty)
+      const rawx_4 = 568 - ((21500 - acweight) / (21500 - 13200)) * (568 - 52);
+      const rawa_4 = getYForXanother(rawx_4, Qat_4[qatindex_4]);
+      const rawb_4 = getYForXanother(rawx_4, Qat_4[qatindex_4 + 1]);
+      const rawy_4 = (rawa_4 != null && rawb_4 != null)
+          ? rawb_4 + ((qat - Qatindex_4[qatindex_4 + 1]) * (rawa_4 - rawb_4)) / (Qatindex_4[qatindex_4] - Qatindex_4[qatindex_4 + 1])
+          : enginehogemap_4;
+      drawFoundPoint(ctx3, rawx_4, rawy_4);
       drawline(
           ctx3,
-          { x: weightmapval_4, y: 762 },
-          { x: weightmapval_4, y: enginehogemap_4 }
+          { x: rawx_4, y: 762 },
+          { x: rawx_4, y: rawy_4 }
       );
       drawline(
           ctx3,
-          { x: weightmapval_4, y: enginehogemap_4 },
-          { x: 52, y: enginehogemap_4 }
+          { x: rawx_4, y: rawy_4 },
+          { x: 52, y: rawy_4 }
       );
   } else {
       document.getElementById("#enginhoge").value = "Unable to calculate";
@@ -644,7 +652,8 @@ function count_4() {
       const enginehogeweight_4 = 
           minWeight + (enginehogeweightmap_4 - minX) / (maxX - minX) * (maxWeight - minWeight);
       
-      document.getElementById("#enginhoge_weight").value = enginehogeweight_4.toFixed(2);
+      const allowedhoge_4 = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverWeight(enginehogeweight_4, null) : enginehogeweight_4;
+      document.getElementById("#enginhoge_weight").value = allowedhoge_4.toFixed(2);
 
       // Draw weight point and lines
       drawFoundPoint(ctx3, enginehogeweightmap_4, hptfmapval_4, "blue");
@@ -678,9 +687,9 @@ function count_5() {
   const acweight = parseFloat(document.getElementById("#acweight").value);
   const wind = parseFloat(document.getElementById("#wind").value);
 
-  if (!(qat >= -45 && qat <= 50 && acweight >= 13200 && acweight <= 21500)) {
-    document.getElementById("#enginIGE").value = formatToTwoDecimals(hpft_5);
-document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIGEweight_5);
+  if (!(qat >= -45 && qat <= 50 && hp >= 0 && hp <= 20000 && acweight >= 13200 && acweight <= 21500)) {
+    document.getElementById("#enginIGE").value = "";
+    document.getElementById("#enginIGE_weight").value = "";
     showToast(
       "Twin IGE 10ft: Input out of range. OAT: -45 to 50C, Alt: 0-20,000 ft, Weight: 13,200-21,500 lb",
       "danger",
@@ -692,8 +701,9 @@ document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIG
 
   const qatindex_5 = parseInt(qat >= -45 && qat <= -40 ? 9 : (50 - qat) / 10);
 
-  // Altitude calculation
-  const weightmapval_5 = 570 - ((21500 - acweight) / (21500 - 13300)) * (570 - 59);
+  // Altitude calculation (at the equivalent weight when equipment reduces hover performance)
+  const chartweight_5 = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverChartWeight(acweight) : acweight;
+  const weightmapval_5 = 570 - ((21500 - chartweight_5) / (21500 - 13300)) * (570 - 59);
   const firstval_5 = getYForXanother(weightmapval_5, Qat_5[qatindex_5]);
   const secondval_5 = getYForXanother(weightmapval_5, Qat_5[qatindex_5 + 1]);
 
@@ -705,17 +715,23 @@ document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIG
     const hpft_5 = 20000 - ((hptfmapval_5 - 28) / (674 - 28)) * 20000;
     document.getElementById("#enginIGE").value = hpft_5.toFixed(2);
 
-    // Draw altitude point and lines
-    drawFoundPoint(ctx4, weightmapval_5, hptfmapval_5);
+    // Draw the plain chart reading at the actual weight (no equipment penalty)
+    const rawx_5 = 570 - ((21500 - acweight) / (21500 - 13300)) * (570 - 59);
+    const rawa_5 = getYForXanother(rawx_5, Qat_5[qatindex_5]);
+    const rawb_5 = getYForXanother(rawx_5, Qat_5[qatindex_5 + 1]);
+    const rawy_5 = (rawa_5 != null && rawb_5 != null)
+      ? rawa_5 - ((rawa_5 - rawb_5) * (Qatindex_4[qatindex_5] - qat)) / 10
+      : hptfmapval_5;
+    drawFoundPoint(ctx4, rawx_5, rawy_5);
     drawline(
       ctx4,
-      { x: weightmapval_5, y: 755 },
-      { x: weightmapval_5, y: hptfmapval_5 }
+      { x: rawx_5, y: 755 },
+      { x: rawx_5, y: rawy_5 }
     );
     drawline(
       ctx4,
-      { x: weightmapval_5, y: hptfmapval_5 },
-      { x: 54, y: hptfmapval_5 }
+      { x: rawx_5, y: rawy_5 },
+      { x: 54, y: rawy_5 }
     );
   } else {
     document.getElementById("#enginIGE").value = "Unable to calculate";
@@ -740,7 +756,8 @@ document.getElementById("#enginIGE_weight").value = formatToTwoDecimals(engineIG
     const engineIGEweight_5 = 
       minWeight + (engineIGEweightmap_5 - minX) / (maxX - minX) * (maxWeight - minWeight);
     
-    document.getElementById("#enginIGE_weight").value = engineIGEweight_5.toFixed(2);
+    const allowedIGE_5 = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.hoverWeight(engineIGEweight_5, null) : engineIGEweight_5;
+    document.getElementById("#enginIGE_weight").value = allowedIGE_5.toFixed(2);
 
     // Draw weight point and lines
     drawFoundPoint(ctx4, engineIGEweightmap_5, hptfmapval_5_weight, "blue");
@@ -866,7 +883,9 @@ function count_7() {
       }
   );
   const rcval_7 = 1500 - ((868.5 - rcmapval_7) / (868.5 - 612.5)) * 1500;
-  document.getElementById("#rc").value = formatToTwoDecimals(rcval_7);
+  // Equipment climb penalties (perf/equipment.js: JDD, hoist, searchlight)
+  const rcallowed_7 = (typeof EQUIPMENT !== 'undefined') ? EQUIPMENT.climb(rcval_7) : rcval_7;
+  document.getElementById("#rc").value = formatToTwoDecimals(rcallowed_7);
 }
 
 function showToast(message = "Sample Message", toastType = "info", duration = 5000, fortop = 0) {
